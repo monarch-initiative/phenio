@@ -74,10 +74,6 @@ odkversion:
 $(TMPDIR) $(REPORTDIR) $(MIRRORDIR) $(IMPORTDIR) $(COMPONENTSDIR) $(SUBSETDIR):
 	mkdir -p $@
 
-# An extra endpoint just to prepare empty sources
-prepare_repo:
-	touch $(IMPORT_FILES) $(OTHER_SRC)
-
 # ----------------------------------------
 # Release assets
 # ----------------------------------------
