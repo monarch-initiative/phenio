@@ -1,5 +1,4 @@
 
-![Build Status](https://github.com/monarch-initiative/phenio/workflows/CI/badge.svg)
 # Phenomics Integrated Ontology
 
 Description: None
@@ -10,11 +9,7 @@ More information can be found at http://obofoundry.org/ontology/phenio
 
 ### Stable release versions
 
-The latest version of the ontology can always be found at:
-
-http://purl.obolibrary.org/obo/phenio.owl
-
-(note this will not show up until the request has been approved by obofoundry.org)
+The latest version of the ontology can be found in this repository.
 
 ### Editors' version
 
