@@ -1,0 +1,57 @@
+{
+  "graphs": [
+    {
+      "domainRangeAxioms": [],
+      "edges": [],
+      "equivalentNodesSets": [],
+      "id": "http://purl.obolibrary.org/obo/phenio/phenio-full.json",
+      "logicalDefinitionAxioms": [],
+      "meta": {
+        "basicPropertyValues": [
+          {
+            "pred": "http://purl.org/dc/terms/description",
+            "val": "None"
+          },
+          {
+            "pred": "http://purl.org/dc/terms/license",
+            "val": "https://creativecommons.org/licenses/unspecified"
+          },
+          {
+            "pred": "http://purl.org/dc/terms/title",
+            "val": "Phenomics Integrated Ontology"
+          },
+          {
+            "pred": "http://www.w3.org/2002/07/owl#versionInfo",
+            "val": "2022-05-05"
+          }
+        ],
+        "subsets": [],
+        "version": "http://purl.obolibrary.org/obo/phenio/releases/2022-05-05/phenio-full.json",
+        "xrefs": []
+      },
+      "nodes": [
+        {
+          "id": "http://purl.obolibrary.org/obo/PHENIO_0000000",
+          "lbl": "root node",
+          "type": "CLASS"
+        },
+        {
+          "id": "http://purl.org/dc/terms/description",
+          "lbl": "description",
+          "type": "PROPERTY"
+        },
+        {
+          "id": "http://purl.org/dc/terms/license",
+          "lbl": "license",
+          "type": "PROPERTY"
+        },
+        {
+          "id": "http://purl.org/dc/terms/title",
+          "lbl": "title",
+          "type": "PROPERTY"
+        }
+      ],
+      "propertyChainAxioms": []
+    }
+  ]
+}
