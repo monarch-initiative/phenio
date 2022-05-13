@@ -68,8 +68,11 @@ components:
       source: http://purl.obolibrary.org/obo/pato/pato-base.owl
     - filename: go.owl
       source: http://purl.obolibrary.org/obo/go/go-base.owl
+      ###
+      # upheno2
     - filename: upheno.owl
-      source: https://raw.githubusercontent.com/obophenotype/upheno/master/metazoa.owl
+      source: https://bbop-ontologies.s3.amazonaws.com/upheno/current/upheno-release/all/upheno_all_with_relations.owl
+      ###
     - filename: mondo-equivalents.owl
       source: http://purl.obolibrary.org/obo/mondo/imports/equivalencies.owl
     - filename: mondo.owl
