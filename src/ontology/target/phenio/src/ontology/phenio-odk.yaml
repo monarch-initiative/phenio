@@ -1,0 +1,96 @@
+id: phenio
+title: "Phenomics Integrated Ontology"
+github_org: monarch-initiative
+repo: phenio
+report_fail_on: none
+release_artefacts: 
+  - base
+  - full
+  - non-classified
+primary_release: full
+export_formats:
+  - owl
+  - json
+import_group:
+  use_base_merging: TRUE
+  exclude_iri_patterns:
+    - <http://purl.obolibrary.org/obo/GOCHE_*>
+    - <http://purl.obolibrary.org/obo/NCBITaxon_Union_*>
+    - <http://www.informatics.jax.org/marker/MGI:*>
+    - <http://purl.obolibrary.org/obo/OBA_*>
+    - <http://purl.obolibrary.org/obo/CARO_*>
+  slme_individuals: exclude
+  mirror_max_time_download: 400
+  products:
+    - id: nbo
+      use_base: TRUE
+    - id: fao
+      make_base: TRUE
+    - id: oba
+      use_base: TRUE
+    - id: stato
+    - id: bfo
+    - id: hsapdv
+      make_base: TRUE
+    - id: mpath
+      make_base: TRUE
+    - id: ncbitaxon-taxslim
+      mirror_from: http://purl.obolibrary.org/obo/ncbitaxon/subsets/taxslim.owl
+    - id: caro
+      make_base: TRUE
+    - id: uberon
+      use_base: TRUE
+    - id: uberon-bridge-to-zfa
+      mirror_from: http://purl.obolibrary.org/obo/uberon/bridge/uberon-bridge-to-zfa.owl
+    - id: uberon-bridge-to-ma
+      mirror_from: http://purl.obolibrary.org/obo/uberon/bridge/uberon-bridge-to-ma.owl
+    - id: uberon-bridge-to-wbbt
+      mirror_from: http://purl.obolibrary.org/obo/uberon/bridge/uberon-bridge-to-wbbt.owl
+    - id: uberon-bridge-to-fbbt
+      mirror_from: http://purl.obolibrary.org/obo/uberon/bridge/uberon-bridge-to-fbbt.owl
+    - id: uberon-bridge-to-fma
+      mirror_from: http://purl.obolibrary.org/obo/uberon/bridge/uberon-bridge-to-fma.owl
+    - id: uberon-bridge-to-nifstd
+      mirror_from: http://purl.obolibrary.org/obo/uberon/bridge/uberon-bridge-to-nifstd.owl
+    - id: cl-bridge-to-ma
+      mirror_from: http://purl.obolibrary.org/obo/uberon/bridge/cl-bridge-to-ma.owl
+    - id: cl-bridge-to-fma
+      mirror_from: http://purl.obolibrary.org/obo/uberon/bridge/cl-bridge-to-fma.owl
+    - id: cl-bridge-to-wbbt
+      mirror_from: http://purl.obolibrary.org/obo/uberon/bridge/cl-bridge-to-wbbt.owl
+    - id: cl-bridge-to-fbbt
+      mirror_from: http://purl.obolibrary.org/obo/uberon/bridge/cl-bridge-to-fbbt.owl
+    - id: cl-bridge-to-zfa
+      mirror_from: http://purl.obolibrary.org/obo/uberon/bridge/cl-bridge-to-zfa.owl
+components:
+  products:
+    - filename: pato.owl
+      source: http://purl.obolibrary.org/obo/pato/pato-base.owl
+    - filename: go.owl
+      source: http://purl.obolibrary.org/obo/go/go-base.owl
+      ###
+      # upheno2
+    - filename: upheno.owl
+      source: https://bbop-ontologies.s3.amazonaws.com/upheno/current/upheno-release/all/upheno_all_with_relations.owl
+      ###
+    - filename: mondo-equivalents.owl
+      source: http://purl.obolibrary.org/obo/mondo/imports/equivalencies.owl
+    - filename: mondo.owl
+      source: http://purl.obolibrary.org/obo/mondo/mondo-base.owl
+    - filename: eco.owl
+      source: http://purl.obolibrary.org/obo/eco/eco-base.owl
+    - filename: sepio.owl
+      source: http://purl.obolibrary.org/obo/sepio.owl
+    - filename: ro.owl
+      source: http://purl.obolibrary.org/obo/ro.owl
+    - filename: uberon.owl
+      source: http://purl.obolibrary.org/obo/uberon/uberon-base.owl
+    - filename: fbbt.owl
+      source: http://purl.obolibrary.org/obo/fbbt/fbbt-base.owl
+    - filename: wbbt.owl
+      source: http://purl.obolibrary.org/obo/wbbt/wbbt-base.owl
+    - filename: zfa.owl
+      source: http://purl.obolibrary.org/obo/zfa/zfa-base.owl
+    - filename: chebi.owl
+      mirror_from: http://purl.obolibrary.org/obo/chebi.owl.gz
+robot_java_args: '-Xmx18G'
