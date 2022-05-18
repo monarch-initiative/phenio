@@ -328,7 +328,7 @@ $(COMPONENTSDIR)/go.owl:  component-download-go.owl
 
 .PHONY: component-download-upheno.owl
 component-download-upheno.owl: | $(TMPDIR)
-	if [ $(IMP) = true ]; then $(ROBOT) merge -I https://raw.githubusercontent.com/obophenotype/upheno/master/metazoa.owl \
+	if [ $(IMP) = true ]; then $(ROBOT) merge -I https://bbop-ontologies.s3.amazonaws.com/upheno/current/upheno-release/all/upheno_all_with_relations.owl \
 	annotate --ontology-iri $(ONTBASE)/$@ $(ANNOTATE_ONTOLOGY_VERSION) -o $(TMPDIR)/$@.owl; fi
 
 $(COMPONENTSDIR)/upheno.owl:  component-download-upheno.owl

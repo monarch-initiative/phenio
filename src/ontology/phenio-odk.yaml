@@ -3,7 +3,7 @@ title: "Phenomics Integrated Ontology"
 github_org: monarch-initiative
 repo: phenio
 report_fail_on: none
-release_artefacts: 
+release_artefacts:
   - base
   - full
   - non-classified
@@ -68,8 +68,11 @@ components:
       source: http://purl.obolibrary.org/obo/pato/pato-base.owl
     - filename: go.owl
       source: http://purl.obolibrary.org/obo/go/go-base.owl
+      ###
+      # upheno2
     - filename: upheno.owl
-      source: https://raw.githubusercontent.com/obophenotype/upheno/master/metazoa.owl
+      source: https://bbop-ontologies.s3.amazonaws.com/upheno/current/upheno-release/all/upheno_all_with_relations.owl
+      ###
     - filename: mondo-equivalents.owl
       source: http://purl.obolibrary.org/obo/mondo/imports/equivalencies.owl
     - filename: mondo.owl
@@ -91,3 +94,11 @@ components:
     - filename: chebi.owl
       mirror_from: http://purl.obolibrary.org/obo/chebi.owl.gz
 robot_java_args: '-Xmx18G'
+
+robot_report:
+  release_reports: False
+  fail_on: none
+  use_labels: False
+  custom_profile: True
+  report_on:
+    - edit

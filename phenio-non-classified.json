@@ -22,11 +22,11 @@
           },
           {
             "pred": "http://www.w3.org/2002/07/owl#versionInfo",
-            "val": "2022-05-05"
+            "val": "2022-05-18"
           }
         ],
         "subsets": [],
-        "version": "http://purl.obolibrary.org/obo/phenio/releases/2022-05-05/phenio-non-classified.json",
+        "version": "http://purl.obolibrary.org/obo/phenio/releases/2022-05-18/phenio-non-classified.json",
         "xrefs": []
       },
       "nodes": [
