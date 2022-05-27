@@ -8,7 +8,7 @@ An ontology for accessing and comparing knowledge concerning phenotypes across s
 
 The latest version of the ontology can always be found at:
 
-http://purl.obolibrary.org/obo/phenio.owl
+https://github.com/monarch-initiative/phenio/releases/
 
 ### Editors' version
 
