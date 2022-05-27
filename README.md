@@ -1,10 +1,6 @@
+# Phenomics Integrated Ontology (PHENIO)
 
-![Build Status](https://github.com/monarch-initiative/phenio/workflows/CI/badge.svg)
-# Phenomics Integrated Ontology
-
-Description: None
-
-More information can be found at http://obofoundry.org/ontology/phenio
+An ontology for accessing and comparing knowledge concerning phenotypes across species and genetic backgrounds.
 
 ## Versions
 
@@ -12,9 +8,7 @@ More information can be found at http://obofoundry.org/ontology/phenio
 
 The latest version of the ontology can always be found at:
 
-http://purl.obolibrary.org/obo/phenio.owl
-
-(note this will not show up until the request has been approved by obofoundry.org)
+https://github.com/monarch-initiative/phenio/releases/
 
 ### Editors' version
 
