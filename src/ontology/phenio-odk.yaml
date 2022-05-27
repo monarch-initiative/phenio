@@ -5,11 +5,14 @@ repo: phenio
 report_fail_on: none
 release_artefacts:
   - base
+  - basic
+  - simple
   - full
   - non-classified
 primary_release: full
 export_formats:
   - owl
+  - obo
   - json
 import_group:
   use_base_merging: TRUE
@@ -93,12 +96,16 @@ components:
       source: http://purl.obolibrary.org/obo/zfa/zfa-base.owl
     - filename: chebi.owl
       mirror_from: http://purl.obolibrary.org/obo/chebi.owl.gz
-robot_java_args: '-Xmx18G'
+
+robot_java_args: '-Xmx24G'
 
 robot_report:
-  release_reports: False
+  release_reports: True
   fail_on: none
   use_labels: False
   custom_profile: True
   report_on:
     - edit
+
+documentation:
+  documentation_system: mkdocs
