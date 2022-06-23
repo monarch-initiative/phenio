@@ -6,13 +6,10 @@ report_fail_on: none
 release_artefacts:
   - base
   - basic
-  - simple
   - full
-  - non-classified
 primary_release: full
 export_formats:
   - owl
-  - obo
   - json
 import_group:
   use_base_merging: TRUE
@@ -70,12 +67,9 @@ components:
     - filename: pato.owl
       source: http://purl.obolibrary.org/obo/pato/pato-base.owl
     - filename: go.owl
-      source: http://purl.obolibrary.org/obo/go/go-base.owl
-      ###
-      # upheno2
-    - filename: upheno.owl
+      source: http://purl.obolibrary.org/obo/go/go-base.owl 
+    - filename: upheno.owl # upheno2
       source: https://bbop-ontologies.s3.amazonaws.com/upheno/current/upheno-release/all/upheno_all_with_relations.owl
-      ###
     - filename: mondo-equivalents.owl
       source: http://purl.obolibrary.org/obo/mondo/imports/equivalencies.owl
     - filename: mondo.owl
