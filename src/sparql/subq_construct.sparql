@@ -1,0 +1,11 @@
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+
+CONSTRUCT { ?a rdfs:subClassOf [a owl:Restriction; owl:onProperty ?p2 ; owl:someValuesFrom ?b ] }
+WHERE {
+  ?a rdfs:subClassOf ?bN1 .
+  ?bN1 owl:onProperty ?p1 .
+  ?bN1 owl:someValuesFrom ?bN2 .
+  ?bN2 owl:onProperty ?p2 .
+  ?bN2 owl:someValuesFrom ?b .
+  FILTER isIRI(?a)}
