@@ -21,7 +21,7 @@ $(TMPDIR)/$(ONT)-full.owl: $(SRC) $(OTHER_SRC) $(IMPORT_FILES)
 
 $(SUBQ_QUERY_RESULT_PATH): $(TMPDIR)/$(ONT)-full.owl
 	#echo "Finding subq patterns based on $(SUBQ_QUERY_PATH)..."
-	$(ROBOT) query --input $@ --format 'owl' --query $(SUBQ_QUERY_PATH) $@
+	$(ROBOT) query --input $< --format 'owl' --query $(SUBQ_QUERY_PATH) $@
 
 $(UPDATE_QUERY_PATH): $(SUBQ_QUERY_RESULT_PATH)
 	#echo "Creating update query..."
