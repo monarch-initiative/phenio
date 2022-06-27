@@ -22,8 +22,9 @@ $(ONT)-full.owl: $(SRC) $(OTHER_SRC) $(IMPORT_FILES)
 	$(ROBOT) query --input $@ --format 'owl' --query $(SUBQ_QUERY_PATH) $@_subqs_queryresult.tmp.owl
 	echo "Creating update query..."
 	awk -v RS= 'NR==1' $(SUBQ_QUERY_PATH) > $(UPDATE_QUERY_PATH)
-	echo -e "INSERT DATA\n{\n" >> $(UPDATE_QUERY_PATH)
+	echo -e "\nINSERT DATA\n{" >> $(UPDATE_QUERY_PATH)
 	tail -n +3 $@_subqs_queryresult.tmp.owl >> $(UPDATE_QUERY_PATH)
+    grep subClassOf ttest.owl | wc -l
 
 	echo "Running update query for subq patterns..."
 	$(ROBOT) query --input $@ --format 'owl' --update $(UPDATE_QUERY_PATH) --temporary-file 'true' --output $@.tmp.owl && mv $@.tmp.owl $@
