@@ -28,7 +28,7 @@ $(UPDATE_QUERY_PATH): $(SUBQ_QUERY_RESULT_PATH)
 	awk -v RS= 'NR==1' $(SUBQ_QUERY_PATH) > $@
 	echo -e "\nINSERT DATA\n{" >> $@
 	tail -n +3 $< >> $@
-    grep subClassOf $@ | wc -l
+	grep subClassOf $@ | wc -l
 
 $(ONT)-full.owl: $(TMPDIR)/$(ONT)-full.owl $(UPDATE_QUERY_PATH)
 	#echo "Running update query for subq patterns..."
