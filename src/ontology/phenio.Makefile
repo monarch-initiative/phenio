@@ -14,6 +14,7 @@ UPDATE_QUERY_PATH=              $(TMPDIR)/subq_update.sparql
 # Full file assembly
 $(TMPDIR)/$(ONT)-full.owl: $(SRC) $(OTHER_SRC) $(IMPORT_FILES)
 	$(ROBOT) merge --input $< \
+		merge $(patsubst %, -i %, $(OTHER_SRC)) \
 		reason --reasoner ELK --equivalent-classes-allowed asserted-only --exclude-tautologies structural \
 		relax \
 		reduce -r ELK \
