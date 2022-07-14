@@ -8,16 +8,16 @@
 
 # Constants
 SUBQ_QUERY_PATH=                $(SPARQLDIR)/subq_construct.sparql
-SUBQ_QUERY_RESULT_PATH=         $(TMPDIR)/$(ONT)-base_subqs_queryresult.tmp.owl
+SUBQ_QUERY_RESULT_PATH=         $(TMPDIR)/$(ONT)-full_subqs_queryresult.tmp.owl
 UPDATE_QUERY_PATH=              $(TMPDIR)/subq_update.sparql
 
 # Base file assembly
 $(TMPDIR)/$(ONT)-full.owl: $(SRC) $(OTHER_SRC)
-	$(ROBOT) remove --input $< --select imports --trim false \
-		merge $(patsubst %, -i %, $(OTHER_SRC)) $(patsubst %, -i %, $(IMPORT_FILES))\
-		 $(SHARED_ROBOT_COMMANDS) annotate --link-annotation http://purl.org/dc/elements/1.1/type http://purl.obolibrary.org/obo/IAO_8000001 \
-		--ontology-iri $(ONTBASE)/$@ $(ANNOTATE_ONTOLOGY_VERSION) \
-		--output $@.tmp.owl && mv $@.tmp.owl $@
+	$(ROBOT) merge --input $< $(patsubst %, -i %, $(OTHER_SRC)) $(patsubst %, -i %, $(IMPORT_FILES)) \
+		reason --reasoner ELK --equivalent-classes-allowed asserted-only --exclude-tautologies structural \
+		relax \
+		reduce -r ELK \
+		$(SHARED_ROBOT_COMMANDS) annotate --ontology-iri $(ONTBASE)/$@ $(ANNOTATE_ONTOLOGY_VERSION) --output $@.tmp.owl && mv $@.tmp.owl $@
 
 $(SUBQ_QUERY_RESULT_PATH): $(TMPDIR)/$(ONT)-full.owl
 	#echo "Finding subq patterns based on $(SUBQ_QUERY_PATH)..."
