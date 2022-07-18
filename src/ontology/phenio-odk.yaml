@@ -12,7 +12,6 @@ export_formats:
   - json
 allow_equivalents: all
 import_group:
-  module_type: mirror
   use_base_merging: TRUE
   exclude_iri_patterns:
     - <http://purl.obolibrary.org/obo/GOCHE_*>
