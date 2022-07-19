@@ -1,3 +1,4 @@
+src/ontology/imports/*
 src/ontology/components/mondo.owl
 src/ontology/tmp/merged-phenio-edit.owl
 src/ontology/components/upheno.owl

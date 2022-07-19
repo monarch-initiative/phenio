@@ -5,15 +5,12 @@ repo: phenio
 report_fail_on: none
 release_artefacts:
   - base
-  - basic
-  - simple
   - full
-  - non-classified
 primary_release: full
 export_formats:
   - owl
-  - obo
   - json
+allow_equivalents: all
 import_group:
   use_base_merging: TRUE
   exclude_iri_patterns:
@@ -40,6 +37,10 @@ import_group:
     - id: ncbitaxon-taxslim
       mirror_from: http://purl.obolibrary.org/obo/ncbitaxon/subsets/taxslim.owl
     - id: caro
+      make_base: TRUE
+    - id: chebi
+      is_large: TRUE
+      use_gzipped: TRUE
       make_base: TRUE
     - id: uberon
       use_base: TRUE
@@ -71,13 +72,10 @@ components:
       source: http://purl.obolibrary.org/obo/pato/pato-base.owl
     - filename: go.owl
       source: http://purl.obolibrary.org/obo/go/go-base.owl
-      ###
-      # upheno2
-    - filename: upheno.owl
+    - filename: upheno.owl # upheno2
       source: https://bbop-ontologies.s3.amazonaws.com/upheno/current/upheno-release/all/upheno_all_with_relations.owl
-      ###
-    - filename: mondo-equivalents.owl
-      source: http://purl.obolibrary.org/obo/mondo/imports/equivalencies.owl
+#    - filename: mondo-equivalents.owl
+#      source: http://purl.obolibrary.org/obo/mondo/imports/equivalencies.owl
     - filename: mondo.owl
       source: http://purl.obolibrary.org/obo/mondo/mondo-base.owl
     - filename: eco.owl
@@ -86,16 +84,12 @@ components:
       source: http://purl.obolibrary.org/obo/sepio.owl
     - filename: ro.owl
       source: http://purl.obolibrary.org/obo/ro.owl
-    - filename: uberon.owl
-      source: http://purl.obolibrary.org/obo/uberon/uberon-base.owl
     - filename: fbbt.owl
       source: http://purl.obolibrary.org/obo/fbbt/fbbt-base.owl
     - filename: wbbt.owl
       source: http://purl.obolibrary.org/obo/wbbt/wbbt-base.owl
     - filename: zfa.owl
       source: http://purl.obolibrary.org/obo/zfa/zfa-base.owl
-    - filename: chebi.owl
-      mirror_from: http://purl.obolibrary.org/obo/chebi.owl.gz
 
 robot_java_args: '-Xmx24G'
 
