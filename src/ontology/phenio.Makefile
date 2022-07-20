@@ -14,7 +14,7 @@ UPDATE_QUERY_PATH=              $(TMPDIR)/subq_update.sparql
 # Base file assembly
 $(TMPDIR)/$(ONT)-full-unreasoned.owl: $(SRC) $(OTHER_SRC)
 	$(ROBOT) merge --input $< $(patsubst %, -i %, $(OTHER_SRC)) $(patsubst %, -i %, $(IMPORT_FILES)) \
-		--output $@
+		unmerge -i config/unmerge.ttl --output $@
 	# Run a robot explain to check for unsatisfiable classes before next step
 	$(ROBOT) explain -i $@ -M unsatisfiability --unsatisfiable random:10 --explanation tmp/explain_unsat.md 
 
