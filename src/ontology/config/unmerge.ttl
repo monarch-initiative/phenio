@@ -1,2 +1,2 @@
 <http://purl.obolibrary.org/obo/CARO_0000000> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://purl.obolibrary.org/obo/BFO_0000040> .
-<http://purl.obolibrary.org/obo/CARO_0000000> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://purl.obolibrary.org/obo/UBERON_0001062> .
+<http://purl.obolibrary.org/obo/UBERON_0001062> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://purl.obolibrary.org/obo/BFO_0000040> .
