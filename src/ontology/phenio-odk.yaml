@@ -71,11 +71,11 @@ components:
     - filename: pato.owl
       source: http://purl.obolibrary.org/obo/pato/pato-base.owl
     - filename: go.owl
-      source: http://purl.obolibrary.org/obo/go/go-base.owl 
+      source: http://purl.obolibrary.org/obo/go/go-base.owl
     - filename: upheno.owl # upheno2
       source: https://bbop-ontologies.s3.amazonaws.com/upheno/current/upheno-release/all/upheno_all_with_relations.owl
-    - filename: mondo-equivalents.owl
-      source: http://purl.obolibrary.org/obo/mondo/imports/equivalencies.owl
+#    - filename: mondo-equivalents.owl
+#      source: http://purl.obolibrary.org/obo/mondo/imports/equivalencies.owl
     - filename: mondo.owl
       source: http://purl.obolibrary.org/obo/mondo/mondo-base.owl
     - filename: eco.owl
