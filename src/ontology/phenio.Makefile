@@ -34,7 +34,7 @@ $(SUBQ_QUERY_RESULT_PATH): $(TMPDIR)/$(ONT)-full.owl
 $(UPDATE_QUERY_PATH): $(SUBQ_QUERY_RESULT_PATH)
 	#echo "Creating update query..."
 	awk -v RS= 'NR==1' $(SUBQ_QUERY_PATH) > $@
-	echo -e "\nINSERT DATA\n{" >> $@
+	echo $'\nINSERT DATA\n{' >> $@
 	tail -n +3 $< >> $@
 	grep subClassOf $@ | wc -l
 
