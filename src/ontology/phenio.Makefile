@@ -43,3 +43,13 @@ $(ONT)-full.owl: $(TMPDIR)/$(ONT)-full.owl $(UPDATE_QUERY_PATH)
 	#echo "Running update query for subq patterns..."
 	$(ROBOT) query --input $< --format 'owl' --update $(UPDATE_QUERY_PATH) --temporary-file 'true' annotate --ontology-iri $(ONTBASE)/$@ $(ANNOTATE_ONTOLOGY_VERSION) --output $@
 	#echo "Completed update with subq patterns."
+
+### Replace profile-based validation functions to ignore
+
+$(REPORTDIR)/validate_profile_owl2dl_%.txt: % | $(REPORTDIR) $(TMPDIR)
+	touch $(TMPDIR)/validate.ofn
+	touch $@
+.PRECIOUS: $(REPORTDIR)/validate_profile_owl2dl_%.txt
+
+validate_profile_%: $(REPORTDIR)/validate_profile_owl2dl_%.txt
+	echo "$* profile validation skipped."
