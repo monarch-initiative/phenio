@@ -7,9 +7,11 @@
 # similar process including subq reconstruction
 
 # Constants
+RG= 							relation-graph
 SUBQ_QUERY_PATH=                $(SPARQLDIR)/subq_construct.sparql
 SUBQ_QUERY_RESULT_PATH=         $(TMPDIR)/$(ONT)-full_subqs_queryresult.tmp.owl
 UPDATE_QUERY_PATH=              $(TMPDIR)/subq_update.sparql
+
 
 # Base file assembly
 $(TMPDIR)/$(ONT)-full-unreasoned.owl: $(SRC) $(OTHER_SRC)
@@ -53,3 +55,18 @@ $(REPORTDIR)/validate_profile_owl2dl_%.txt: % | $(REPORTDIR) $(TMPDIR)
 
 validate_profile_%: $(REPORTDIR)/validate_profile_owl2dl_%.txt
 	echo "$* profile validation skipped."
+
+### Get full entailment with relation-graph
+
+$(ONT)-min.owl: $(ONT).owl
+	$(ROBOT) remove -i $< --axioms "equivalent disjoint annotation" -o $@
+
+$(ONT)-relation-graph.tsv: $(ONT)-min.owl
+	$(RG) --disable-owl-nothing true \
+                       --ontology-file $<\
+                       --output-file $@ \
+                       --equivalence-as-subclass true \
+	               	   --output-subclasses true \
+                       --reflexive-subclasses true \
+					   --redundant-output-file $@.redunancies.tsv \
+					   --mode tsv
