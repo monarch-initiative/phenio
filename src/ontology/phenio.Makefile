@@ -11,6 +11,7 @@ RG= 							relation-graph
 SUBQ_QUERY_PATH=                $(SPARQLDIR)/subq_construct.sparql
 SUBQ_QUERY_RESULT_PATH=         $(TMPDIR)/$(ONT)-full_subqs_queryresult.tmp.owl
 UPDATE_QUERY_PATH=              $(TMPDIR)/subq_update.sparql
+MINIMAL_PATH=					$(TMPDIR)/$(ONT)-min.owl
 
 
 # Base file assembly
@@ -57,13 +58,16 @@ validate_profile_%: $(REPORTDIR)/validate_profile_owl2dl_%.txt
 	echo "$* profile validation skipped."
 
 ### Get full entailment with relation-graph
+### Need to replace final artifact to get this to run
 
-$(ONT)-min.owl: $(ONT).owl
-	$(ROBOT) remove -i $< --axioms "equivalent disjoint annotation" -o $@
+$(ONT).owl: $(ONT)-full.owl
+	$(ROBOT) annotate --input $< --ontology-iri $(URIBASE)/$@ $(ANNOTATE_ONTOLOGY_VERSION) \
+		convert -o $@.tmp.owl && mv $@.tmp.owl $@
 
-$(ONT)-relation-graph.tsv: $(ONT)-min.owl
+$(ONT)-relation-graph.tsv: $(ONT).owl $(MINIMAL_PATH)
+	$(ROBOT) remove -i $< --axioms "equivalent disjoint annotation" -o $(MINIMAL_PATH)
 	$(RG) --disable-owl-nothing true \
-                       --ontology-file $<\
+                       --ontology-file $(MINIMAL_PATH)\
                        --output-file $@ \
                        --equivalence-as-subclass true \
 	               	   --output-subclasses true \
