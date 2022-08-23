@@ -60,17 +60,14 @@ validate_profile_%: $(REPORTDIR)/validate_profile_owl2dl_%.txt
 ### Get full entailment with relation-graph
 ### Need to replace final artifact to get this to run
 
-$(ONT).owl: $(ONT)-full.owl
-	$(ROBOT) annotate --input $< --ontology-iri $(URIBASE)/$@ $(ANNOTATE_ONTOLOGY_VERSION) \
-		convert -o $@.tmp.owl && mv $@.tmp.owl $@
-
-$(ONT)-relation-graph.tsv: $(ONT).owl $(MINIMAL_PATH)
+.PHONY: make_relation_graph
+make_relation_graph: $(ONT).owl
 	$(ROBOT) remove -i $< --axioms "equivalent disjoint annotation" -o $(MINIMAL_PATH)
 	$(RG) --disable-owl-nothing true \
                        --ontology-file $(MINIMAL_PATH)\
-                       --output-file $@ \
+                       --output-file $(ONT)-relation-graph.tsv \
                        --equivalence-as-subclass true \
 	               	   --output-subclasses true \
                        --reflexive-subclasses true \
-					   --redundant-output-file $@.redunancies.tsv \
+					   --redundant-output-file $(ONT)-relation-graph-redundancies.tsv \
 					   --mode tsv
