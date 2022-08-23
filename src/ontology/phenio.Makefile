@@ -58,16 +58,15 @@ validate_profile_%: $(REPORTDIR)/validate_profile_owl2dl_%.txt
 	echo "$* profile validation skipped."
 
 ### Get full entailment with relation-graph
-### Need to replace final artifact to get this to run
 
 .PHONY: make_relation_graph
 make_relation_graph: $(ONT).owl
 	$(ROBOT) remove -i $< --axioms "equivalent disjoint annotation" -o $(MINIMAL_PATH)
 	$(RG) --disable-owl-nothing true \
-                       --ontology-file $(MINIMAL_PATH)\
-                       --output-file $(ONT)-relation-graph.tsv \
-                       --equivalence-as-subclass true \
-	               	   --output-subclasses true \
-                       --reflexive-subclasses true \
-					   --redundant-output-file $(ONT)-relation-graph-redundancies.tsv \
-					   --mode tsv
+			--ontology-file $(MINIMAL_PATH)\
+			--output-file $(ONT)-relation-graph.tsv \
+			--equivalence-as-subclass true \
+			--output-subclasses true \
+			--reflexive-subclasses true \
+			--verbose \
+			--mode owl
