@@ -64,7 +64,7 @@ make_relation_graph: $(ONT).owl
 	$(ROBOT) remove -i $< --axioms "equivalent disjoint annotation" -o $(MINIMAL_PATH)
 	$(RG) --disable-owl-nothing true \
 			--ontology-file $(MINIMAL_PATH)\
-			--output-file $(ONT)-relation-graph.tsv \
+			--output-file $(ONT)-relation-graph.owl \
 			--equivalence-as-subclass true \
 			--output-subclasses true \
 			--reflexive-subclasses true \
