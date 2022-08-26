@@ -47,24 +47,13 @@ $(ONT)-full.owl: $(TMPDIR)/$(ONT)-full.owl $(UPDATE_QUERY_PATH)
 	$(ROBOT) query --input $< --format 'owl' --update $(UPDATE_QUERY_PATH) --temporary-file 'true' annotate --ontology-iri $(ONTBASE)/$@ $(ANNOTATE_ONTOLOGY_VERSION) --output $@
 	#echo "Completed update with subq patterns."
 
-### Replace profile-based validation functions to ignore
-
-$(REPORTDIR)/validate_profile_owl2dl_%.txt: % | $(REPORTDIR) $(TMPDIR)
-	touch $(TMPDIR)/validate.ofn
-	touch $@
-.PRECIOUS: $(REPORTDIR)/validate_profile_owl2dl_%.txt
-
-validate_profile_%: $(REPORTDIR)/validate_profile_owl2dl_%.txt
-	echo "$* profile validation skipped."
-
 ### Get full entailment with relation-graph
 
-.PHONY: make_relation_graph
-make_relation_graph: $(ONT).owl
+$(ONT)-relation-graph.ttl: $(ONT).owl
 	$(ROBOT) remove -i $< --axioms "equivalent disjoint annotation" -o $(MINIMAL_PATH)
 	$(RG) --disable-owl-nothing true \
 			--ontology-file $(MINIMAL_PATH)\
-			--output-file $(ONT)-relation-graph.ttl \
+			--output-file $@ \
 			--equivalence-as-subclass true \
 			--output-subclasses true \
 			--reflexive-subclasses true \

@@ -94,6 +94,7 @@ components:
 robot_java_args: '-Xmx24G'
 
 robot_report:
+  ensure_owl2dl_profile: FALSE
   release_reports: True
   fail_on: none
   use_labels: False
