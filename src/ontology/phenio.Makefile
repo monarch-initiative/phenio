@@ -59,3 +59,6 @@ $(ONT)-relation-graph.ttl: $(ONT).owl
 			--reflexive-subclasses true \
 			--verbose true \
 			--mode rdf
+
+relation_graph: $(ONT)-relation-graph.ttl
+	echo "Entailed graph construction completed."
