@@ -66,6 +66,8 @@ import_group:
       mirror_from: http://purl.obolibrary.org/obo/uberon/bridge/cl-bridge-to-fbbt.owl
     - id: cl-bridge-to-zfa
       mirror_from: http://purl.obolibrary.org/obo/uberon/bridge/cl-bridge-to-zfa.owl
+    - id: sepio
+      make_base: TRUE
 components:
   products:
     - filename: pato.owl
@@ -80,8 +82,6 @@ components:
       source: http://purl.obolibrary.org/obo/mondo/mondo-base.owl
     - filename: eco.owl
       source: http://purl.obolibrary.org/obo/eco/eco-base.owl
-    - filename: sepio.owl
-      source: http://purl.obolibrary.org/obo/sepio.owl
     - filename: ro.owl
       source: http://purl.obolibrary.org/obo/ro.owl
     - filename: fbbt.owl
