@@ -50,7 +50,7 @@ $(ONT)-full.owl: $(TMPDIR)/$(ONT)-full.owl $(UPDATE_QUERY_PATH)
 ### Get full entailment with relation-graph
 
 $(ONT)-relation-graph.ttl: $(ONT).owl
-	$(ROBOT) remove -i $< --axioms "equivalent disjoint annotation" -o $(MINIMAL_PATH)
+	$(ROBOT) remove -i $< --axioms "equivalent disjoint annotation domains ranges" -o $(MINIMAL_PATH)
 	$(RG) --disable-owl-nothing true \
 			--ontology-file $(MINIMAL_PATH)\
 			--output-file $@ \
