@@ -7,12 +7,13 @@
 # similar process including subq reconstruction
 
 # Constants
+MINIMAL_PATH=					$(TMPDIR)/$(ONT)-min.owl
+OT_MEMO=						50G
+OWLTOOLS=						OWLTOOLS_MEMORY=$(OT_MEMO) owltools --no-logging
 RG= 							relation-graph
 SUBQ_QUERY_PATH=                $(SPARQLDIR)/subq_construct.sparql
 SUBQ_QUERY_RESULT_PATH=         $(TMPDIR)/$(ONT)-full_subqs_queryresult.tmp.owl
 UPDATE_QUERY_PATH=              $(TMPDIR)/subq_update.sparql
-MINIMAL_PATH=					$(TMPDIR)/$(ONT)-min.owl
-
 
 # Base file assembly
 $(TMPDIR)/$(ONT)-full-unreasoned.owl: $(SRC) $(OTHER_SRC)
@@ -50,7 +51,14 @@ $(ONT)-full.owl: $(TMPDIR)/$(ONT)-full.owl $(UPDATE_QUERY_PATH)
 ### Get full entailment with relation-graph
 
 $(ONT)-relation-graph.ttl: $(ONT).owl
-	$(ROBOT) remove -i $< --axioms "equivalent disjoint annotation" --select "domains ranges" -o $(MINIMAL_PATH)
+### $(ROBOT) remove -i $< --axioms "equivalent disjoint annotation" --select "domains ranges" -o $(MINIMAL_PATH)
+	$(OWLTOOLS) $< --merge-imports-closure \
+					--remove-axioms -t DisjointClasses \
+					--remove-axioms -t ObjectPropertyDomain \
+					--remove-axioms -t ObjectPropertyRange -t DisjointUnion \
+					--remove-disjoints \
+					--remove-equivalent-to-nothing-axioms \
+					-o $(MINIMAL_PATH)
 	$(RG) --disable-owl-nothing true \
 			--ontology-file $(MINIMAL_PATH)\
 			--output-file $@ \
