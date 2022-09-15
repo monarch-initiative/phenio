@@ -58,7 +58,7 @@ $(ONT)-relation-graph.ttl: $(ONT).owl
 ###					--remove-equivalent-to-nothing-axioms \
 ###					-o $(MINIMAL_PATH)
 # Run a robot explain to check for unsatisfiable classes before next step
-	$(ROBOT) explain -i $@ -M unsatisfiability --unsatisfiable random:10 --explanation tmp/explain_unsat.md 
+	$(ROBOT) explain -i $(MINIMAL_PATH) -M unsatisfiability --unsatisfiable random:10 --explanation tmp/explain_unsat.md 
 	$(RG) --disable-owl-nothing true \
 			--ontology-file $(MINIMAL_PATH)\
 			--output-file $@ \
