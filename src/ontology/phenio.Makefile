@@ -19,8 +19,6 @@ UPDATE_QUERY_PATH=              $(TMPDIR)/subq_update.sparql
 $(TMPDIR)/$(ONT)-full-unreasoned.owl: $(SRC) $(OTHER_SRC)
 	$(ROBOT) merge --input $< $(patsubst %, -i %, $(OTHER_SRC)) $(patsubst %, -i %, $(IMPORT_FILES)) \
 		--output $@
-	# Run a robot explain to check for unsatisfiable classes before next step
-	$(ROBOT) explain -i $@ -M unsatisfiability --unsatisfiable random:10 --explanation tmp/explain_unsat.md 
 
 $(TMPDIR)/$(ONT)-full.owl: $(TMPDIR)/$(ONT)-full-unreasoned.owl
 	# $(ROBOT) reason --input $< \
@@ -28,7 +26,7 @@ $(TMPDIR)/$(ONT)-full.owl: $(TMPDIR)/$(ONT)-full-unreasoned.owl
 	# 	relax \
 	# 	reduce -r ELK \
 	# 	$(SHARED_ROBOT_COMMANDS) annotate --ontology-iri $(ONTBASE)/$@ $(ANNOTATE_ONTOLOGY_VERSION) --output $@.tmp.owl && mv $@.tmp.owl $@
-	  $(ROBOT) relax --input $< \
+	$(ROBOT) relax --input $< \
  	    $(SHARED_ROBOT_COMMANDS) annotate --ontology-iri $(ONTBASE)/$@ $(ANNOTATE_ONTOLOGY_VERSION) --output $@.tmp.owl && mv $@.tmp.owl $@
 
 $(SUBQ_QUERY_RESULT_PATH): $(TMPDIR)/$(ONT)-full.owl
@@ -51,14 +49,16 @@ $(ONT)-full.owl: $(TMPDIR)/$(ONT)-full.owl $(UPDATE_QUERY_PATH)
 ### Get full entailment with relation-graph
 
 $(ONT)-relation-graph.ttl: $(ONT).owl
-### $(ROBOT) remove -i $< --axioms "equivalent disjoint annotation" --select "domains ranges" -o $(MINIMAL_PATH)
-	$(OWLTOOLS) $< --merge-imports-closure \
-					--remove-axioms -t DisjointClasses \
-					--remove-axioms -t ObjectPropertyDomain \
-					--remove-axioms -t ObjectPropertyRange -t DisjointUnion \
-					--remove-disjoints \
-					--remove-equivalent-to-nothing-axioms \
-					-o $(MINIMAL_PATH)
+	$(ROBOT) remove -i $< --axioms "equivalent disjoint annotation" --select "domains ranges" -o $(MINIMAL_PATH)
+###	$(OWLTOOLS) $< --merge-imports-closure \
+###					--remove-axioms -t DisjointClasses \
+###					--remove-axioms -t ObjectPropertyDomain \
+###					--remove-axioms -t ObjectPropertyRange -t DisjointUnion \
+###					--remove-disjoints \
+###					--remove-equivalent-to-nothing-axioms \
+###					-o $(MINIMAL_PATH)
+# Run a robot explain to check for unsatisfiable classes before next step
+	$(ROBOT) explain -i $@ -M unsatisfiability --unsatisfiable random:10 --explanation tmp/explain_unsat.md 
 	$(RG) --disable-owl-nothing true \
 			--ontology-file $(MINIMAL_PATH)\
 			--output-file $@ \
