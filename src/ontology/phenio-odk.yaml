@@ -22,28 +22,38 @@ import_group:
   slme_individuals: exclude
   mirror_max_time_download: 400
   products:
-    - id: nbo
-      use_base: TRUE
-    - id: fao
-      make_base: TRUE
-    - id: oba
-      use_base: TRUE
-    - id: stato
     - id: bfo
-    - id: hsapdv
-      make_base: TRUE
-    - id: mpath
-      make_base: TRUE
-    - id: ncbitaxon-taxslim
-      mirror_from: http://purl.obolibrary.org/obo/ncbitaxon/subsets/taxslim.owl
     - id: caro
       make_base: TRUE
     - id: chebi
       is_large: TRUE
       use_gzipped: TRUE
       make_base: TRUE
+    - id: eco
+      make_base: TRUE
+    - id: fao
+      make_base: TRUE
+    - id: go
+      make_base: TRUE
+    - id: hsapdv
+      make_base: TRUE
+    - id: mpath
+      make_base: TRUE
+    - id: nbo
+      make_base: TRUE
+    - id: ncbitaxon-taxslim
+      mirror_from: http://purl.obolibrary.org/obo/ncbitaxon/subsets/taxslim.owl
+      make_base: TRUE
+    - id: oba
+      make_base: TRUE
+    - id: pato
+      make_base: TRUE
+    - id: ro
+      make_base: TRUE
+    - id: stato
+      make_base: TRUE
     - id: uberon
-      use_base: TRUE
+      make_base: TRUE
     - id: uberon-bridge-to-zfa
       mirror_from: http://purl.obolibrary.org/obo/uberon/bridge/uberon-bridge-to-zfa.owl
     - id: uberon-bridge-to-ma
@@ -70,20 +80,12 @@ import_group:
 #      make_base: TRUE
 components:
   products:
-    - filename: pato.owl
-      source: http://purl.obolibrary.org/obo/pato/pato-base.owl
-    - filename: go.owl
-      source: http://purl.obolibrary.org/obo/go/go-base.owl
     - filename: upheno.owl # upheno2
       source: https://bbop-ontologies.s3.amazonaws.com/upheno/current/upheno-release/all/upheno_all_with_relations.owl
 #    - filename: mondo-equivalents.owl
 #      source: http://purl.obolibrary.org/obo/mondo/imports/equivalencies.owl
     - filename: mondo.owl
       source: http://purl.obolibrary.org/obo/mondo/mondo-base.owl
-    - filename: eco.owl
-      source: http://purl.obolibrary.org/obo/eco/eco-base.owl
-    - filename: ro.owl
-      source: http://purl.obolibrary.org/obo/ro.owl
     - filename: fbbt.owl
       source: http://purl.obolibrary.org/obo/fbbt/fbbt-base.owl
     - filename: wbbt.owl
