@@ -14,6 +14,7 @@ RG= 							relation-graph
 SUBQ_QUERY_PATH=                $(SPARQLDIR)/subq_construct.sparql
 SUBQ_QUERY_RESULT_PATH=         $(TMPDIR)/$(ONT)-full_subqs_queryresult.tmp.owl
 UPDATE_QUERY_PATH=              $(TMPDIR)/subq_update.sparql
+EXPLAIN_OUT_PATH=               $(TMPDIR)/explain_unsat.md
 
 # Base file assembly
 $(TMPDIR)/$(ONT)-full-unreasoned.owl: $(SRC) $(OTHER_SRC)
@@ -47,9 +48,14 @@ $(ONT)-full.owl: $(TMPDIR)/$(ONT)-full.owl $(UPDATE_QUERY_PATH)
 	#echo "Completed update with subq patterns."
 
 ### Get full entailment with relation-graph
+$(MINIMAL_PATH): $(ONT).owl
+	$(ROBOT) remove -i $< --axioms "equivalent disjoint annotation" --select "domains ranges" -o $@
 
-$(ONT)-relation-graph.ttl: $(ONT).owl
-	$(ROBOT) remove -i $< --axioms "equivalent disjoint annotation" --select "domains ranges" -o $(MINIMAL_PATH)
+# Run a robot explain to check for unsatisfiable classes before next step
+$(EXPLAIN_OUT_PATH): $(MINIMAL_PATH)
+	$(ROBOT) explain -i $< -M unsatisfiability --unsatisfiable random:10 --explanation $@
+
+$(ONT)-relation-graph.ttl: $(MINIMAL_PATH)
 ###	$(OWLTOOLS) $< --merge-imports-closure \
 ###					--remove-axioms -t DisjointClasses \
 ###					--remove-axioms -t ObjectPropertyDomain \
@@ -57,10 +63,8 @@ $(ONT)-relation-graph.ttl: $(ONT).owl
 ###					--remove-disjoints \
 ###					--remove-equivalent-to-nothing-axioms \
 ###					-o $(MINIMAL_PATH)
-# Run a robot explain to check for unsatisfiable classes before next step
-	$(ROBOT) explain -i $(MINIMAL_PATH) -M unsatisfiability --unsatisfiable random:10 --explanation tmp/explain_unsat.md 
 	$(RG) --disable-owl-nothing true \
-			--ontology-file $(MINIMAL_PATH)\
+			--ontology-file $< \
 			--output-file $@ \
 			--equivalence-as-subclass true \
 			--output-subclasses true \
