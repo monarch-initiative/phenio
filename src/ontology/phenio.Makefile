@@ -1,7 +1,4 @@
 ## Customize Makefile settings for phenio
-## 
-## If you need to customize your Makefile, make
-## changes here rather than in the main Makefile
 
 # Replace the assembly of phenio-full.owl with a
 # similar process including subq reconstruction
