@@ -79,7 +79,7 @@ components:
 #    - filename: mondo-equivalents.owl
 #      source: http://purl.obolibrary.org/obo/mondo/imports/equivalencies.owl
     - filename: mondo.owl
-      source: https://github.com/monarch-initiative/mondo/releases/download/v2022-08-01/mondo-base.owl
+      source: http://purl.obolibrary.org/obo/mondo/mondo-base.owl
     - filename: eco.owl
       source: http://purl.obolibrary.org/obo/eco/eco-base.owl
     - filename: ro.owl
