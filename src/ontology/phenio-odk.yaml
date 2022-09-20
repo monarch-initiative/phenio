@@ -37,6 +37,8 @@ import_group:
       make_base: TRUE
     - id: hsapdv
       make_base: TRUE
+    - id: mondo
+      make_base: TRUE
     - id: mpath
       make_base: TRUE
     - id: nbo
@@ -51,6 +53,9 @@ import_group:
     - id: stato
       make_base: TRUE
     - id: uberon
+      make_base: TRUE
+    - id: upheno
+      mirror_from: https://bbop-ontologies.s3.amazonaws.com/upheno/current/upheno-release/all/upheno_all_with_relations.owl
       make_base: TRUE
     - id: uberon-bridge-to-zfa
       mirror_from: http://purl.obolibrary.org/obo/uberon/bridge/uberon-bridge-to-zfa.owl
@@ -78,12 +83,8 @@ import_group:
 #      make_base: TRUE
 components:
   products:
-    - filename: upheno.owl # upheno2
-      source: https://bbop-ontologies.s3.amazonaws.com/upheno/current/upheno-release/all/upheno_all_with_relations.owl
 #    - filename: mondo-equivalents.owl
 #      source: http://purl.obolibrary.org/obo/mondo/imports/equivalencies.owl
-    - filename: mondo.owl
-      source: http://purl.obolibrary.org/obo/mondo/mondo-base.owl
     - filename: fbbt.owl
       source: http://purl.obolibrary.org/obo/fbbt/fbbt-base.owl
     - filename: ro.owl
