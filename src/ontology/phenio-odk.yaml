@@ -48,8 +48,6 @@ import_group:
       make_base: TRUE
     - id: pato
       make_base: TRUE
-    - id: ro
-      make_base: TRUE
     - id: stato
       make_base: TRUE
     - id: uberon
@@ -88,6 +86,8 @@ components:
       source: http://purl.obolibrary.org/obo/mondo/mondo-base.owl
     - filename: fbbt.owl
       source: http://purl.obolibrary.org/obo/fbbt/fbbt-base.owl
+    - filename: ro.owl
+      source: http://purl.obolibrary.org/obo/ro.owl
     - filename: wbbt.owl
       source: http://purl.obolibrary.org/obo/wbbt/wbbt-base.owl
     - filename: zfa.owl
