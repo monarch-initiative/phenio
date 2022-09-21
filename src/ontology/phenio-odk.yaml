@@ -56,8 +56,14 @@ import_group:
     - id: uberon
       make_base: TRUE
     - id: upheno
-      mirror_from: https://bbop-ontologies.s3.amazonaws.com/upheno/current/upheno-release/all/upheno_all_with_relations.owl
+      mirror_from: http://purl.obolibrary.org/obo/upheno/v2/upheno.owl
       make_base: TRUE
+      base_iris:
+        - http://purl.obolibrary.org/obo/HP_
+        - http://purl.obolibrary.org/obo/MP_
+        - http://purl.obolibrary.org/obo/WBPhenotype_
+        - http://purl.obolibrary.org/obo/XPO_
+        - http://purl.obolibrary.org/obo/ZP_
     - id: wbbt
       make_base: TRUE
     - id: zfa
