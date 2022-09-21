@@ -22,7 +22,6 @@ import_group:
   slme_individuals: exclude
   mirror_max_time_download: 400
   products:
-    - id: bfo
     - id: caro
       make_base: TRUE
     - id: chebi
@@ -91,6 +90,8 @@ components:
   products:
 #    - filename: mondo-equivalents.owl
 #      source: http://purl.obolibrary.org/obo/mondo/imports/equivalencies.owl
+    - filename: bfo.owl
+      source: http://purl.obolibrary.org/obo/bfo.owl
     - filename: ro.owl
       source: http://purl.obolibrary.org/obo/ro.owl
 
