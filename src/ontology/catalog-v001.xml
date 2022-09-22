@@ -12,27 +12,6 @@
   <uri name="http://purl.obolibrary.org/obo/phenio/imports/eco_import.owl" uri="imports/eco_import.owl"/>
   <uri name="http://purl.obolibrary.org/obo/phenio/imports/eco_import.obo" uri="imports/eco_import.obo"/>
   
-  <uri name="http://purl.obolibrary.org/obo/phenio/imports/fao_import.owl" uri="imports/fao_import.owl"/>
-  <uri name="http://purl.obolibrary.org/obo/phenio/imports/fao_import.obo" uri="imports/fao_import.obo"/>
-  
-  <uri name="http://purl.obolibrary.org/obo/phenio/imports/fbbt_import.owl" uri="imports/fbbt_import.owl"/>
-  <uri name="http://purl.obolibrary.org/obo/phenio/imports/fbbt_import.obo" uri="imports/fbbt_import.obo"/>
-  
-  <uri name="http://purl.obolibrary.org/obo/phenio/imports/go_import.owl" uri="imports/go_import.owl"/>
-  <uri name="http://purl.obolibrary.org/obo/phenio/imports/go_import.obo" uri="imports/go_import.obo"/>
-  
-  <uri name="http://purl.obolibrary.org/obo/phenio/imports/hsapdv_import.owl" uri="imports/hsapdv_import.owl"/>
-  <uri name="http://purl.obolibrary.org/obo/phenio/imports/hsapdv_import.obo" uri="imports/hsapdv_import.obo"/>
-  
-  <uri name="http://purl.obolibrary.org/obo/phenio/imports/mondo_import.owl" uri="imports/mondo_import.owl"/>
-  <uri name="http://purl.obolibrary.org/obo/phenio/imports/mondo_import.obo" uri="imports/mondo_import.obo"/>
-  
-  <uri name="http://purl.obolibrary.org/obo/phenio/imports/mpath_import.owl" uri="imports/mpath_import.owl"/>
-  <uri name="http://purl.obolibrary.org/obo/phenio/imports/mpath_import.obo" uri="imports/mpath_import.obo"/>
-  
-  <uri name="http://purl.obolibrary.org/obo/phenio/imports/nbo_import.owl" uri="imports/nbo_import.owl"/>
-  <uri name="http://purl.obolibrary.org/obo/phenio/imports/nbo_import.obo" uri="imports/nbo_import.obo"/>
-  
   <uri name="http://purl.obolibrary.org/obo/phenio/imports/ncbitaxon-taxslim_import.owl" uri="imports/ncbitaxon-taxslim_import.owl"/>
   <uri name="http://purl.obolibrary.org/obo/phenio/imports/ncbitaxon-taxslim_import.obo" uri="imports/ncbitaxon-taxslim_import.obo"/>
   
@@ -44,18 +23,6 @@
   
   <uri name="http://purl.obolibrary.org/obo/phenio/imports/stato_import.owl" uri="imports/stato_import.owl"/>
   <uri name="http://purl.obolibrary.org/obo/phenio/imports/stato_import.obo" uri="imports/stato_import.obo"/>
-  
-  <uri name="http://purl.obolibrary.org/obo/phenio/imports/uberon_import.owl" uri="imports/uberon_import.owl"/>
-  <uri name="http://purl.obolibrary.org/obo/phenio/imports/uberon_import.obo" uri="imports/uberon_import.obo"/>
-  
-  <uri name="http://purl.obolibrary.org/obo/phenio/imports/upheno_import.owl" uri="imports/upheno_import.owl"/>
-  <uri name="http://purl.obolibrary.org/obo/phenio/imports/upheno_import.obo" uri="imports/upheno_import.obo"/>
-  
-  <uri name="http://purl.obolibrary.org/obo/phenio/imports/wbbt_import.owl" uri="imports/wbbt_import.owl"/>
-  <uri name="http://purl.obolibrary.org/obo/phenio/imports/wbbt_import.obo" uri="imports/wbbt_import.obo"/>
-  
-  <uri name="http://purl.obolibrary.org/obo/phenio/imports/zfa_import.owl" uri="imports/zfa_import.owl"/>
-  <uri name="http://purl.obolibrary.org/obo/phenio/imports/zfa_import.obo" uri="imports/zfa_import.obo"/>
   
   <uri name="http://purl.obolibrary.org/obo/phenio/imports/uberon-bridge-to-zfa_import.owl" uri="imports/uberon-bridge-to-zfa_import.owl"/>
   <uri name="http://purl.obolibrary.org/obo/phenio/imports/uberon-bridge-to-zfa_import.obo" uri="imports/uberon-bridge-to-zfa_import.obo"/>
@@ -95,7 +62,29 @@
   
   <uri name="http://purl.obolibrary.org/obo/phenio/components/bfo.owl" uri="components/bfo.owl"/>
   
+  <uri name="http://purl.obolibrary.org/obo/phenio/components/fao.owl" uri="components/fao.owl"/>
+  
+  <uri name="http://purl.obolibrary.org/obo/phenio/components/fbbt.owl" uri="components/fbbt.owl"/>
+  
+  <uri name="http://purl.obolibrary.org/obo/phenio/components/go.owl" uri="components/go.owl"/>
+  
+  <uri name="http://purl.obolibrary.org/obo/phenio/components/hsapdv.owl" uri="components/hsapdv.owl"/>
+  
+  <uri name="http://purl.obolibrary.org/obo/phenio/components/mondo.owl" uri="components/mondo.owl"/>
+  
+  <uri name="http://purl.obolibrary.org/obo/phenio/components/mpath.owl" uri="components/mpath.owl"/>
+  
+  <uri name="http://purl.obolibrary.org/obo/phenio/components/nbo.owl" uri="components/nbo.owl"/>
+  
   <uri name="http://purl.obolibrary.org/obo/phenio/components/ro.owl" uri="components/ro.owl"/>
+  
+  <uri name="http://purl.obolibrary.org/obo/phenio/components/uberon.owl" uri="components/uberon.owl"/>
+  
+  <uri name="http://purl.obolibrary.org/obo/phenio/components/upheno.owl" uri="components/upheno.owl"/>
+  
+  <uri name="http://purl.obolibrary.org/obo/phenio/components/wbbt.owl" uri="components/wbbt.owl"/>
+  
+  <uri name="http://purl.obolibrary.org/obo/phenio/components/zfa.owl" uri="components/zfa.owl"/>
   
 
 </group>
