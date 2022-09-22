@@ -23,13 +23,13 @@ $(EXPLAIN_OUT_PATH): $(TMPDIR)/$(ONT)-full-unreasoned.owl
 	$(ROBOT) explain -i $< -M unsatisfiability --unsatisfiable random:10 --explanation $@
 
 $(TMPDIR)/$(ONT)-full.owl: $(TMPDIR)/$(ONT)-full-unreasoned.owl
-	$(ROBOT) reason --input $< \
-	 	--reasoner ELK --equivalent-classes-allowed all --exclude-tautologies structural \
-	 	relax \
-	 	reduce -r ELK \
-	 	$(SHARED_ROBOT_COMMANDS) annotate --ontology-iri $(ONTBASE)/$@ $(ANNOTATE_ONTOLOGY_VERSION) --output $@.tmp.owl && mv $@.tmp.owl $@
-	#$(ROBOT) relax --input $< \
- 	#    $(SHARED_ROBOT_COMMANDS) annotate --ontology-iri $(ONTBASE)/$@ $(ANNOTATE_ONTOLOGY_VERSION) --output $@.tmp.owl && mv $@.tmp.owl $@
+	#$(ROBOT) reason --input $< \
+	# 	--reasoner ELK --equivalent-classes-allowed all --exclude-tautologies structural \
+	# 	relax \
+	# 	reduce -r ELK \
+	# 	$(SHARED_ROBOT_COMMANDS) annotate --ontology-iri $(ONTBASE)/$@ $(ANNOTATE_ONTOLOGY_VERSION) --output $@.tmp.owl && mv $@.tmp.owl $@
+	$(ROBOT) relax --input $< \
+ 	    $(SHARED_ROBOT_COMMANDS) annotate --ontology-iri $(ONTBASE)/$@ $(ANNOTATE_ONTOLOGY_VERSION) --output $@.tmp.owl && mv $@.tmp.owl $@
 
 $(SUBQ_QUERY_RESULT_PATH): $(TMPDIR)/$(ONT)-full.owl
 	#echo "Finding subq patterns based on $(SUBQ_QUERY_PATH)..."
