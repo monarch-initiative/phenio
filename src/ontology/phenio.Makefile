@@ -18,6 +18,10 @@ $(TMPDIR)/$(ONT)-full-unreasoned.owl: $(SRC) $(OTHER_SRC)
 	$(ROBOT) merge --input $< $(patsubst %, -i %, $(OTHER_SRC)) $(patsubst %, -i %, $(IMPORT_FILES)) \
 		--output $@
 
+# Run a robot explain to check for unsatisfiable classes before next step
+$(EXPLAIN_OUT_PATH): $(TMPDIR)/$(ONT)-full-unreasoned.owl
+	$(ROBOT) explain -i $< -M unsatisfiability --unsatisfiable random:10 --explanation $@
+
 $(TMPDIR)/$(ONT)-full.owl: $(TMPDIR)/$(ONT)-full-unreasoned.owl
 	$(ROBOT) reason --input $< \
 	 	--reasoner ELK --equivalent-classes-allowed all --exclude-tautologies structural \
@@ -47,10 +51,6 @@ $(ONT)-full.owl: $(TMPDIR)/$(ONT)-full.owl $(UPDATE_QUERY_PATH)
 ### Get full entailment with relation-graph
 $(MINIMAL_PATH): $(ONT).owl
 	$(ROBOT) remove -i $< --axioms "equivalent disjoint annotation" --select "domains ranges" -o $@
-
-# Run a robot explain to check for unsatisfiable classes before next step
-$(EXPLAIN_OUT_PATH): $(MINIMAL_PATH)
-	$(ROBOT) explain -i $< -M unsatisfiability --unsatisfiable random:10 --explanation $@
 
 $(ONT)-relation-graph.ttl: $(MINIMAL_PATH)
 ###	$(OWLTOOLS) $< --merge-imports-closure \
