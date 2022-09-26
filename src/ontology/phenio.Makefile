@@ -1,9 +1,10 @@
-## Customize Makefile settings for phenio
-
 # Replace the assembly of phenio-full.owl with a
 # similar process including subq reconstruction
 
 # Constants
+BLMODEL = 					bl-model.ttl
+BLMODEL_URL =				"https://github.com/biolink/biolink-model/blob/master/biolink-model.owl.ttl"
+BLQUERY =					$(SPARQLDIR)/bl-categories.ru
 MINIMAL_PATH=					$(TMPDIR)/$(ONT)-min.owl
 OT_MEMO=						50G
 OWLTOOLS=						OWLTOOLS_MEMORY=$(OT_MEMO) owltools --no-logging
@@ -47,6 +48,17 @@ $(ONT)-full.owl: $(TMPDIR)/$(ONT)-full.owl $(UPDATE_QUERY_PATH)
 	#echo "Running update query for subq patterns..."
 	$(ROBOT) query --input $< --format 'owl' --update $(UPDATE_QUERY_PATH) --temporary-file 'true' annotate --ontology-iri $(ONTBASE)/$@ $(ANNOTATE_ONTOLOGY_VERSION) --output $@
 	#echo "Completed update with subq patterns."
+  
+### Merge Biolink Model categories
+$(BLMODEL):
+	wget $(BLMODEL_URL) -O $@
+
+$(ONT).owl: $(ONT)-full.owl $(BLMODEL)
+	$(ROBOT) merge --input $< --input $(BLMODEL) \
+			query --update $(BLQUERY)
+			unmerge -input $(BLMODEL)
+	$(ROBOT) annotate --input $< --ontology-iri $(URIBASE)/$@ $(ANNOTATE_ONTOLOGY_VERSION) \
+		convert -o $@.tmp.owl && mv $@.tmp.owl $@
 
 ### Get full entailment with relation-graph
 $(MINIMAL_PATH): $(ONT).owl
