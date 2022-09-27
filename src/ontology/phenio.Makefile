@@ -3,7 +3,7 @@
 
 # Constants
 BLMODEL = 					bl-model.ttl
-BLMODEL_URL =				"https://github.com/biolink/biolink-model/blob/master/biolink-model.owl.ttl"
+BLMODEL_URL =				"https://raw.githubusercontent.com/biolink/biolink-model/master/biolink-model.owl.ttl"
 BLQUERY =					$(SPARQLDIR)/bl-categories.ru
 MINIMAL_PATH=					$(TMPDIR)/$(ONT)-min.owl
 OT_MEMO=						50G
