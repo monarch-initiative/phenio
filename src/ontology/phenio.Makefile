@@ -55,8 +55,8 @@ $(BLMODEL):
 
 $(ONT).owl: $(ONT)-full.owl $(BLMODEL)
 	$(ROBOT) merge --input $< --input $(BLMODEL) \
-			query --update $(BLQUERY)
-			unmerge -input $(BLMODEL)
+			query --update $(BLQUERY) \
+			unmerge --input $(BLMODEL)
 	$(ROBOT) annotate --input $< --ontology-iri $(URIBASE)/$@ $(ANNOTATE_ONTOLOGY_VERSION) \
 		convert -o $@.tmp.owl && mv $@.tmp.owl $@
 
