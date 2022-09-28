@@ -55,10 +55,10 @@ $(BLMODEL):
 
 $(ONT).owl: $(ONT)-full.owl $(BLMODEL)
 	$(ROBOT) merge --input $< --input $(BLMODEL) \
-			query --update $(BLQUERY) \
-			unmerge --input $(BLMODEL)
-	$(ROBOT) annotate --input $< --ontology-iri $(URIBASE)/$@ $(ANNOTATE_ONTOLOGY_VERSION) \
-		convert -o $@.tmp.owl && mv $@.tmp.owl $@
+			 query --update $(BLQUERY) \
+			 unmerge --input $(BLMODEL) \
+			 annotate --ontology-iri $(URIBASE)/$@ $(ANNOTATE_ONTOLOGY_VERSION) \
+			 convert -o $@.tmp.owl && mv $@.tmp.owl $@
 
 ### Get full entailment with relation-graph
 $(MINIMAL_PATH): $(ONT).owl
