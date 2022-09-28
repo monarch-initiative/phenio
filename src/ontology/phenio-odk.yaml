@@ -5,15 +5,12 @@ repo: phenio
 report_fail_on: none
 release_artefacts:
   - base
-  - basic
-  - simple
   - full
-  - non-classified
 primary_release: full
 export_formats:
   - owl
-  - obo
   - json
+allow_equivalents: all
 import_group:
   use_base_merging: TRUE
   exclude_iri_patterns:
@@ -25,24 +22,17 @@ import_group:
   slme_individuals: exclude
   mirror_max_time_download: 400
   products:
-    - id: nbo
-      use_base: TRUE
-    - id: fao
-      make_base: TRUE
-    - id: oba
-      use_base: TRUE
-    - id: stato
-    - id: bfo
-    - id: hsapdv
-      make_base: TRUE
-    - id: mpath
+    - id: caro
+    - id: chebi
+      is_large: TRUE
+      use_gzipped: TRUE
+    - id: eco
       make_base: TRUE
     - id: ncbitaxon-taxslim
       mirror_from: http://purl.obolibrary.org/obo/ncbitaxon/subsets/taxslim.owl
-    - id: caro
-      make_base: TRUE
-    - id: uberon
-      use_base: TRUE
+    - id: oba
+    - id: pato
+    - id: stato
     - id: uberon-bridge-to-zfa
       mirror_from: http://purl.obolibrary.org/obo/uberon/bridge/uberon-bridge-to-zfa.owl
     - id: uberon-bridge-to-ma
@@ -65,41 +55,92 @@ import_group:
       mirror_from: http://purl.obolibrary.org/obo/uberon/bridge/cl-bridge-to-fbbt.owl
     - id: cl-bridge-to-zfa
       mirror_from: http://purl.obolibrary.org/obo/uberon/bridge/cl-bridge-to-zfa.owl
+#    - id: sepio
+#      make_base: TRUE
 components:
   products:
-    - filename: pato.owl
-      source: http://purl.obolibrary.org/obo/pato/pato-base.owl
+#    - filename: mondo-equivalents.owl
+#      source: http://purl.obolibrary.org/obo/mondo/imports/equivalencies.owl
+    - filename: bfo.owl
+      source: http://purl.obolibrary.org/obo/bfo.owl
+    - filename: fao.owl
+      source: http://purl.obolibrary.org/obo/fao.owl
+      make_base: TRUE
+      base_iris:
+        - http://purl.obolibrary.org/obo/FAO_
+    - filename: fbbt.owl
+      source: http://purl.obolibrary.org/obo/fbbt.owl
+      make_base: TRUE
+      base_iris:
+        - http://purl.obolibrary.org/obo/fbbt#
+        - http://purl.obolibrary.org/obo/FBbt_
     - filename: go.owl
-      source: http://purl.obolibrary.org/obo/go/go-base.owl
-      ###
-      # upheno2
-    - filename: upheno.owl
-      source: https://bbop-ontologies.s3.amazonaws.com/upheno/current/upheno-release/all/upheno_all_with_relations.owl
-      ###
-    - filename: mondo-equivalents.owl
-      source: http://purl.obolibrary.org/obo/mondo/imports/equivalencies.owl
+      source: http://purl.obolibrary.org/obo/go.owl
+      make_base: TRUE
+      base_iris:
+        - http://purl.obolibrary.org/obo/go#
+        - http://purl.obolibrary.org/obo/GO_
+    - filename: hsapdv.owl
+      source: http://purl.obolibrary.org/obo/hsapdv.owl
+      make_base: TRUE
+      base_iris:
+        - http://purl.obolibrary.org/obo/hsapdv#
+        - http://purl.obolibrary.org/obo/HsapDv_
     - filename: mondo.owl
-      source: http://purl.obolibrary.org/obo/mondo/mondo-base.owl
-    - filename: eco.owl
-      source: http://purl.obolibrary.org/obo/eco/eco-base.owl
-    - filename: sepio.owl
-      source: http://purl.obolibrary.org/obo/sepio.owl
+      source: http://purl.obolibrary.org/obo/mondo.owl
+      make_base: TRUE
+      base_iris:
+        - http://purl.obolibrary.org/obo/mondo#
+        - http://purl.obolibrary.org/obo/MONDO_
+    - filename: mpath.owl
+      source: http://purl.obolibrary.org/obo/mpath.owl
+      make_base: TRUE
+      base_iris:
+        - http://purl.obolibrary.org/obo/mpath#
+        - http://purl.obolibrary.org/obo/MPATH_
+    - filename: nbo.owl
+      source: http://purl.obolibrary.org/obo/nbo.owl
+      make_base: TRUE
+      base_iris:
+        - http://purl.obolibrary.org/obo/nbo.owl#
+        - http://purl.obolibrary.org/obo/NBO_
     - filename: ro.owl
       source: http://purl.obolibrary.org/obo/ro.owl
     - filename: uberon.owl
-      source: http://purl.obolibrary.org/obo/uberon/uberon-base.owl
-    - filename: fbbt.owl
-      source: http://purl.obolibrary.org/obo/fbbt/fbbt-base.owl
+      source: http://purl.obolibrary.org/obo/uberon.owl
+      make_base: TRUE
+      base_iris:
+        - http://purl.obolibrary.org/obo/UBERON_
+        - http://purl.obolibrary.org/obo/uberon/core#
+        - http://purl.obolibrary.org/obo/UBPROP_
+    - filename: upheno.owl
+      source: http://purl.obolibrary.org/obo/upheno/v2/upheno.owl
+      make_base: TRUE
+      base_iris:
+        - http://purl.obolibrary.org/obo/UPHENO_      
+        - http://purl.obolibrary.org/obo/HP_
+        - http://purl.obolibrary.org/obo/MP_
+        - http://purl.obolibrary.org/obo/WBPhenotype_
+        - http://purl.obolibrary.org/obo/XPO_
+        - http://purl.obolibrary.org/obo/ZP_
     - filename: wbbt.owl
-      source: http://purl.obolibrary.org/obo/wbbt/wbbt-base.owl
+      source: http://purl.obolibrary.org/obo/wbbt.owl
+      make_base: TRUE
+      base_iris:
+        - http://purl.obolibrary.org/obo/wbbt#
+        - http://purl.obolibrary.org/obo/WBbt_
     - filename: zfa.owl
-      source: http://purl.obolibrary.org/obo/zfa/zfa-base.owl
-    - filename: chebi.owl
-      mirror_from: http://purl.obolibrary.org/obo/chebi.owl.gz
+      source: http://purl.obolibrary.org/obo/zfa.owl
+      make_base: TRUE
+      base_iris:
+        - http://purl.obolibrary.org/obo/zfa#
+        - http://purl.obolibrary.org/obo/ZFA_
+
 
 robot_java_args: '-Xmx24G'
 
 robot_report:
+  ensure_owl2dl_profile: FALSE
   release_reports: True
   fail_on: none
   use_labels: False

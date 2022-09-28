@@ -16,16 +16,13 @@ These are the current imports in PHENIO
 
 | Import | URL | Type |
 | ------ | --- | ---- |
-| nbo | http://purl.obolibrary.org/obo/nbo.owl | None |
-| fao | http://purl.obolibrary.org/obo/fao.owl | None |
-| oba | http://purl.obolibrary.org/obo/oba.owl | None |
-| stato | http://purl.obolibrary.org/obo/stato.owl | None |
-| bfo | http://purl.obolibrary.org/obo/bfo.owl | None |
-| hsapdv | http://purl.obolibrary.org/obo/hsapdv.owl | None |
-| mpath | http://purl.obolibrary.org/obo/mpath.owl | None |
-| ncbitaxon-taxslim | http://purl.obolibrary.org/obo/ncbitaxon/subsets/taxslim.owl | None |
 | caro | http://purl.obolibrary.org/obo/caro.owl | None |
-| uberon | http://purl.obolibrary.org/obo/uberon.owl | None |
+| chebi | http://purl.obolibrary.org/obo/chebi.owl | None |
+| eco | http://purl.obolibrary.org/obo/eco.owl | None |
+| ncbitaxon-taxslim | http://purl.obolibrary.org/obo/ncbitaxon/subsets/taxslim.owl | None |
+| oba | http://purl.obolibrary.org/obo/oba.owl | None |
+| pato | http://purl.obolibrary.org/obo/pato.owl | None |
+| stato | http://purl.obolibrary.org/obo/stato.owl | None |
 | uberon-bridge-to-zfa | http://purl.obolibrary.org/obo/uberon/bridge/uberon-bridge-to-zfa.owl | None |
 | uberon-bridge-to-ma | http://purl.obolibrary.org/obo/uberon/bridge/uberon-bridge-to-ma.owl | None |
 | uberon-bridge-to-wbbt | http://purl.obolibrary.org/obo/uberon/bridge/uberon-bridge-to-wbbt.owl | None |
@@ -49,16 +46,16 @@ These are the components in PHENIO
 
 | Filename | URL |
 | -------- | --- |
-| pato.owl | http://purl.obolibrary.org/obo/pato/pato-base.owl |
-| go.owl | http://purl.obolibrary.org/obo/go/go-base.owl |
-| upheno.owl | https://bbop-ontologies.s3.amazonaws.com/upheno/current/upheno-release/all/upheno_all_with_relations.owl |
-| mondo-equivalents.owl | http://purl.obolibrary.org/obo/mondo/imports/equivalencies.owl |
-| mondo.owl | http://purl.obolibrary.org/obo/mondo/mondo-base.owl |
-| eco.owl | http://purl.obolibrary.org/obo/eco/eco-base.owl |
-| sepio.owl | http://purl.obolibrary.org/obo/sepio.owl |
+| bfo.owl | http://purl.obolibrary.org/obo/bfo.owl |
+| fao.owl | http://purl.obolibrary.org/obo/fao.owl |
+| fbbt.owl | http://purl.obolibrary.org/obo/fbbt.owl |
+| go.owl | http://purl.obolibrary.org/obo/go.owl |
+| hsapdv.owl | http://purl.obolibrary.org/obo/hsapdv.owl |
+| mondo.owl | http://purl.obolibrary.org/obo/mondo.owl |
+| mpath.owl | http://purl.obolibrary.org/obo/mpath.owl |
+| nbo.owl | http://purl.obolibrary.org/obo/nbo.owl |
 | ro.owl | http://purl.obolibrary.org/obo/ro.owl |
-| uberon.owl | http://purl.obolibrary.org/obo/uberon/uberon-base.owl |
-| fbbt.owl | http://purl.obolibrary.org/obo/fbbt/fbbt-base.owl |
-| wbbt.owl | http://purl.obolibrary.org/obo/wbbt/wbbt-base.owl |
-| zfa.owl | http://purl.obolibrary.org/obo/zfa/zfa-base.owl |
-| chebi.owl | None |
+| uberon.owl | http://purl.obolibrary.org/obo/uberon.owl |
+| upheno.owl | http://purl.obolibrary.org/obo/upheno/v2/upheno.owl |
+| wbbt.owl | http://purl.obolibrary.org/obo/wbbt.owl |
+| zfa.owl | http://purl.obolibrary.org/obo/zfa.owl |
