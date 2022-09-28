@@ -39,6 +39,7 @@ dependencies:
 - id: mpath
 - id: ncbitaxon-taxslim
 - id: caro
+- id: chebi
 - id: uberon
 - id: uberon-bridge-to-zfa
 - id: uberon-bridge-to-ma

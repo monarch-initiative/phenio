@@ -1,9 +1,28 @@
 site_name: Phenomics Integrated Ontology
-theme: material
+theme:
+  name: material
+  features:
+    - content.tabs.link
+plugins:
+  - search
+markdown_extensions:
+  - pymdownx.highlight:
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+  - pymdownx.critic
+  - pymdownx.caret
+  - pymdownx.keys
+  - pymdownx.mark
+  - pymdownx.tilde
+
+site_url: https://monarch-initiative.github.io/phenio/
+repo_url: https://github.com/monarch-initiative/phenio/
+
 nav:
   - Getting started: index.md
   - Cite: cite.md
-  - History: history.md
   - How-to guides:
       - Standard ODK workflows:
           - Overview: odk-workflows/index.md
@@ -12,6 +31,7 @@ nav:
           - Manage your ODK Repository: odk-workflows/RepoManagement.md
           - Setting up Docker for ODK: odk-workflows/SettingUpDockerForODK.md
           - Imports management: odk-workflows/UpdateImports.md
+          - Components management: odk-workflows/components.md
           - Managing the documentation: odk-workflows/ManageDocumentation.md
           - Continuous Integration: odk-workflows/ContinuousIntegration.md
           - Your ODK Repository Overview: odk-workflows/RepositoryFileStructure.md 

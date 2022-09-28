@@ -15,10 +15,9 @@
 # ----------------------------------------
 # these can be overwritten on the command line
 
-OBOBASE=                    http://purl.obolibrary.org/obo
 URIBASE=                    http://purl.obolibrary.org/obo
 ONT=                        phenio
-ONTBASE=                    http://purl.obolibrary.org/obo/phenio
+ONTBASE=                    $(URIBASE)/$(ONT)
 EDIT_FORMAT=                owl
 SRC =                       $(ONT)-edit.$(EDIT_FORMAT)
 CATALOG=                    catalog-v001.xml
@@ -50,7 +49,6 @@ VERSION=                    $(TODAY)
 ANNOTATE_ONTOLOGY_VERSION = annotate -V $(ONTBASE)/releases/$(VERSION)/$@ --annotation owl:versionInfo $(VERSION)
 OTHER_SRC =                 $(COMPONENTSDIR)/bfo.owl $(COMPONENTSDIR)/fao.owl $(COMPONENTSDIR)/fbbt.owl $(COMPONENTSDIR)/go.owl $(COMPONENTSDIR)/hsapdv.owl $(COMPONENTSDIR)/mondo.owl $(COMPONENTSDIR)/mpath.owl $(COMPONENTSDIR)/nbo.owl $(COMPONENTSDIR)/ro.owl $(COMPONENTSDIR)/uberon.owl $(COMPONENTSDIR)/upheno.owl $(COMPONENTSDIR)/wbbt.owl $(COMPONENTSDIR)/zfa.owl 
 ONTOLOGYTERMS =             $(TMPDIR)/ontologyterms.txt
-EDIT_PREPROCESSED = $(TMPDIR)/$(ONT)-preprocess.owl
 
 FORMATS = $(sort  owl json owl)
 FORMATS_INCL_TSV = $(sort $(FORMATS) tsv)
@@ -69,13 +67,10 @@ all: all_odk
 all_odk: odkversion test all_assets
 
 .PHONY: test
-test: odkversion reason_test sparql_test robot_reports 
-	echo "Finished running all tests successfully."
-
-.PHONY: reason_test
-reason_test: $(EDIT_PREPROCESSED)
-	$(ROBOT) reason --input $< --reasoner ELK --equivalent-classes-allowed all \
-		--exclude-tautologies structural --output test.owl && rm test.owl
+test: odkversion sparql_test robot_reports 
+	$(ROBOT) reason --input $(SRC) --reasoner ELK  --equivalent-classes-allowed all \
+                  --exclude-tautologies structural --output test.owl && rm test.owl &&\
+  echo "Success"
 
 .PHONY: odkversion
 odkversion:
@@ -162,7 +157,7 @@ validate_profile_%: $(REPORTDIR)/validate_profile_owl2dl_%.txt
 
 SPARQL_VALIDATION_QUERIES = $(foreach V,$(SPARQL_VALIDATION_CHECKS),$(SPARQLDIR)/$(V)-violation.sparql)
 
-sparql_test: $(EDIT_PREPROCESSED) catalog-v001.xml | $(REPORTDIR)
+sparql_test: $(SRC) catalog-v001.xml | $(REPORTDIR)
 ifneq ($(SPARQL_VALIDATION_QUERIES),)
 	$(ROBOT) verify  --catalog catalog-v001.xml -i $< --queries $(SPARQL_VALIDATION_QUERIES) -O $(REPORTDIR)
 endif
@@ -204,7 +199,7 @@ show_assets:
 # Release Management
 # ----------------------------------------
 
-CLEANFILES=$(MAIN_FILES) $(SRCMERGED) $(EDIT_PREPROCESSED)
+CLEANFILES=$(MAIN_FILES) $(SRCMERGED)
 # This should be executed by the release manager whenever time comes to make a release.
 # It will ensure that all assets/files are fresh, and will copy to release folder
 
@@ -233,12 +228,9 @@ prepare_release_fast:
 IMPORTSEED=$(TMPDIR)/seed.txt
 PRESEED=$(TMPDIR)/pre_seed.txt
 
-$(SRCMERGED): $(EDIT_PREPROCESSED) $(OTHER_SRC)
+$(SRCMERGED): $(SRC) $(OTHER_SRC)
 	$(ROBOT) remove --input $< --select imports --trim false \
 		merge  $(patsubst %, -i %, $(OTHER_SRC)) -o $@
-
-$(EDIT_PREPROCESSED): $(SRC)
-	$(ROBOT) convert --input $< --format ofn --output $@
 
 $(PRESEED): $(SRCMERGED)
 	$(ROBOT) query -f csv -i $< --query ../sparql/terms.sparql $@.tmp &&\
@@ -330,19 +322,11 @@ all_components: $(OTHER_SRC)
 
 .PHONY: recreate-components
 recreate-components:
-	$(MAKE) COMP=true IMP=false MIR=true PAT=true IMP_LARGE=false all_components -B
-
-.PHONY: no-mirror-recreate-components
-no-mirror-recreate-components:
-	$(MAKE) COMP=true IMP=false MIR=false PAT=true IMP_LARGE=false all_components -B
+	$(MAKE) IMP=true MIR=true PAT=true IMP_LARGE=true all_components -B
 
 .PHONY: recreate-%
 recreate-%:
-	$(MAKE) COMP=true IMP=false IMP_LARGE=false MIR=true PAT=true $(COMPONENTSDIR)/$*.owl -B
-
-.PHONY: no-mirror-recreate-%
-no-mirror-recreate-%:
-	$(MAKE) COMP=true IMP=false IMP_LARGE=false MIR=false PAT=true $(COMPONENTSDIR)/$*.owl -B
+	$(MAKE) IMP=true IMP_LARGE=true MIR=true PAT=true $(COMPONENTSDIR)/$*.owl -B
 
 $(COMPONENTSDIR)/%: | $(COMPONENTSDIR)
 	touch $@
@@ -364,7 +348,6 @@ $(COMPONENTSDIR)/bfo.owl:  component-download-bfo.owl
 .PHONY: component-download-fao.owl
 component-download-fao.owl: | $(TMPDIR)
 	if [ $(MIR) = true ] && [ $(COMP) = true ]; then $(ROBOT) merge -I http://purl.obolibrary.org/obo/fao.owl \
-	remove --base-iri http://purl.obolibrary.org/obo/FAO_ --axioms external --preserve-structure false --trim false \
 	annotate --ontology-iri $(ONTBASE)/$@ $(ANNOTATE_ONTOLOGY_VERSION) -o $(TMPDIR)/$@.owl; fi
 
 $(COMPONENTSDIR)/fao.owl:  component-download-fao.owl
@@ -376,7 +359,6 @@ $(COMPONENTSDIR)/fao.owl:  component-download-fao.owl
 .PHONY: component-download-fbbt.owl
 component-download-fbbt.owl: | $(TMPDIR)
 	if [ $(MIR) = true ] && [ $(COMP) = true ]; then $(ROBOT) merge -I http://purl.obolibrary.org/obo/fbbt.owl \
-	remove --base-iri http://purl.obolibrary.org/obo/fbbt# --base-iri http://purl.obolibrary.org/obo/FBbt_ --axioms external --preserve-structure false --trim false \
 	annotate --ontology-iri $(ONTBASE)/$@ $(ANNOTATE_ONTOLOGY_VERSION) -o $(TMPDIR)/$@.owl; fi
 
 $(COMPONENTSDIR)/fbbt.owl:  component-download-fbbt.owl
@@ -388,7 +370,6 @@ $(COMPONENTSDIR)/fbbt.owl:  component-download-fbbt.owl
 .PHONY: component-download-go.owl
 component-download-go.owl: | $(TMPDIR)
 	if [ $(MIR) = true ] && [ $(COMP) = true ]; then $(ROBOT) merge -I http://purl.obolibrary.org/obo/go.owl \
-	remove --base-iri http://purl.obolibrary.org/obo/go# --base-iri http://purl.obolibrary.org/obo/GO_ --axioms external --preserve-structure false --trim false \
 	annotate --ontology-iri $(ONTBASE)/$@ $(ANNOTATE_ONTOLOGY_VERSION) -o $(TMPDIR)/$@.owl; fi
 
 $(COMPONENTSDIR)/go.owl:  component-download-go.owl
@@ -400,7 +381,6 @@ $(COMPONENTSDIR)/go.owl:  component-download-go.owl
 .PHONY: component-download-hsapdv.owl
 component-download-hsapdv.owl: | $(TMPDIR)
 	if [ $(MIR) = true ] && [ $(COMP) = true ]; then $(ROBOT) merge -I http://purl.obolibrary.org/obo/hsapdv.owl \
-	remove --base-iri http://purl.obolibrary.org/obo/hsapdv# --base-iri http://purl.obolibrary.org/obo/HsapDv_ --axioms external --preserve-structure false --trim false \
 	annotate --ontology-iri $(ONTBASE)/$@ $(ANNOTATE_ONTOLOGY_VERSION) -o $(TMPDIR)/$@.owl; fi
 
 $(COMPONENTSDIR)/hsapdv.owl:  component-download-hsapdv.owl
@@ -412,7 +392,6 @@ $(COMPONENTSDIR)/hsapdv.owl:  component-download-hsapdv.owl
 .PHONY: component-download-mondo.owl
 component-download-mondo.owl: | $(TMPDIR)
 	if [ $(MIR) = true ] && [ $(COMP) = true ]; then $(ROBOT) merge -I http://purl.obolibrary.org/obo/mondo.owl \
-	remove --base-iri http://purl.obolibrary.org/obo/mondo# --base-iri http://purl.obolibrary.org/obo/MONDO_ --axioms external --preserve-structure false --trim false \
 	annotate --ontology-iri $(ONTBASE)/$@ $(ANNOTATE_ONTOLOGY_VERSION) -o $(TMPDIR)/$@.owl; fi
 
 $(COMPONENTSDIR)/mondo.owl:  component-download-mondo.owl
@@ -424,7 +403,6 @@ $(COMPONENTSDIR)/mondo.owl:  component-download-mondo.owl
 .PHONY: component-download-mpath.owl
 component-download-mpath.owl: | $(TMPDIR)
 	if [ $(MIR) = true ] && [ $(COMP) = true ]; then $(ROBOT) merge -I http://purl.obolibrary.org/obo/mpath.owl \
-	remove --base-iri http://purl.obolibrary.org/obo/mpath# --base-iri http://purl.obolibrary.org/obo/MPATH_ --axioms external --preserve-structure false --trim false \
 	annotate --ontology-iri $(ONTBASE)/$@ $(ANNOTATE_ONTOLOGY_VERSION) -o $(TMPDIR)/$@.owl; fi
 
 $(COMPONENTSDIR)/mpath.owl:  component-download-mpath.owl
@@ -436,7 +414,6 @@ $(COMPONENTSDIR)/mpath.owl:  component-download-mpath.owl
 .PHONY: component-download-nbo.owl
 component-download-nbo.owl: | $(TMPDIR)
 	if [ $(MIR) = true ] && [ $(COMP) = true ]; then $(ROBOT) merge -I http://purl.obolibrary.org/obo/nbo.owl \
-	remove --base-iri http://purl.obolibrary.org/obo/nbo.owl# --base-iri http://purl.obolibrary.org/obo/NBO_ --axioms external --preserve-structure false --trim false \
 	annotate --ontology-iri $(ONTBASE)/$@ $(ANNOTATE_ONTOLOGY_VERSION) -o $(TMPDIR)/$@.owl; fi
 
 $(COMPONENTSDIR)/nbo.owl:  component-download-nbo.owl
@@ -459,7 +436,6 @@ $(COMPONENTSDIR)/ro.owl:  component-download-ro.owl
 .PHONY: component-download-uberon.owl
 component-download-uberon.owl: | $(TMPDIR)
 	if [ $(MIR) = true ] && [ $(COMP) = true ]; then $(ROBOT) merge -I http://purl.obolibrary.org/obo/uberon.owl \
-	remove --base-iri http://purl.obolibrary.org/obo/UBERON_ --base-iri http://purl.obolibrary.org/obo/uberon/core# --base-iri http://purl.obolibrary.org/obo/UBPROP_ --axioms external --preserve-structure false --trim false \
 	annotate --ontology-iri $(ONTBASE)/$@ $(ANNOTATE_ONTOLOGY_VERSION) -o $(TMPDIR)/$@.owl; fi
 
 $(COMPONENTSDIR)/uberon.owl:  component-download-uberon.owl
@@ -471,7 +447,6 @@ $(COMPONENTSDIR)/uberon.owl:  component-download-uberon.owl
 .PHONY: component-download-upheno.owl
 component-download-upheno.owl: | $(TMPDIR)
 	if [ $(MIR) = true ] && [ $(COMP) = true ]; then $(ROBOT) merge -I http://purl.obolibrary.org/obo/upheno/v2/upheno.owl \
-	remove --base-iri http://purl.obolibrary.org/obo/UPHENO_ --base-iri http://purl.obolibrary.org/obo/HP_ --base-iri http://purl.obolibrary.org/obo/MP_ --base-iri http://purl.obolibrary.org/obo/WBPhenotype_ --base-iri http://purl.obolibrary.org/obo/XPO_ --base-iri http://purl.obolibrary.org/obo/ZP_ --axioms external --preserve-structure false --trim false \
 	annotate --ontology-iri $(ONTBASE)/$@ $(ANNOTATE_ONTOLOGY_VERSION) -o $(TMPDIR)/$@.owl; fi
 
 $(COMPONENTSDIR)/upheno.owl:  component-download-upheno.owl
@@ -483,7 +458,6 @@ $(COMPONENTSDIR)/upheno.owl:  component-download-upheno.owl
 .PHONY: component-download-wbbt.owl
 component-download-wbbt.owl: | $(TMPDIR)
 	if [ $(MIR) = true ] && [ $(COMP) = true ]; then $(ROBOT) merge -I http://purl.obolibrary.org/obo/wbbt.owl \
-	remove --base-iri http://purl.obolibrary.org/obo/wbbt# --base-iri http://purl.obolibrary.org/obo/WBbt_ --axioms external --preserve-structure false --trim false \
 	annotate --ontology-iri $(ONTBASE)/$@ $(ANNOTATE_ONTOLOGY_VERSION) -o $(TMPDIR)/$@.owl; fi
 
 $(COMPONENTSDIR)/wbbt.owl:  component-download-wbbt.owl
@@ -495,7 +469,6 @@ $(COMPONENTSDIR)/wbbt.owl:  component-download-wbbt.owl
 .PHONY: component-download-zfa.owl
 component-download-zfa.owl: | $(TMPDIR)
 	if [ $(MIR) = true ] && [ $(COMP) = true ]; then $(ROBOT) merge -I http://purl.obolibrary.org/obo/zfa.owl \
-	remove --base-iri http://purl.obolibrary.org/obo/zfa# --base-iri http://purl.obolibrary.org/obo/ZFA_ --axioms external --preserve-structure false --trim false \
 	annotate --ontology-iri $(ONTBASE)/$@ $(ANNOTATE_ONTOLOGY_VERSION) -o $(TMPDIR)/$@.owl; fi
 
 $(COMPONENTSDIR)/zfa.owl:  component-download-zfa.owl
@@ -516,7 +489,7 @@ IMP_LARGE=true # Global parameter to bypass handling of large imports
 .PHONY: mirror-caro
 .PRECIOUS: $(MIRRORDIR)/caro.owl
 mirror-caro: | $(TMPDIR)
-	if [ $(MIR) = true ] && [ $(IMP) = true ]; then curl -L $(OBOBASE)/caro.owl --create-dirs -o $(MIRRORDIR)/caro.owl --retry 4 --max-time 400 &&\
+	if [ $(MIR) = true ] && [ $(IMP) = true ]; then curl -L $(URIBASE)/caro.owl --create-dirs -o $(MIRRORDIR)/caro.owl --retry 4 --max-time 400 &&\
 		$(ROBOT) convert -i $(MIRRORDIR)/caro.owl -o $@.tmp.owl &&\
 		mv $@.tmp.owl $(TMPDIR)/$@.owl; fi
 
@@ -525,7 +498,7 @@ mirror-caro: | $(TMPDIR)
 .PHONY: mirror-chebi
 .PRECIOUS: $(MIRRORDIR)/chebi.owl
 mirror-chebi: | $(TMPDIR)
-	if [ $(MIR) = true ] && [ $(IMP) = true ] && [ $(IMP_LARGE) = true ]; then curl -L $(OBOBASE)/chebi.owl.gz --create-dirs -o $(MIRRORDIR)/chebi.owl.gz --retry 4 --max-time 400 &&\
+	if [ $(MIR) = true ] && [ $(IMP) = true ] && [ $(IMP_LARGE) = true ]; then curl -L $(URIBASE)/chebi.owl.gz --create-dirs -o $(MIRRORDIR)/chebi.owl.gz --retry 4 --max-time 400 &&\
 		$(ROBOT) convert -i $(MIRRORDIR)/chebi.owl.gz -o $@.tmp.owl &&\
 		mv $@.tmp.owl $(TMPDIR)/$@.owl; fi
 
@@ -534,7 +507,7 @@ mirror-chebi: | $(TMPDIR)
 .PHONY: mirror-eco
 .PRECIOUS: $(MIRRORDIR)/eco.owl
 mirror-eco: | $(TMPDIR)
-	if [ $(MIR) = true ] && [ $(IMP) = true ]; then curl -L $(OBOBASE)/eco.owl --create-dirs -o $(MIRRORDIR)/eco.owl --retry 4 --max-time 400 &&\
+	if [ $(MIR) = true ] && [ $(IMP) = true ]; then curl -L $(URIBASE)/eco.owl --create-dirs -o $(MIRRORDIR)/eco.owl --retry 4 --max-time 400 &&\
 		$(ROBOT) convert -i $(MIRRORDIR)/eco.owl -o $@.tmp.owl && \
 		$(ROBOT) remove -i $@.tmp.owl --base-iri $(URIBASE)/ECO --axioms external --preserve-structure false --trim false -o $@.tmp.owl &&\
 		mv $@.tmp.owl $(TMPDIR)/$@.owl; fi
@@ -552,7 +525,7 @@ mirror-ncbitaxon-taxslim: | $(TMPDIR)
 .PHONY: mirror-oba
 .PRECIOUS: $(MIRRORDIR)/oba.owl
 mirror-oba: | $(TMPDIR)
-	if [ $(MIR) = true ] && [ $(IMP) = true ]; then curl -L $(OBOBASE)/oba.owl --create-dirs -o $(MIRRORDIR)/oba.owl --retry 4 --max-time 400 &&\
+	if [ $(MIR) = true ] && [ $(IMP) = true ]; then curl -L $(URIBASE)/oba.owl --create-dirs -o $(MIRRORDIR)/oba.owl --retry 4 --max-time 400 &&\
 		$(ROBOT) convert -i $(MIRRORDIR)/oba.owl -o $@.tmp.owl &&\
 		mv $@.tmp.owl $(TMPDIR)/$@.owl; fi
 
@@ -561,7 +534,7 @@ mirror-oba: | $(TMPDIR)
 .PHONY: mirror-pato
 .PRECIOUS: $(MIRRORDIR)/pato.owl
 mirror-pato: | $(TMPDIR)
-	if [ $(MIR) = true ] && [ $(IMP) = true ]; then curl -L $(OBOBASE)/pato.owl --create-dirs -o $(MIRRORDIR)/pato.owl --retry 4 --max-time 400 &&\
+	if [ $(MIR) = true ] && [ $(IMP) = true ]; then curl -L $(URIBASE)/pato.owl --create-dirs -o $(MIRRORDIR)/pato.owl --retry 4 --max-time 400 &&\
 		$(ROBOT) convert -i $(MIRRORDIR)/pato.owl -o $@.tmp.owl &&\
 		mv $@.tmp.owl $(TMPDIR)/$@.owl; fi
 
@@ -570,7 +543,7 @@ mirror-pato: | $(TMPDIR)
 .PHONY: mirror-stato
 .PRECIOUS: $(MIRRORDIR)/stato.owl
 mirror-stato: | $(TMPDIR)
-	if [ $(MIR) = true ] && [ $(IMP) = true ]; then curl -L $(OBOBASE)/stato.owl --create-dirs -o $(MIRRORDIR)/stato.owl --retry 4 --max-time 400 &&\
+	if [ $(MIR) = true ] && [ $(IMP) = true ]; then curl -L $(URIBASE)/stato.owl --create-dirs -o $(MIRRORDIR)/stato.owl --retry 4 --max-time 400 &&\
 		$(ROBOT) convert -i $(MIRRORDIR)/stato.owl -o $@.tmp.owl &&\
 		mv $@.tmp.owl $(TMPDIR)/$@.owl; fi
 
@@ -703,7 +676,7 @@ SPARQL_EXPORTS_ARGS = $(foreach V,$(SPARQL_EXPORTS),-s $(SPARQLDIR)/$(V).sparql 
 # This combines all into one single command
 
 .PHONY: custom_reports
-custom_reports: $(EDIT_PREPROCESSED) | $(REPORTDIR)
+custom_reports: $(SRC) | $(REPORTDIR)
 ifneq ($(SPARQL_EXPORTS_ARGS),)
 	$(ROBOT) query -f tsv --use-graphs true -i $< $(SPARQL_EXPORTS_ARGS)
 endif
@@ -738,11 +711,12 @@ $(ONT).json: $(ONT)-full.owl
 # -----------------------------------------------------
 SHARED_ROBOT_COMMANDS = 
 
-$(ONTOLOGYTERMS): $(SRCMERGED)
-	$(ROBOT) query -f csv -i $< --query ../sparql/phenio_terms.sparql $@
+$(ONTOLOGYTERMS): $(SRC) $(OTHER_SRC)
+	touch $(ONTOLOGYTERMS) && \
+	$(ROBOT) query --use-graphs true -f csv -i $< --query ../sparql/phenio_terms.sparql $@
 
 # base: OTHER sources of interest, such as definitions owl
-$(ONT)-base.owl: $(EDIT_PREPROCESSED) $(OTHER_SRC)
+$(ONT)-base.owl: $(SRC) $(OTHER_SRC)
 	$(ROBOT) remove --input $< --select imports --trim false \
 		merge $(patsubst %, -i %, $(OTHER_SRC)) \
 		 $(SHARED_ROBOT_COMMANDS) annotate --link-annotation http://purl.org/dc/elements/1.1/type http://purl.obolibrary.org/obo/IAO_8000001 \
@@ -750,7 +724,7 @@ $(ONT)-base.owl: $(EDIT_PREPROCESSED) $(OTHER_SRC)
 		--output $@.tmp.owl && mv $@.tmp.owl $@
 
 # Full: The full artefacts with imports merged, reasoned
-$(ONT)-full.owl: $(EDIT_PREPROCESSED) $(OTHER_SRC) $(IMPORT_FILES)
+$(ONT)-full.owl: $(SRC) $(OTHER_SRC) $(IMPORT_FILES)
 	$(ROBOT) merge --input $< \
 		reason --reasoner ELK --equivalent-classes-allowed all --exclude-tautologies structural \
 		relax \
@@ -761,8 +735,8 @@ $(ONT)-full.owl: $(EDIT_PREPROCESSED) $(OTHER_SRC) $(IMPORT_FILES)
 # Debugging Tools
 # ----------------------------------------
 
-explain_unsat: $(EDIT_PREPROCESSED) 
-	$(ROBOT) explain -i $< -M unsatisfiability --unsatisfiable random:10 --explanation $(TMPDIR)/$@.md
+explain_unsat: $(SRC) 
+	$(ROBOT) explain -i $(SRC) -M unsatisfiability --unsatisfiable random:10 --explanation $(TMPDIR)/$@.md
 
 
 
@@ -858,7 +832,6 @@ Additional build commands (advanced users)
 Additional QC commands (advanced users)
 * robot_reports:	Run all configured ROBOT reports
 * validate_profile_%:	Run an OWL2 DL profile validation check, for example validate_profile_phenio-edit.owl.
-* reason_test: Run a basic reasoning test
 
 Examples: 
 * sh run.sh make IMP=false prepare_release
