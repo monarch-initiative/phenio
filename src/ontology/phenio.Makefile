@@ -55,8 +55,6 @@ $(BLMODEL):
 
 $(ONT).owl: $(ONT)-full.owl $(BLMODEL)
 	$(ROBOT) merge --input $< --input $(BLMODEL) \
-			 reason --reasoner ELK \
-			 reduce \
 			 query --update $(BLQUERY) \
 			 unmerge --input $(BLMODEL) \
 			 annotate --ontology-iri $(URIBASE)/$@ $(ANNOTATE_ONTOLOGY_VERSION) \
