@@ -13,17 +13,8 @@ INSERT {
 }
 WHERE {
   {
-    ?biolink_category skos:exactMatch ?entity_to_type .
+    ?biolink_category (skos:exactMatch|skos:narrowMatch)+ ?entity_to_type .
     ?subject (rdf:type|rdfs:subClassOf|owl:equivalentClass|^owl:equivalentClass|owl:sameAs|^owl:sameAs)* ?entity_to_type .
-    FILTER(STRSTARTS(str(?biolink_category),"https://w3id.org/biolink/vocab/"))
-    FILTER(isIRI(?subject))
-    FILTER(isIRI(?biolink_category))
-    FILTER(isIRI(?entity_to_type))
-  }
-  UNION
-  {
-    ?biolink_category skos:narrowMatch ?entity_to_type .
-    ?subject rdfs:subClassOf+ ?entity_to_type .
     FILTER(STRSTARTS(str(?biolink_category),"https://w3id.org/biolink/vocab/"))
     FILTER(isIRI(?subject))
     FILTER(isIRI(?biolink_category))
