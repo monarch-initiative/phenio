@@ -68,6 +68,12 @@ components:
       make_base: TRUE
       base_iris:
         - http://purl.obolibrary.org/obo/FAO_
+    - filename: emapa.owl
+      source: http://purl.obolibrary.org/obo/emapa.owl
+      make_base: TRUE
+      base_iris:
+        - http://purl.obolibrary.org/obo/emapa#
+        - http://purl.obolibrary.org/obo/EMAPA_
     - filename: fbbt.owl
       source: http://purl.obolibrary.org/obo/fbbt.owl
       make_base: TRUE
