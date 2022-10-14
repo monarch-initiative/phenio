@@ -33,6 +33,8 @@ import_group:
     - id: oba
     - id: pato
     - id: stato
+    - id: uberon-bridge-to-emapa
+      mirror_from: http://purl.obolibrary.org/obo/uberon/bridge/uberon-bridge-to-emapa.owl
     - id: uberon-bridge-to-zfa
       mirror_from: http://purl.obolibrary.org/obo/uberon/bridge/uberon-bridge-to-zfa.owl
     - id: uberon-bridge-to-ma
@@ -45,6 +47,8 @@ import_group:
       mirror_from: http://purl.obolibrary.org/obo/uberon/bridge/uberon-bridge-to-fma.owl
     - id: uberon-bridge-to-nifstd
       mirror_from: http://purl.obolibrary.org/obo/uberon/bridge/uberon-bridge-to-nifstd.owl
+    - id: cl-bridge-to-emapa
+      mirror_from: http://purl.obolibrary.org/obo/uberon/bridge/cl-bridge-to-emapa.owl
     - id: cl-bridge-to-ma
       mirror_from: http://purl.obolibrary.org/obo/uberon/bridge/cl-bridge-to-ma.owl
     - id: cl-bridge-to-fma
@@ -68,6 +72,12 @@ components:
       make_base: TRUE
       base_iris:
         - http://purl.obolibrary.org/obo/FAO_
+    - filename: emapa.owl
+      source: http://purl.obolibrary.org/obo/emapa.owl
+      make_base: TRUE
+      base_iris:
+        - http://purl.obolibrary.org/obo/emapa#
+        - http://purl.obolibrary.org/obo/EMAPA_
     - filename: fbbt.owl
       source: http://purl.obolibrary.org/obo/fbbt.owl
       make_base: TRUE

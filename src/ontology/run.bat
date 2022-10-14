@@ -1,1 +1,1 @@
-docker run -v %cd%\..\..\:/work -w /work/src/ontology -e ROBOT_JAVA_ARGS='-Xmx18G' -e JAVA_OPTS='-Xmx18G' --rm -ti obolibrary/odkfull %*
+docker run -v %cd%\..\..\:/work -w /work/src/ontology -e 'ROBOT_JAVA_ARGS=-Xmx24G' -e 'JAVA_OPTS=-Xmx24G' --rm -ti obolibrary/odkfull %*
