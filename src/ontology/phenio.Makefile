@@ -61,8 +61,12 @@ $(ONT).owl: $(ONT)-full.owl $(BLMODEL)
 			 convert -o $@.tmp.owl && mv $@.tmp.owl $@
 
 ### Get full entailment with relation-graph
+### First, make a minimal version
 $(MINIMAL_PATH): $(ONT).owl
-	$(ROBOT) remove -i $< --axioms "equivalent disjoint annotation" --select "domains ranges" -o $@
+	$(ROBOT) remove -i $< \
+		--axioms "equivalent disjoint annotation" \
+		filter --exclude-terms exclude-terms.txt \
+		-o $@
 
 $(ONT)-relation-graph.ttl: $(MINIMAL_PATH)
 ###	$(OWLTOOLS) $< --merge-imports-closure \
@@ -77,10 +81,9 @@ $(ONT)-relation-graph.ttl: $(MINIMAL_PATH)
 			--output-file $@ \
 			--equivalence-as-subclass true \
 			--output-subclasses true \
+			--output-individuals true \
 			--reflexive-subclasses true \
-			--verbose true \
-			--mode rdf \
-			--property "rdfs:subClassOf"
+			--verbose true
 
 relation_graph: $(ONT)-relation-graph.ttl
 	echo "Entailed graph construction completed."
