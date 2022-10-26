@@ -68,7 +68,7 @@ $(MINIMAL_PATH): $(ONT).owl
 		filter --exclude-terms exclude-terms.txt \
 		-o $@
 
-$(ONT)-relation-graph.ttl: $(MINIMAL_PATH)
+$(ONT)-relation-graph.tsv: $(MINIMAL_PATH)
 ###	$(OWLTOOLS) $< --merge-imports-closure \
 ###					--remove-axioms -t DisjointClasses \
 ###					--remove-axioms -t ObjectPropertyDomain \
@@ -83,7 +83,9 @@ $(ONT)-relation-graph.ttl: $(MINIMAL_PATH)
 			--output-subclasses true \
 			--output-individuals true \
 			--reflexive-subclasses true \
+			--mode TSV \
+			--obo-prefixes true \
 			--verbose true
 
-relation_graph: $(ONT)-relation-graph.ttl
+relation_graph: $(ONT)-relation-graph.tsv
 	echo "Entailed graph construction completed."
