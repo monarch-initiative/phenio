@@ -154,7 +154,7 @@ robot_report:
   release_reports: True
   fail_on: none
   use_labels: False
-  custom_profile: True
+  custom_profile: False
   report_on:
     - edit
 
