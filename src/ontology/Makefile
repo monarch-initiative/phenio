@@ -33,6 +33,7 @@ MIRRORDIR=                  mirror
 IMPORTDIR=                  imports
 SUBSETDIR=                  subsets
 SCRIPTSDIR=                 ../scripts
+UPDATEREPODIR=              target
 SPARQLDIR =                 ../sparql
 COMPONENTSDIR =             components
 REPORT_FAIL_ON =            none
@@ -70,6 +71,9 @@ all_odk: odkversion test all_assets
 .PHONY: test
 test: odkversion reason_test sparql_test robot_reports 
 	echo "Finished running all tests successfully."
+
+.PHONY: release_diff
+release_diff: $(REPORTDIR)/release-diff.md
 
 .PHONY: reason_test
 reason_test: $(EDIT_PREPROCESSED)
@@ -143,7 +147,7 @@ all_reports: custom_reports robot_reports
 # ROBOT OWL Profile checking
 # ----------------------------------------
 
-# The conversion to functional syntax is necessary to avoid undeclared entity violations.
+# The merge step is necessary to avoid undeclared entity violations.
 $(REPORTDIR)/validate_profile_owl2dl_%.txt: % | $(REPORTDIR) $(TMPDIR)
 	$(ROBOT) merge -i $< convert -f ofn -o $(TMPDIR)/validate.ofn
 	$(ROBOT) validate-profile --profile DL -i $(TMPDIR)/validate.ofn -o $@ || { cat $@ && exit 1; }
@@ -192,7 +196,7 @@ RELEASE_ASSETS = \
   $(REPORT_FILES)
 
 .PHONY: all_assets
-all_assets: $(ASSETS) check_rdfxml_assets
+all_assets: $(ASSETS) 
 
 .PHONY: show_assets
 show_assets:
@@ -200,7 +204,7 @@ show_assets:
 	du -sh $(ASSETS)
 
 check_rdfxml_%: %
-	@check-rdfxml  $<
+	@check-rdfxml $<
 
 .PHONY: check_rdfxml_assets
 check_rdfxml_assets: $(foreach product,$(MAIN_PRODUCTS),check_rdfxml_$(product).owl)
@@ -229,6 +233,14 @@ prepare_initial_release: all_assets
 .PHONY: prepare_release_fast
 prepare_release_fast:
 	$(MAKE) prepare_release IMP=false PAT=false MIR=false COMP=false
+
+CURRENT_RELEASE=$(ONTBASE).owl
+
+$(TMPDIR)/current-release.owl:
+	wget $(CURRENT_RELEASE) -O $@
+
+$(REPORTDIR)/release-diff.md: $(ONT).owl $(TMPDIR)/current-release.owl
+	$(ROBOT) diff --labels true --left $(TMPDIR)/current-release.owl --right $(ONT).owl -f markdown -o $@
 
 # ------------------------
 # Imports: Seeding system 
@@ -725,7 +737,7 @@ $(SUBSETDIR)/%.owl: $(ONT).owl | $(SUBSETDIR)
 
 $(SUBSETDIR)/%.json: $(SUBSETDIR)/%.owl
 	$(ROBOT) convert --input $< --check false -f json -o $@.tmp.json &&\
-	jq -S 'walk(if type == "array" then sort else . end)' $@.tmp.json > $@ && rm $@.tmp.json
+	mv $@.tmp.json $@
 
 
 # ---------------------------------------------
@@ -749,11 +761,11 @@ endif
 $(ONT)-base.json: $(ONT)-base.owl
 	$(ROBOT) annotate --input $< --ontology-iri $(ONTBASE)/$@ $(ANNOTATE_ONTOLOGY_VERSION) \
 		convert --check false -f json -o $@.tmp.json &&\
-	jq -S 'walk(if type == "array" then sort else . end)' $@.tmp.json > $@ && rm $@.tmp.json
+		mv $@.tmp.json $@
 $(ONT)-full.json: $(ONT)-full.owl
 	$(ROBOT) annotate --input $< --ontology-iri $(ONTBASE)/$@ $(ANNOTATE_ONTOLOGY_VERSION) \
 		convert --check false -f json -o $@.tmp.json &&\
-	jq -S 'walk(if type == "array" then sort else . end)' $@.tmp.json > $@ && rm $@.tmp.json
+		mv $@.tmp.json $@
 # ----------------------------------------
 # Release artefacts: main release artefacts
 # ----------------------------------------
@@ -764,8 +776,8 @@ $(ONT).owl: $(ONT)-full.owl
 
 $(ONT).json: $(ONT)-full.owl
 	$(ROBOT) annotate --input $< --ontology-iri $(URIBASE)/$@ $(ANNOTATE_ONTOLOGY_VERSION) \
-		convert --check false -f json -o $@.tmp.json && \
-	jq -S 'walk(if type == "array" then sort else . end)' $@.tmp.json > $@ && rm $@.tmp.json
+		convert --check false -f json -o $@.tmp.json &&\
+		mv $@.tmp.json $@
 # -----------------------------------------------------
 # Release artefacts: variants (base, full, simple, etc)
 # -----------------------------------------------------
@@ -774,22 +786,20 @@ SHARED_ROBOT_COMMANDS =
 $(ONTOLOGYTERMS): $(SRCMERGED)
 	$(ROBOT) query -f csv -i $< --query ../sparql/phenio_terms.sparql $@
 
+# ROBOT pipeline that merges imports, including components.
 ROBOT_RELEASE_IMPORT_MODE=$(ROBOT) merge --input $< 
 
-ROBOT_RELEASE_IMPORT_MODE_BASE=$(ROBOT) merge --input $< 
+# ROBOT pipeline that removes imports, then merges components. This is for release artefacts that start from "base"
+ROBOT_RELEASE_IMPORT_MODE_BASE=$(ROBOT) remove --input $< --select imports --trim false merge $(patsubst %, -i %, $(OTHER_SRC)) 
 
-# base: OTHER sources of interest, such as definitions owl
-$(ONT)-base.owl: $(EDIT_PREPROCESSED) $(OTHER_SRC) $(IMPORT_FILES)
+# base: All the axioms as they are editted by the editors, excluding reasoning
+$(ONT)-base.owl: $(EDIT_PREPROCESSED) $(OTHER_SRC)
 	$(ROBOT_RELEASE_IMPORT_MODE_BASE) \
-	reason --reasoner ELK --equivalent-classes-allowed all --exclude-tautologies structural \
-	relax \
-	reduce -r ELK \
-	remove --base-iri $(URIBASE)/PHENIO --axioms external --preserve-structure false --trim false \
 	$(SHARED_ROBOT_COMMANDS) \
 	annotate --link-annotation http://purl.org/dc/elements/1.1/type http://purl.obolibrary.org/obo/IAO_8000001 \
 		--ontology-iri $(ONTBASE)/$@ $(ANNOTATE_ONTOLOGY_VERSION) \
 		--output $@.tmp.owl && mv $@.tmp.owl $@
-# Full: The full artefacts with imports merged, reasoned
+# Full: The full artefacts with imports merged, reasoned.
 $(ONT)-full.owl: $(EDIT_PREPROCESSED) $(OTHER_SRC) $(IMPORT_FILES)
 	$(ROBOT_RELEASE_IMPORT_MODE) \
 		reason --reasoner ELK --equivalent-classes-allowed all --exclude-tautologies structural \
@@ -848,6 +858,7 @@ update_docs:
 clean:
 	[ -n "$(MIRRORDIR)" ] && [ $(MIRRORDIR) != "." ] && [ $(MIRRORDIR) != "/" ] && [ $(MIRRORDIR) != ".." ] && [ -d ./$(MIRRORDIR) ] && rm -rf ./$(MIRRORDIR)/*
 	[ -n "$(TMPDIR)" ] && [ $(TMPDIR) != "." ] && [ $(TMPDIR) != "/" ] && [ $(TMPDIR) != ".." ] && [ -d ./$(TMPDIR) ] && rm -rf ./$(TMPDIR)/*
+	[ -n "$(UPDATEREPODIR)" ] && [ $(UPDATEREPODIR) != "." ] && [ $(UPDATEREPODIR) != "/" ] && [ $(UPDATEREPODIR) != ".." ] && [ -d ./$(UPDATEREPODIR) ] && rm -rf ./$(UPDATEREPODIR)/*
 	rm -f $(CLEANFILES)
 
 .PHONY: help
@@ -869,6 +880,7 @@ Core commands:
 * odkversion:		Show the current version of the ODK Makefile and ROBOT.
 * clean:		Delete all temporary files
 * help:			Print ODK Usage information
+* public_release:	Uploads the release file to a release management system, such as GitHub releases. Must be configured.
 
 
 Imports management:
@@ -886,6 +898,7 @@ Editor utilities:
 * explain_unsat:	If you have unsatisfiable classes, this command will create a markdown file (tmp/explain_unsat.md) which will explain all your unsatisfiable classes
 * validate-all-tsv:	Check all your tsv files for possible problems in syntax. Use ALL_TSV_FILES variable to list files
 * validate-tsv:		Check a tsv file for syntactic problems with tsvalid. Use TSV variable to pass filepath, e.g. make TSV=../my.tsv validate-tsv.
+* release_diff:	Create a diff between the current release and the new release
 
 Additional build commands (advanced users)
 * all:			Run the entire pipeline (like prepare_release), but without copying the release files to the release directory.
