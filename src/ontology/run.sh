@@ -15,7 +15,18 @@
 # See README-editors.md for more details.
 
 if [ -f run.sh.conf ]; then
-    source run.sh.conf
+    source ./run.sh.conf
+fi
+
+# Look for a GitHub token
+if [ -n "$GH_TOKEN" ]; then
+    :
+elif [ -f ../../.github/token.txt ]; then
+    GH_TOKEN=$(cat ../../.github/token.txt)
+elif [ -f $XDG_CONFIG_HOME/ontology-development-kit/github/token ]; then
+    GH_TOKEN=$(cat $XDG_CONFIG_HOME/ontology-development-kit/github/token)
+elif [ -f "$HOME/Library/Application Support/ontology-development-kit/github/token" ]; then
+    GH_TOKEN=$(cat "$HOME/Library/Application Support/ontology-development-kit/github/token")
 fi
 
 ODK_IMAGE=${ODK_IMAGE:-odkfull}
@@ -45,17 +56,27 @@ if [ -n "$ODK_BINDS" ]; then
     VOLUME_BIND="$VOLUME_BIND,$ODK_BINDS"
 fi
 
+# Gather environment variables into a single file
+# (and make sure that file is deleted no matter what)
+trap "rm -f run.sh.env" EXIT
+trap "rm -f run.sh.env; trap - INT; kill -INT $$" INT
+cat <<EOF > run.sh.env
+ROBOT_JAVA_ARGS=$ODK_JAVA_OPTS
+JAVA_OPTS=$ODK_JAVA_OPTS
+GH_TOKEN=$GH_TOKEN
+EOF
+
 if [ -n "$USE_SINGULARITY" ]; then
     
     singularity exec --cleanenv $ODK_SINGULARITY_OPTIONS \
-        --env "ROBOT_JAVA_ARGS=$ODK_JAVA_OPTS,JAVA_OPTS=$ODK_JAVA_OPTS" \
+        --env-file run.sh.env \
         --bind $VOLUME_BIND \
         -W $WORK_DIR \
         docker://obolibrary/$ODK_IMAGE:$ODK_TAG $TIMECMD "$@"
 else
     BIND_OPTIONS="-v $(echo $VOLUME_BIND | sed 's/,/ -v /')"
     docker run -u $(id -u):$(id -g) $ODK_DOCKER_OPTIONS $BIND_OPTIONS -w $WORK_DIR \
-        -e ROBOT_JAVA_ARGS="$ODK_JAVA_OPTS" -e JAVA_OPTS="$ODK_JAVA_OPTS" \
+        --env-file run.sh.env \
          \
         --rm -ti obolibrary/$ODK_IMAGE:$ODK_TAG $TIMECMD "$@"
 fi
