@@ -43,6 +43,7 @@ REPORT_PROFILE_OPTS =
 OBO_FORMAT_OPTIONS =        
 SPARQL_VALIDATION_CHECKS =  owldef-self-reference iri-range label-with-iri multiple-replaced_by 
 SPARQL_EXPORTS =            basic-report class-count-by-prefix edges xrefs obsoletes synonyms 
+
 ODK_VERSION_MAKEFILE =      v1.5-dev
 
 TODAY ?=                    $(shell date +%Y-%m-%d)
