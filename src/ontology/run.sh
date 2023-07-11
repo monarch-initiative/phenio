@@ -15,7 +15,7 @@
 # See README-editors.md for more details.
 
 if [ -f run.sh.conf ]; then
-    source ./run.sh.conf
+    . ./run.sh.conf
 fi
 
 # Look for a GitHub token
@@ -40,6 +40,14 @@ ODK_TAG=${ODK_TAG:-latest}
 ODK_JAVA_OPTS=${ODK_JAVA_OPTS:--Xmx24G}
 ODK_DEBUG=${ODK_DEBUG:-no}
 
+# Convert OWLAPI_* environment variables to the OWLAPI as Java options
+# See http://owlcs.github.io/owlapi/apidocs_4/org/semanticweb/owlapi/model/parameters/ConfigurationOptions.html
+# for a list of allowed options
+OWLAPI_OPTIONS_NAMESPACE=org.semanticweb.owlapi.model.parameters.ConfigurationOptions
+for owlapi_var in $(env | sed -n s/^OWLAPI_//p) ; do
+    ODK_JAVA_OPTS="$ODK_JAVA_OPTS -D$OWLAPI_OPTIONS_NAMESPACE.${owlapi_var%=*}=${owlapi_var#*=}"
+done
+
 TIMECMD=
 if [ x$ODK_DEBUG = xyes ]; then
     # If you wish to change the format string, take care of using
@@ -56,28 +64,17 @@ if [ -n "$ODK_BINDS" ]; then
     VOLUME_BIND="$VOLUME_BIND,$ODK_BINDS"
 fi
 
-# Gather environment variables into a single file
-# (and make sure that file is deleted no matter what)
-trap "rm -f run.sh.env" EXIT
-trap "rm -f run.sh.env; trap - INT; kill -INT $$" INT
-cat <<EOF > run.sh.env
-ROBOT_JAVA_ARGS=$ODK_JAVA_OPTS
-JAVA_OPTS=$ODK_JAVA_OPTS
-GH_TOKEN=$GH_TOKEN
-EOF
-
 if [ -n "$USE_SINGULARITY" ]; then
     
     singularity exec --cleanenv $ODK_SINGULARITY_OPTIONS \
-        --env-file run.sh.env \
+        --env "ROBOT_JAVA_ARGS=$ODK_JAVA_OPTS,JAVA_OPTS=$ODK_JAVA_OPTS" \
         --bind $VOLUME_BIND \
         -W $WORK_DIR \
         docker://obolibrary/$ODK_IMAGE:$ODK_TAG $TIMECMD "$@"
 else
     BIND_OPTIONS="-v $(echo $VOLUME_BIND | sed 's/,/ -v /')"
-    docker run -u $(id -u):$(id -g) $ODK_DOCKER_OPTIONS $BIND_OPTIONS -w $WORK_DIR \
-        --env-file run.sh.env \
-         \
+    docker run $ODK_DOCKER_OPTIONS $BIND_OPTIONS -w $WORK_DIR \
+        -e ROBOT_JAVA_ARGS="$ODK_JAVA_OPTS" -e JAVA_OPTS="$ODK_JAVA_OPTS" \
         --rm -ti obolibrary/$ODK_IMAGE:$ODK_TAG $TIMECMD "$@"
 fi
 
