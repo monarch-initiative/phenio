@@ -87,5 +87,5 @@ $(ONT)-relation-graph.tsv: $(MINIMAL_PATH)
 			--obo-prefixes true \
 			--verbose true
 
-relation_graph: $(ONT)-relation-graph.tsv
+relation_graph: $(ONT)-relation-graph.tsv $(ONT).json
 	echo "Entailed graph construction completed."
