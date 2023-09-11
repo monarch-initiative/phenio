@@ -37,16 +37,8 @@ if [ -n "$TAG_IN_IMAGE" ]; then
   ODK_IMAGE=$(echo $ODK_IMAGE | awk -F':' '{ print $1 }')
 fi
 ODK_TAG=${ODK_TAG:-latest}
-ODK_JAVA_OPTS=${ODK_JAVA_OPTS:--Xmx24G}
+ODK_JAVA_OPTS=${ODK_JAVA_OPTS:--Xmx30G}
 ODK_DEBUG=${ODK_DEBUG:-no}
-
-# Convert OWLAPI_* environment variables to the OWLAPI as Java options
-# See http://owlcs.github.io/owlapi/apidocs_4/org/semanticweb/owlapi/model/parameters/ConfigurationOptions.html
-# for a list of allowed options
-OWLAPI_OPTIONS_NAMESPACE=org.semanticweb.owlapi.model.parameters.ConfigurationOptions
-for owlapi_var in $(env | sed -n s/^OWLAPI_//p) ; do
-    ODK_JAVA_OPTS="$ODK_JAVA_OPTS -D$OWLAPI_OPTIONS_NAMESPACE.${owlapi_var%=*}=${owlapi_var#*=}"
-done
 
 TIMECMD=
 if [ x$ODK_DEBUG = xyes ]; then
