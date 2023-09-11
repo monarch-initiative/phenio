@@ -43,7 +43,6 @@ REPORT_PROFILE_OPTS =
 OBO_FORMAT_OPTIONS =        
 SPARQL_VALIDATION_CHECKS =  owldef-self-reference iri-range label-with-iri multiple-replaced_by 
 SPARQL_EXPORTS =            basic-report class-count-by-prefix edges xrefs obsoletes synonyms 
-
 ODK_VERSION_MAKEFILE =      v1.5-dev
 
 TODAY ?=                    $(shell date +%Y-%m-%d)
@@ -522,7 +521,7 @@ $(COMPONENTSDIR)/uberon.owl:  component-download-uberon.owl
 .PHONY: component-download-upheno.owl
 component-download-upheno.owl: | $(TMPDIR)
 	if [ $(MIR) = true ] && [ $(COMP) = true ]; then $(ROBOT) merge -I http://purl.obolibrary.org/obo/upheno/v2/upheno.owl \
-	remove --base-iri http://purl.obolibrary.org/obo/UPHENO_ --base-iri http://purl.obolibrary.org/obo/HP_ --base-iri http://purl.obolibrary.org/obo/MP_ --base-iri http://purl.obolibrary.org/obo/WBPhenotype_ --base-iri http://purl.obolibrary.org/obo/XPO_ --base-iri http://purl.obolibrary.org/obo/ZP_ --axioms external --preserve-structure false --trim false \
+	remove --base-iri http://purl.obolibrary.org/obo/UPHENO_ --base-iri http://purl.obolibrary.org/obo/HP_ --base-iri http://purl.obolibrary.org/obo/MP_ --base-iri http://purl.obolibrary.org/obo/WBPhenotype_ --base-iri http://purl.obolibrary.org/obo/XPO_ --base-iri http://purl.obolibrary.org/obo/ZP_ --base-iri http://purl.obolibrary.org/obo/FYPO_ --axioms external --preserve-structure false --trim false \
 	annotate --ontology-iri $(ONTBASE)/$@ $(ANNOTATE_ONTOLOGY_VERSION) -o $(TMPDIR)/$@.owl; fi
 
 $(COMPONENTSDIR)/upheno.owl:  component-download-upheno.owl
