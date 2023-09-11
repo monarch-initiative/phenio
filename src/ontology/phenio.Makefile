@@ -34,7 +34,7 @@ $(TMPDIR)/$(ONT)-full.owl: $(TMPDIR)/$(ONT)-full-unreasoned.owl
 
 $(SUBQ_QUERY_RESULT_PATH): $(TMPDIR)/$(ONT)-full.owl
 	#echo "Finding subq patterns based on $(SUBQ_QUERY_PATH)..."
-	$(ROBOT) query --input $< --format 'owl' --query $(SUBQ_QUERY_PATH) $@
+	$(ROBOT) query --input $< --tdb true --format 'owl' --query $(SUBQ_QUERY_PATH) $@
 
 $(UPDATE_QUERY_PATH): $(SUBQ_QUERY_RESULT_PATH)
 	#echo "Creating update query..."
