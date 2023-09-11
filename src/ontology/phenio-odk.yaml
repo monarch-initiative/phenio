@@ -148,7 +148,7 @@ components:
         - http://purl.obolibrary.org/obo/ZFA_
 
 
-robot_java_args: '-Xmx24G'
+robot_java_args: '-Xmx30G'
 
 robot_report:
   ensure_owl2dl_profile: FALSE
