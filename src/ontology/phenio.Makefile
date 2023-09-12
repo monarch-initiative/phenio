@@ -39,8 +39,9 @@ $(SUBQ_QUERY_RESULT_PATH): $(TMPDIR)/$(ONT)-full.owl
 $(UPDATE_QUERY_PATH): $(SUBQ_QUERY_RESULT_PATH)
 	#echo "Creating update query..."
 	awk -v RS= 'NR==1' $(SUBQ_QUERY_PATH) > $@
+	tail -n +3 $< | sed -e '/./!Q' -e 's/@prefix/PREFIX/g' $< >> $@
 	printf '\nINSERT DATA\n{' >> $@
-	tail -n +3 $< >> $@
+	tac $< | sed -e '/./!Q' | tac >> $@
 	printf '\n}' >> $@
 	grep subClassOf $@ | wc -l
 
@@ -86,7 +87,6 @@ $(ONT)-relation-graph.tsv: $(MINIMAL_PATH)
 			--mode TSV \
 			--obo-prefixes true \
 			--verbose true
-
 
 # base-plus. No externally imported axioms, but reasoning is performed.
 $(ONT)-base-plus.owl: $(EDIT_PREPROCESSED) $(OTHER_SRC) $(IMPORT_FILES)
