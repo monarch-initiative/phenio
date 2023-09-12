@@ -87,5 +87,18 @@ $(ONT)-relation-graph.tsv: $(MINIMAL_PATH)
 			--obo-prefixes true \
 			--verbose true
 
+
+# base-plus. No externally imported axioms, but reasoning is performed.
+$(ONT)-base-plus.owl: $(EDIT_PREPROCESSED) $(OTHER_SRC) $(IMPORT_FILES)
+	$(ROBOT_RELEASE_IMPORT_MODE) \
+	reason --reasoner ELK --equivalent-classes-allowed all --exclude-tautologies structural \
+	relax \
+	reduce -r ELK \
+	remove --base-iri $(URIBASE)/PHENIO --axioms external --preserve-structure false --trim false \
+	$(SHARED_ROBOT_COMMANDS) \
+	annotate --link-annotation http://purl.org/dc/elements/1.1/type http://purl.obolibrary.org/obo/IAO_8000001 \
+		--ontology-iri $(ONTBASE)/$@ $(ANNOTATE_ONTOLOGY_VERSION) \
+		--output $@.tmp.owl && mv $@.tmp.owl $@
+
 relation_graph: $(ONT)-relation-graph.tsv $(ONT).json
 	echo "Entailed graph construction completed."
