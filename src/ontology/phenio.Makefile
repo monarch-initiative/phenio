@@ -41,7 +41,7 @@ $(UPDATE_QUERY_PATH): $(SUBQ_QUERY_RESULT_PATH)
 	awk -v RS= 'NR==1' $(SUBQ_QUERY_PATH) > $@
 	tail -n +3 $<| sed -e '/./!Q' -e 's/@prefix/PREFIX/g' -e 's/.$//' >> $@
 	printf '\nINSERT DATA\n{' >> $@
-	tac $< | sed -e '/./!Q' | tac >> $@
+	sed -n '/rdfs:subClassOf/,$p' $< >> $@
 	printf '\n}' >> $@
 	grep subClassOf $@ | wc -l
 
