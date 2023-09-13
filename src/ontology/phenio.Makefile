@@ -13,6 +13,9 @@ SUBQ_QUERY_PATH=                $(SPARQLDIR)/subq_construct.sparql
 SUBQ_QUERY_RESULT_PATH=         $(TMPDIR)/$(ONT)-full_subqs_queryresult.tmp.owl
 UPDATE_QUERY_PATH=              $(TMPDIR)/subq_update.sparql
 EXPLAIN_OUT_PATH=               $(TMPDIR)/explain_unsat.md
+RELEASE_ASSETS_AFTER_RELEASE=$(foreach n,$(RELEASE_ASSETS), ./$(n))
+
+RELEASE_ASSETS = $(ONT).owl $(ONT).json $(ONT)-relation-graph.tar.gz
 
 # Base file assembly
 $(TMPDIR)/$(ONT)-full-unreasoned.owl: $(SRC) $(OTHER_SRC)
@@ -34,13 +37,14 @@ $(TMPDIR)/$(ONT)-full.owl: $(TMPDIR)/$(ONT)-full-unreasoned.owl
 
 $(SUBQ_QUERY_RESULT_PATH): $(TMPDIR)/$(ONT)-full.owl
 	#echo "Finding subq patterns based on $(SUBQ_QUERY_PATH)..."
-	$(ROBOT) query --input $< --format 'owl' --query $(SUBQ_QUERY_PATH) $@
+	$(ROBOT) query --input $< --tdb true --format 'owl' --query $(SUBQ_QUERY_PATH) $@
 
 $(UPDATE_QUERY_PATH): $(SUBQ_QUERY_RESULT_PATH)
 	#echo "Creating update query..."
 	awk -v RS= 'NR==1' $(SUBQ_QUERY_PATH) > $@
+	tail -n +3 $<| sed -e '/./!Q' -e 's/@prefix/PREFIX/g' -e 's/.$$//' >> $@
 	printf '\nINSERT DATA\n{' >> $@
-	tail -n +3 $< >> $@
+	sed -n '/rdfs:subClassOf/,$$p' $< >> $@
 	printf '\n}' >> $@
 	grep subClassOf $@ | wc -l
 
@@ -87,5 +91,26 @@ $(ONT)-relation-graph.tsv: $(MINIMAL_PATH)
 			--obo-prefixes true \
 			--verbose true
 
-relation_graph: $(ONT)-relation-graph.tsv
+# base-plus. No externally imported axioms, but reasoning is performed.
+$(ONT)-base-plus.owl: $(EDIT_PREPROCESSED) $(OTHER_SRC) $(IMPORT_FILES)
+	$(ROBOT_RELEASE_IMPORT_MODE) \
+	reason --reasoner ELK --equivalent-classes-allowed all --exclude-tautologies structural \
+	relax \
+	reduce -r ELK \
+	remove --base-iri $(URIBASE)/PHENIO --axioms external --preserve-structure false --trim false \
+	$(SHARED_ROBOT_COMMANDS) \
+	annotate --link-annotation http://purl.org/dc/elements/1.1/type http://purl.obolibrary.org/obo/IAO_8000001 \
+		--ontology-iri $(ONTBASE)/$@ $(ANNOTATE_ONTOLOGY_VERSION) \
+		--output $@.tmp.owl && mv $@.tmp.owl $@
+
+# Do release to Github
+# Compress relation-graph first
+public_release:
+	@test $(GHVERSION)
+	tar -czf $(ONT)-relation-graph.tar.gz $(ONT)-relation-graph.tsv
+	ls -alt $(RELEASE_ASSETS_AFTER_RELEASE)
+	gh auth login
+	gh release create $(GHVERSION) --title "$(VERSION)" --draft $(RELEASE_ASSETS_AFTER_RELEASE) --generate-notes
+
+relation_graph: $(ONT)-relation-graph.tsv $(ONT).json
 	echo "Entailed graph construction completed."

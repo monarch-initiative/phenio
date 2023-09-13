@@ -127,12 +127,13 @@ components:
       source: http://purl.obolibrary.org/obo/upheno/v2/upheno.owl
       make_base: TRUE
       base_iris:
-        - http://purl.obolibrary.org/obo/UPHENO_      
+        - http://purl.obolibrary.org/obo/UPHENO_
         - http://purl.obolibrary.org/obo/HP_
         - http://purl.obolibrary.org/obo/MP_
         - http://purl.obolibrary.org/obo/WBPhenotype_
         - http://purl.obolibrary.org/obo/XPO_
         - http://purl.obolibrary.org/obo/ZP_
+        - http://purl.obolibrary.org/obo/FYPO_
     - filename: wbbt.owl
       source: http://purl.obolibrary.org/obo/wbbt.owl
       make_base: TRUE
@@ -147,7 +148,7 @@ components:
         - http://purl.obolibrary.org/obo/ZFA_
 
 
-robot_java_args: '-Xmx24G'
+robot_java_args: '-Xmx30G'
 
 robot_report:
   ensure_owl2dl_profile: FALSE
