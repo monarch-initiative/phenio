@@ -13,6 +13,9 @@ SUBQ_QUERY_PATH=                $(SPARQLDIR)/subq_construct.sparql
 SUBQ_QUERY_RESULT_PATH=         $(TMPDIR)/$(ONT)-full_subqs_queryresult.tmp.owl
 UPDATE_QUERY_PATH=              $(TMPDIR)/subq_update.sparql
 EXPLAIN_OUT_PATH=               $(TMPDIR)/explain_unsat.md
+RELEASE_ASSETS_AFTER_RELEASE=$(foreach n,$(RELEASE_ASSETS), ./$(n))
+
+RELEASE_ASSETS = $(ONT).owl $(ONT).json $(ONT)-relation-graph.tar.gz
 
 # Base file assembly
 $(TMPDIR)/$(ONT)-full-unreasoned.owl: $(SRC) $(OTHER_SRC)
@@ -99,6 +102,15 @@ $(ONT)-base-plus.owl: $(EDIT_PREPROCESSED) $(OTHER_SRC) $(IMPORT_FILES)
 	annotate --link-annotation http://purl.org/dc/elements/1.1/type http://purl.obolibrary.org/obo/IAO_8000001 \
 		--ontology-iri $(ONTBASE)/$@ $(ANNOTATE_ONTOLOGY_VERSION) \
 		--output $@.tmp.owl && mv $@.tmp.owl $@
+
+# Do release to Github
+# Compress relation-graph first
+public_release:
+	@test $(GHVERSION)
+	tar -czf $(ONT)-relation-graph.tar.gz $(ONT)-relation-graph.tsv
+	ls -alt $(RELEASE_ASSETS_AFTER_RELEASE)
+	gh auth login
+	gh release create $(GHVERSION) --title "$(VERSION)" --draft $(RELEASE_ASSETS_AFTER_RELEASE) --generate-notes
 
 relation_graph: $(ONT)-relation-graph.tsv $(ONT).json
 	echo "Entailed graph construction completed."
