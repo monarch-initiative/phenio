@@ -37,7 +37,7 @@ Import(<http://purl.obolibrary.org/obo/phenio/imports/oba_import.owl>)
 Import(<http://purl.obolibrary.org/obo/phenio/imports/uberon-bridge-to-fbbt_import.owl>)
 Import(<http://purl.obolibrary.org/obo/phenio/imports/uberon-bridge-to-fma_import.owl>)
 Import(<http://purl.obolibrary.org/obo/phenio/imports/uberon-bridge-to-ma_import.owl>)
-Import(<http://purl.obolibrary.org/obo/phenio/imports/uberon-bridge-to-nifstd_import.owl>)
+#Import(<http://purl.obolibrary.org/obo/phenio/imports/uberon-bridge-to-nifstd_import.owl>)
 Import(<http://purl.obolibrary.org/obo/phenio/imports/uberon-bridge-to-wbbt_import.owl>)
 Import(<http://purl.obolibrary.org/obo/phenio/imports/uberon-bridge-to-zfa_import.owl>)
 

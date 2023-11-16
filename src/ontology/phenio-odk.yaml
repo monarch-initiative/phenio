@@ -45,8 +45,8 @@ import_group:
       mirror_from: http://purl.obolibrary.org/obo/uberon/bridge/uberon-bridge-to-fbbt.owl
     - id: uberon-bridge-to-fma
       mirror_from: http://purl.obolibrary.org/obo/uberon/bridge/uberon-bridge-to-fma.owl
-    - id: uberon-bridge-to-nifstd
-      mirror_from: http://purl.obolibrary.org/obo/uberon/bridge/uberon-bridge-to-nifstd.owl
+#    - id: uberon-bridge-to-nifstd
+#      mirror_from: http://purl.obolibrary.org/obo/uberon/bridge/uberon-bridge-to-nifstd.owl
     - id: cl-bridge-to-emapa
       mirror_from: http://purl.obolibrary.org/obo/uberon/bridge/cl-bridge-to-emapa.owl
     - id: cl-bridge-to-ma
