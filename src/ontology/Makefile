@@ -108,7 +108,7 @@ all_main: $(MAIN_FILES)
 # ----------------------------------------
 
 
-IMPORTS =  caro chebi eco ncbitaxon-taxslim oba pato stato uberon-bridge-to-emapa uberon-bridge-to-zfa uberon-bridge-to-ma uberon-bridge-to-wbbt uberon-bridge-to-fbbt uberon-bridge-to-fma uberon-bridge-to-nifstd cl-bridge-to-emapa cl-bridge-to-ma cl-bridge-to-fma cl-bridge-to-wbbt cl-bridge-to-fbbt cl-bridge-to-zfa
+IMPORTS =  chebi eco ncbitaxon-taxslim oba pato uberon-bridge-to-emapa uberon-bridge-to-zfa uberon-bridge-to-ma uberon-bridge-to-wbbt uberon-bridge-to-fbbt uberon-bridge-to-fma cl-bridge-to-emapa cl-bridge-to-ma cl-bridge-to-fma cl-bridge-to-wbbt cl-bridge-to-fbbt cl-bridge-to-zfa
 
 IMPORT_ROOTS =  $(IMPORTDIR)/merged_import
 IMPORT_OWL_FILES = $(foreach n,$(IMPORT_ROOTS), $(n).owl)
