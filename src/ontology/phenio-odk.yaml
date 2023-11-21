@@ -22,7 +22,7 @@ import_group:
   slme_individuals: exclude
   mirror_max_time_download: 400
   products:
-    - id: caro
+#    - id: caro
     - id: chebi
       is_large: TRUE
       use_gzipped: TRUE
@@ -32,7 +32,7 @@ import_group:
       mirror_from: http://purl.obolibrary.org/obo/ncbitaxon/subsets/taxslim.owl
     - id: oba
     - id: pato
-    - id: stato
+#    - id: stato
     - id: uberon-bridge-to-emapa
       mirror_from: http://purl.obolibrary.org/obo/uberon/bridge/uberon-bridge-to-emapa.owl
     - id: uberon-bridge-to-zfa
@@ -45,8 +45,8 @@ import_group:
       mirror_from: http://purl.obolibrary.org/obo/uberon/bridge/uberon-bridge-to-fbbt.owl
     - id: uberon-bridge-to-fma
       mirror_from: http://purl.obolibrary.org/obo/uberon/bridge/uberon-bridge-to-fma.owl
-    - id: uberon-bridge-to-nifstd
-      mirror_from: http://purl.obolibrary.org/obo/uberon/bridge/uberon-bridge-to-nifstd.owl
+#    - id: uberon-bridge-to-nifstd
+#      mirror_from: http://purl.obolibrary.org/obo/uberon/bridge/uberon-bridge-to-nifstd.owl
     - id: cl-bridge-to-emapa
       mirror_from: http://purl.obolibrary.org/obo/uberon/bridge/cl-bridge-to-emapa.owl
     - id: cl-bridge-to-ma
@@ -67,11 +67,11 @@ components:
 #      source: http://purl.obolibrary.org/obo/mondo/imports/equivalencies.owl
     - filename: bfo.owl
       source: http://purl.obolibrary.org/obo/bfo.owl
-    - filename: fao.owl
-      source: http://purl.obolibrary.org/obo/fao.owl
-      make_base: TRUE
-      base_iris:
-        - http://purl.obolibrary.org/obo/FAO_
+#    - filename: fao.owl
+#      source: http://purl.obolibrary.org/obo/fao.owl
+#      make_base: TRUE
+#      base_iris:
+#        - http://purl.obolibrary.org/obo/FAO_
     - filename: emapa.owl
       source: http://purl.obolibrary.org/obo/emapa.owl
       make_base: TRUE
