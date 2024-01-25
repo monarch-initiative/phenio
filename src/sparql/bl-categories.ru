@@ -16,6 +16,9 @@ WHERE {
     ?biolink_category (skos:exactMatch|skos:narrowMatch)+ ?entity_to_type .
     ?subject (rdf:type|rdfs:subClassOf|owl:equivalentClass|^owl:equivalentClass|owl:sameAs|^owl:sameAs)* ?entity_to_type .
     FILTER(STRSTARTS(str(?biolink_category),"https://w3id.org/biolink/vocab/"))
+    FILTER(!STRSTARTS(str(?subject),"https://datacommons.org/browser/"))
+    FILTER(!STRSTARTS(str(?subject),"http://semanticscience.org/resource/"))
+    FILTER(!STRSTARTS(str(?subject),"http://purl.obolibrary.org/obo/OMIT_"))
     FILTER(isIRI(?subject))
     FILTER(isIRI(?biolink_category))
     FILTER(isIRI(?entity_to_type))
