@@ -16,20 +16,17 @@ These are the current imports in PHENIO
 
 | Import | URL | Type |
 | ------ | --- | ---- |
-| caro | http://purl.obolibrary.org/obo/caro.owl | None |
 | chebi | http://purl.obolibrary.org/obo/chebi.owl | None |
 | eco | http://purl.obolibrary.org/obo/eco.owl | None |
 | ncbitaxon-taxslim | http://purl.obolibrary.org/obo/ncbitaxon/subsets/taxslim.owl | None |
 | oba | http://purl.obolibrary.org/obo/oba.owl | None |
 | pato | http://purl.obolibrary.org/obo/pato.owl | None |
-| stato | http://purl.obolibrary.org/obo/stato.owl | None |
 | uberon-bridge-to-emapa | http://purl.obolibrary.org/obo/uberon/bridge/uberon-bridge-to-emapa.owl | None |
 | uberon-bridge-to-zfa | http://purl.obolibrary.org/obo/uberon/bridge/uberon-bridge-to-zfa.owl | None |
 | uberon-bridge-to-ma | http://purl.obolibrary.org/obo/uberon/bridge/uberon-bridge-to-ma.owl | None |
 | uberon-bridge-to-wbbt | http://purl.obolibrary.org/obo/uberon/bridge/uberon-bridge-to-wbbt.owl | None |
 | uberon-bridge-to-fbbt | http://purl.obolibrary.org/obo/uberon/bridge/uberon-bridge-to-fbbt.owl | None |
 | uberon-bridge-to-fma | http://purl.obolibrary.org/obo/uberon/bridge/uberon-bridge-to-fma.owl | None |
-| uberon-bridge-to-nifstd | http://purl.obolibrary.org/obo/uberon/bridge/uberon-bridge-to-nifstd.owl | None |
 | cl-bridge-to-emapa | http://purl.obolibrary.org/obo/uberon/bridge/cl-bridge-to-emapa.owl | None |
 | cl-bridge-to-ma | http://purl.obolibrary.org/obo/uberon/bridge/cl-bridge-to-ma.owl | None |
 | cl-bridge-to-fma | http://purl.obolibrary.org/obo/uberon/bridge/cl-bridge-to-fma.owl | None |
@@ -49,7 +46,6 @@ These are the components in PHENIO
 | Filename | URL |
 | -------- | --- |
 | bfo.owl | http://purl.obolibrary.org/obo/bfo.owl |
-| fao.owl | http://purl.obolibrary.org/obo/fao.owl |
 | emapa.owl | http://purl.obolibrary.org/obo/emapa.owl |
 | fbbt.owl | http://purl.obolibrary.org/obo/fbbt.owl |
 | go.owl | http://purl.obolibrary.org/obo/go.owl |
