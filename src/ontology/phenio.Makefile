@@ -15,7 +15,7 @@ UPDATE_QUERY_PATH=              $(TMPDIR)/subq_update.sparql
 EXPLAIN_OUT_PATH=               $(TMPDIR)/explain_unsat.md
 RELEASE_ASSETS_AFTER_RELEASE=$(foreach n,$(RELEASE_ASSETS), ./$(n))
 
-RELEASE_ASSETS = $(ONT).owl $(ONT).json $(ONT)-relation-graph.tar.gz
+RELEASE_ASSETS = $(ONT).owl $(ONT).json $(ONT)-relation-graph.tar.gz $(ONT)-test.owl
 
 # Base file assembly
 $(TMPDIR)/$(ONT)-full-unreasoned.owl: $(SRC) $(OTHER_SRC)
@@ -103,6 +103,12 @@ $(ONT)-base-plus.owl: $(EDIT_PREPROCESSED) $(OTHER_SRC) $(IMPORT_FILES)
 		--ontology-iri $(ONTBASE)/$@ $(ANNOTATE_ONTOLOGY_VERSION) \
 		--output $@.tmp.owl && mv $@.tmp.owl $@
 
+# test artifact. A small subset of the ontology for testing purposes
+# Note this does include categories.
+$(ONT)-test.owl: $(ONT).owl
+	echo "Creating test artifact..."
+	$(ROBOT) extract --method BOT --input $< --term-file test_module.txt --output $@
+
 # Do release to Github
 # Compress relation-graph first
 public_release:
@@ -112,5 +118,10 @@ public_release:
 	gh auth login
 	gh release create $(GHVERSION) --title "$(VERSION)" --draft $(RELEASE_ASSETS_AFTER_RELEASE) --generate-notes
 
+# Produce the relation graph (i.e., the fully materialized set of relations) in KGX format and json
+# Note that this will also produce the main ontology file (OWL)
 relation_graph: $(ONT)-relation-graph.tsv $(ONT).json
 	echo "Entailed graph construction completed."
+
+all_release: $(RELEASE_ASSETS)
+	echo "All release steps completed."
