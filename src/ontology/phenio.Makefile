@@ -107,7 +107,7 @@ $(ONT)-base-plus.owl: $(EDIT_PREPROCESSED) $(OTHER_SRC) $(IMPORT_FILES)
 # Note this does include categories.
 $(ONT)-test.owl: $(ONT).owl
 	echo "Creating test artifact..."
-	$(ROBOT) extract --method STAR --input $< --term-file test_module.txt --output $@
+	$(ROBOT) extract --method MIREOT --input $< --branch-from-term "UPHENO:0084945" --output $@
 
 # Do release to Github
 # Compress relation-graph first
