@@ -109,11 +109,13 @@ $(ONT)-test.owl: $(ONT).owl
 	echo "Creating test artifact..."
 	$(ROBOT) extract --method MIREOT --input $< --branch-from-term "UPHENO:0084945" --output $@
 
+# Compress relation-graph
+$(ONT)-relation-graph.tar.gz: $(ONT)-relation-graph.tsv
+	tar -czf $@ $<
+
 # Do release to Github
-# Compress relation-graph first
 public_release:
 	@test $(GHVERSION)
-	tar -czf $(ONT)-relation-graph.tar.gz $(ONT)-relation-graph.tsv
 	ls -alt $(RELEASE_ASSETS_AFTER_RELEASE)
 	gh auth login
 	gh release create $(GHVERSION) --title "$(VERSION)" --draft $(RELEASE_ASSETS_AFTER_RELEASE) --generate-notes
