@@ -46,6 +46,7 @@ These are the components in PHENIO
 | Filename | URL |
 | -------- | --- |
 | bfo.owl | http://purl.obolibrary.org/obo/bfo.owl |
+| ddpheno.owl | http://purl.obolibrary.org/obo/ddpheno.owl |
 | emapa.owl | http://purl.obolibrary.org/obo/emapa.owl |
 | fbbt.owl | http://purl.obolibrary.org/obo/fbbt.owl |
 | go.owl | http://purl.obolibrary.org/obo/go.owl |
