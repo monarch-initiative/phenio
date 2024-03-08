@@ -12,6 +12,7 @@ Prefix(dcterms:=<http://purl.org/dc/terms/>)
 Ontology(<http://purl.obolibrary.org/obo/phenio.owl>
 
 Import(<http://purl.obolibrary.org/obo/phenio/components/bfo.owl>)
+Import(<http://purl.obolibrary.org/obo/phenio/components/ddpheno.owl>)
 Import(<http://purl.obolibrary.org/obo/phenio/components/emapa.owl>)
 #Import(<http://purl.obolibrary.org/obo/phenio/components/fao.owl>)
 Import(<http://purl.obolibrary.org/obo/phenio/components/fbbt.owl>)
