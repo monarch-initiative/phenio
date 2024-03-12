@@ -61,8 +61,6 @@
 
   
   <uri name="http://purl.obolibrary.org/obo/phenio/components/bfo.owl" uri="components/bfo.owl"/>
-
-  <uri name="http://purl.obolibrary.org/obo/phenio/components/ddpheno.owl" uri="components/ddpheno.owl"/>
   
   <uri name="http://purl.obolibrary.org/obo/phenio/components/emapa.owl" uri="components/emapa.owl"/>
 

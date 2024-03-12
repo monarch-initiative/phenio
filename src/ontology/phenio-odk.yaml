@@ -72,12 +72,6 @@ components:
 #      make_base: TRUE
 #      base_iris:
 #        - http://purl.obolibrary.org/obo/FAO_
-    - filename: ddpheno.owl
-      source: http://purl.obolibrary.org/obo/ddpheno.owl
-      make_base: TRUE
-      base_iris:
-        - http://purl.obolibrary.org/obo/ddpheno#
-        - http://purl.obolibrary.org/obo/DDPHENO_
     - filename: emapa.owl
       source: http://purl.obolibrary.org/obo/emapa.owl
       make_base: TRUE
@@ -140,6 +134,8 @@ components:
         - http://purl.obolibrary.org/obo/XPO_
         - http://purl.obolibrary.org/obo/ZP_
         - http://purl.obolibrary.org/obo/FYPO_
+        - http://purl.obolibrary.org/obo/DDPHENO_
+        - http://purl.obolibrary.org/obo/DDANAT_
     - filename: wbbt.owl
       source: http://purl.obolibrary.org/obo/wbbt.owl
       make_base: TRUE
