@@ -163,3 +163,9 @@ robot_report:
 
 documentation:
   documentation_system: mkdocs
+
+robot_plugins:
+  plugins:
+    - name: upheno
+      mirror_from: https://github.com/monarch-initiative/monarch-robot-plugins/releases/download/v0.0.1/monarch-robot-extensions-0.0.1.jar
+
