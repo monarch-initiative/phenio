@@ -30,6 +30,11 @@ $(EXPLAIN_OUT_PATH): $(TMPDIR)/$(ONT)-full-unreasoned.owl
 $(BLMODEL):
 	wget $(BLMODEL_URL) -O $@
 
+### Download ROBOT plugin for upheno
+$(ROBOT_PLUGINS_DIRECTORY)/upheno.jar:
+	mkdir -p $(ROBOT_PLUGINS_DIRECTORY)
+	curl -L -o $@ https://github.com/monarch-initiative/monarch-robot-plugins/releases/download/v0.0.1/monarch-robot-extensions-0.0.1.jar
+
 $(ONT)-full.owl: $(TMPDIR)/$(ONT)-full-unreasoned.owl | all_robot_plugins
 	$(ROBOT) merge --input $< \
 		upheno:extract-upheno-relations --root-phenotype UPHENO:0001001 --relation UPHENO:0000003 --relation UPHENO:0000001 \
@@ -69,10 +74,6 @@ $(ONT)-relation-graph.tsv: $(MINIMAL_PATH)
 			--mode TSV \
 			--obo-prefixes true \
 			--verbose true
-
-$(ROBOT_PLUGINS_DIRECTORY)/upheno.jar:
-	mkdir -p $(ROBOT_PLUGINS_DIRECTORY)
-	curl -L -o $@ https://github.com/monarch-initiative/monarch-robot-plugins/releases/download/v0.0.1/monarch-robot-extensions-0.0.1.jar
 
 # test artifact. A small subset of the ontology for testing purposes
 # Note this does include categories.
