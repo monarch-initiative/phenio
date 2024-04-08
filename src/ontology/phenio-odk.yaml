@@ -164,6 +164,9 @@ robot_report:
 documentation:
   documentation_system: mkdocs
 
+workflows:
+  - docs
+
 robot_plugins:
   plugins:
     - name: upheno
