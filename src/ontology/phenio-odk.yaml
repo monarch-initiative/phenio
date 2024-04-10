@@ -170,5 +170,5 @@ workflows:
 robot_plugins:
   plugins:
     - name: upheno
-      mirror_from: https://github.com/monarch-initiative/monarch-robot-plugins/releases/download/v0.0.1/monarch-robot-extensions-0.0.1.jar
+      mirror_from: https://github.com/monarch-initiative/monarch-robot-plugins/releases/latest/download/monarch-robot-extensions.jar
 

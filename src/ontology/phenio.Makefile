@@ -41,7 +41,7 @@ $(ONT)-full.owl: $(TMPDIR)/$(ONT)-full-unreasoned.owl | all_robot_plugins
 		merge --input $(BLMODEL) \
 		query --update $(BLQUERY) \
 		unmerge --input $(BLMODEL) \
-		upheno:extract-upheno-relations --term UPHENO:0001001 --relation UPHENO:0000003 --relation UPHENO:0000001 \
+		upheno:extract-upheno-relations --root-phenotype UPHENO:0001001 --relation UPHENO:0000003 --relation UPHENO:0000001 \
 		annotate --ontology-iri $(URIBASE)/$@ $(ANNOTATE_ONTOLOGY_VERSION) \
 		convert -o $@.tmp.owl && mv $@.tmp.owl $@
 
