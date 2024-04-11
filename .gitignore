@@ -46,3 +46,4 @@ src/patterns/pattern_owl_seed.txt
 src/patterns/all_pattern_terms.txt
 
 src/ontology/components/*.owl
+src/ontology/debug.log

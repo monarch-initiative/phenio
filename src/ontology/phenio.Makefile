@@ -26,43 +26,27 @@ $(TMPDIR)/$(ONT)-full-unreasoned.owl: $(SRC) $(OTHER_SRC)
 $(EXPLAIN_OUT_PATH): $(TMPDIR)/$(ONT)-full-unreasoned.owl
 	$(ROBOT) explain -i $< -M unsatisfiability --unsatisfiable random:10 --explanation $@
 
-$(TMPDIR)/$(ONT)-full.owl: $(TMPDIR)/$(ONT)-full-unreasoned.owl
-	#$(ROBOT) reason --input $< \
-	# 	--reasoner ELK --equivalent-classes-allowed all --exclude-tautologies structural \
-	# 	relax \
-	# 	reduce -r ELK \
-	# 	$(SHARED_ROBOT_COMMANDS) annotate --ontology-iri $(ONTBASE)/$@ $(ANNOTATE_ONTOLOGY_VERSION) --output $@.tmp.owl && mv $@.tmp.owl $@
-	$(ROBOT) relax --input $< \
- 	    $(SHARED_ROBOT_COMMANDS) annotate --ontology-iri $(ONTBASE)/$@ $(ANNOTATE_ONTOLOGY_VERSION) --output $@.tmp.owl && mv $@.tmp.owl $@
-
-$(SUBQ_QUERY_RESULT_PATH): $(TMPDIR)/$(ONT)-full.owl
-	#echo "Finding subq patterns based on $(SUBQ_QUERY_PATH)..."
-	$(ROBOT) query --input $< --tdb true --format 'owl' --query $(SUBQ_QUERY_PATH) $@
-
-$(UPDATE_QUERY_PATH): $(SUBQ_QUERY_RESULT_PATH)
-	#echo "Creating update query..."
-	awk -v RS= 'NR==1' $(SUBQ_QUERY_PATH) > $@
-	tail -n +3 $<| sed -e '/./!Q' -e 's/@prefix/PREFIX/g' -e 's/.$$//' >> $@
-	printf '\nINSERT DATA\n{' >> $@
-	sed -n '/rdfs:subClassOf/,$$p' $< >> $@
-	printf '\n}' >> $@
-	grep subClassOf $@ | wc -l
-
-$(ONT)-full.owl: $(TMPDIR)/$(ONT)-full.owl $(UPDATE_QUERY_PATH)
-	#echo "Running update query for subq patterns..."
-	$(ROBOT) query --input $< --format 'owl' --update $(UPDATE_QUERY_PATH) --temporary-file 'true' annotate --ontology-iri $(ONTBASE)/$@ $(ANNOTATE_ONTOLOGY_VERSION) --output $@
-	#echo "Completed update with subq patterns."
-  
 ### Merge Biolink Model categories
 $(BLMODEL):
 	wget $(BLMODEL_URL) -O $@
 
-$(ONT).owl: $(ONT)-full.owl $(BLMODEL)
-	$(ROBOT) merge --input $< --input $(BLMODEL) \
-			 query --update $(BLQUERY) \
-			 unmerge --input $(BLMODEL) \
-			 annotate --ontology-iri $(URIBASE)/$@ $(ANNOTATE_ONTOLOGY_VERSION) \
-			 convert -o $@.tmp.owl && mv $@.tmp.owl $@
+### Download ROBOT plugin for upheno
+$(ROBOT_PLUGINS_DIRECTORY)/upheno.jar:
+	mkdir -p $(ROBOT_PLUGINS_DIRECTORY)
+	curl -L -o $@ https://github.com/monarch-initiative/monarch-robot-plugins/releases/download/v0.0.1/monarch-robot-extensions-0.0.1.jar
+
+$(ONT)-full.owl: $(TMPDIR)/$(ONT)-full-unreasoned.owl | all_robot_plugins
+	$(ROBOT) merge --input $< \
+		relax \
+		merge --input $(BLMODEL) \
+		query --update $(BLQUERY) \
+		unmerge --input $(BLMODEL) \
+		upheno:extract-upheno-relations --root-phenotype UPHENO:0001001 --relation UPHENO:0000003 --relation UPHENO:0000001 \
+		annotate --ontology-iri $(URIBASE)/$@ $(ANNOTATE_ONTOLOGY_VERSION) \
+		convert -o $@.tmp.owl && mv $@.tmp.owl $@
+
+tmp/diff.txt: $(ONT).owl $(ONT)-old.owl
+	$(ROBOT) diff --left $< --right $(word 2,$^) --format txt -o $@
 
 ### Get full entailment with relation-graph
 ### First, make a minimal version
@@ -90,18 +74,6 @@ $(ONT)-relation-graph.tsv: $(MINIMAL_PATH)
 			--mode TSV \
 			--obo-prefixes true \
 			--verbose true
-
-# base-plus. No externally imported axioms, but reasoning is performed.
-$(ONT)-base-plus.owl: $(EDIT_PREPROCESSED) $(OTHER_SRC) $(IMPORT_FILES)
-	$(ROBOT_RELEASE_IMPORT_MODE) \
-	reason --reasoner ELK --equivalent-classes-allowed all --exclude-tautologies structural \
-	relax \
-	reduce -r ELK \
-	remove --base-iri $(URIBASE)/PHENIO --axioms external --preserve-structure false --trim false \
-	$(SHARED_ROBOT_COMMANDS) \
-	annotate --link-annotation http://purl.org/dc/elements/1.1/type http://purl.obolibrary.org/obo/IAO_8000001 \
-		--ontology-iri $(ONTBASE)/$@ $(ANNOTATE_ONTOLOGY_VERSION) \
-		--output $@.tmp.owl && mv $@.tmp.owl $@
 
 # test artifact. A small subset of the ontology for testing purposes
 # Note this does include categories.
