@@ -30,11 +30,6 @@ $(EXPLAIN_OUT_PATH): $(TMPDIR)/$(ONT)-full-unreasoned.owl
 $(BLMODEL):
 	wget $(BLMODEL_URL) -O $@
 
-### Download ROBOT plugin for upheno
-$(ROBOT_PLUGINS_DIRECTORY)/upheno.jar:
-	mkdir -p $(ROBOT_PLUGINS_DIRECTORY)
-	curl -L -o $@ https://github.com/monarch-initiative/monarch-robot-plugins/releases/download/v0.0.1/monarch-robot-extensions-0.0.1.jar
-
 $(ONT)-full.owl: $(TMPDIR)/$(ONT)-full-unreasoned.owl | all_robot_plugins
 	$(ROBOT) merge --input $< \
 		relax \
