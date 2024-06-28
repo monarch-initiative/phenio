@@ -22,7 +22,10 @@ repo_url: https://github.com/monarch-initiative/phenio/
 
 nav:
   - Getting started: index.md
-  - Cite: cite.md
+  - Building from scratch: build.md
+  - Composition: composition.md
+  # - Cite: cite.md
+  - Contributing: contributing.md
   - How-to guides:
       - Standard ODK workflows:
           - Overview: odk-workflows/index.md
@@ -34,6 +37,4 @@ nav:
           - Components management: odk-workflows/components.md
           - Managing the documentation: odk-workflows/ManageDocumentation.md
           - Continuous Integration: odk-workflows/ContinuousIntegration.md
-          - Your ODK Repository Overview: odk-workflows/RepositoryFileStructure.md 
-      - Contributing: contributing.md
-
+          - Your ODK Repository Overview: odk-workflows/RepositoryFileStructure.md
