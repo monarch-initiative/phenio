@@ -5,6 +5,7 @@ theme:
     - content.tabs.link
 plugins:
   - search
+  - mermaid2
 markdown_extensions:
   - pymdownx.highlight:
   - pymdownx.inlinehilite
