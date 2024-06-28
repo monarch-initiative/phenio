@@ -1,5 +1,23 @@
 # Building PHENIO from Scratch
 
+```mermaid
+graph LR;
+    subgraph Setup
+
+        B[Install Docker] --> C[Get ODK Docker Image]
+        C --> D[Clone PHENIO Repo]
+    end
+    subgraph Build
+        D --> E[Navigate to ontology directory]
+        E --> F[Update Imports]
+        F --> G[Build PHENIO]
+    end
+    subgraph Release
+        G --> H[Release new PHENIO build]
+        H --> I[Finalize release on web]
+    end
+```
+
 Follow these steps to build PHENIO.
 
 1. Install Docker Engine on your system. Instructions for this step will vary by operating system, but can be found here: <https://docs.docker.com/engine/install/>
