@@ -23,6 +23,7 @@ repo_url: https://github.com/monarch-initiative/phenio/
 nav:
   - Getting started: index.md
   - Building from scratch: build.md
+  - Composition: composition.md
   - Cite: cite.md
   - How-to guides:
       - Standard ODK workflows:
