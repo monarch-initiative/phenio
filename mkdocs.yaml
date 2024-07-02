@@ -5,6 +5,7 @@ theme:
     - content.tabs.link
 plugins:
   - search
+  - mermaid2
 markdown_extensions:
   - pymdownx.highlight:
   - pymdownx.inlinehilite
@@ -26,6 +27,7 @@ nav:
   - Composition: composition.md
   # - Cite: cite.md
   - Contributing: contributing.md
+  - PHENIO vs uPHENO: phenio_vs_upheno.md
   - How-to guides:
       - Standard ODK workflows:
           - Overview: odk-workflows/index.md
