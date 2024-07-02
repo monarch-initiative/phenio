@@ -8,25 +8,25 @@
       
       
       
-        <link rel="canonical" href="https://monarch-initiative.github.io/phenio/odk-workflows/SettingUpDockerForODK/">
+        <link rel="canonical" href="https://monarch-initiative.github.io/phenio/phenio_vs_upheno/">
       
       
-        <link rel="prev" href="../RepoManagement/">
+        <link rel="prev" href="../contributing/">
       
       
-        <link rel="next" href="../UpdateImports/">
+        <link rel="next" href="../odk-workflows/">
       
       
-      <link rel="icon" href="../../assets/images/favicon.png">
+      <link rel="icon" href="../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.28">
     
     
       
-        <title>Setting up Docker for ODK - Phenomics Integrated Ontology</title>
+        <title>PHENIO vs uPHENO - Phenomics Integrated Ontology</title>
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.6543a935.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.6543a935.min.css">
       
       
 
@@ -45,7 +45,7 @@
       
     
     
-    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -64,7 +64,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#setting-up-your-docker-environment-for-odk-use" class="md-skip">
+        <a href="#phenio-vs-upheno" class="md-skip">
           Skip to content
         </a>
       
@@ -80,7 +80,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="../.." title="Phenomics Integrated Ontology" class="md-header__button md-logo" aria-label="Phenomics Integrated Ontology" data-md-component="logo">
+    <a href=".." title="Phenomics Integrated Ontology" class="md-header__button md-logo" aria-label="Phenomics Integrated Ontology" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
@@ -100,7 +100,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Setting up Docker for ODK
+              PHENIO vs uPHENO
             
           </span>
         </div>
@@ -187,7 +187,7 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../.." title="Phenomics Integrated Ontology" class="md-nav__button md-logo" aria-label="Phenomics Integrated Ontology" data-md-component="logo">
+    <a href=".." title="Phenomics Integrated Ontology" class="md-nav__button md-logo" aria-label="Phenomics Integrated Ontology" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
@@ -217,7 +217,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../.." class="md-nav__link">
+      <a href=".." class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -237,7 +237,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../build/" class="md-nav__link">
+      <a href="../build/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -257,7 +257,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../composition/" class="md-nav__link">
+      <a href="../composition/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -277,7 +277,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../contributing/" class="md-nav__link">
+      <a href="../contributing/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -294,10 +294,30 @@
       
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../../phenio_vs_upheno/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    PHENIO vs uPHENO
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   <span class="md-ellipsis">
@@ -306,6 +326,35 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#what-is-the-difference-between-phenio-and-upheno" class="md-nav__link">
+    <span class="md-ellipsis">
+      What is the difference between PHENIO and uPHENO?
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -314,19 +363,17 @@
       
   
   
-    
   
   
-  
     
     
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
         
           
           <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
@@ -340,7 +387,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_6">
             <span class="md-nav__icon md-icon"></span>
             How-to guides
@@ -351,19 +398,17 @@
                 
   
   
-    
   
   
-  
     
     
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_1" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_1" >
         
           
           <label class="md-nav__link" for="__nav_6_1" id="__nav_6_1_label" tabindex="0">
@@ -377,7 +422,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_1_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_1_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_6_1">
             <span class="md-nav__icon md-icon"></span>
             Standard ODK workflows
@@ -391,7 +436,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../" class="md-nav__link">
+      <a href="../odk-workflows/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -412,7 +457,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../EditorsWorkflow/" class="md-nav__link">
+      <a href="../odk-workflows/EditorsWorkflow/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -433,7 +478,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../ReleaseWorkflow/" class="md-nav__link">
+      <a href="../odk-workflows/ReleaseWorkflow/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -454,7 +499,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../RepoManagement/" class="md-nav__link">
+      <a href="../odk-workflows/RepoManagement/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -472,19 +517,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../odk-workflows/SettingUpDockerForODK/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -493,7 +529,6 @@
   
 
       </a>
-      
     </li>
   
 
@@ -506,7 +541,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../UpdateImports/" class="md-nav__link">
+      <a href="../odk-workflows/UpdateImports/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -527,7 +562,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../components/" class="md-nav__link">
+      <a href="../odk-workflows/components/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -548,7 +583,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../ManageDocumentation/" class="md-nav__link">
+      <a href="../odk-workflows/ManageDocumentation/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -569,7 +604,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../ContinuousIntegration/" class="md-nav__link">
+      <a href="../odk-workflows/ContinuousIntegration/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -590,7 +625,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../RepositoryFileStructure/" class="md-nav__link">
+      <a href="../odk-workflows/RepositoryFileStructure/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -639,6 +674,23 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#what-is-the-difference-between-phenio-and-upheno" class="md-nav__link">
+    <span class="md-ellipsis">
+      What is the difference between PHENIO and uPHENO?
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -655,16 +707,10 @@
   
 
 
-<h1 id="setting-up-your-docker-environment-for-odk-use">Setting up your Docker environment for ODK use</h1>
-<p>One of the most frequent problems with running the ODK for the first time is failure because of lack of memory. This can look like a Java OutOfMemory exception, 
-but more often than not it will appear as something like an <code>Error 137</code>. There are two places you need to consider to set your memory:</p>
-<ol>
-<li>Your src/ontology/run.sh (or run.bat) file. You can set the memory in there by adding 
-<code>robot_java_args: '-Xmx8G'</code> to your src/ontology/phenio-odk.yaml file, see for example <a href="https://github.com/INCATools/ontology-development-kit/blob/0e0aef2b26b8db05f5e78b7c38f807d04312d06a/configs/uberon-odk.yaml#L36">here</a>.</li>
-<li>Set your docker memory. By default, it should be about 10-20% more than your <code>robot_java_args</code> variable. You can manage your memory settings
-by right-clicking on the docker whale in your system bar--&gt;Preferences--&gt;Resources--&gt;Advanced, see picture below.</li>
-</ol>
-<p><img alt="dockermemory" src="https://github.com/INCATools/ontology-development-kit/raw/master/docs/img/docker_memory.png" /></p>
+<h1 id="phenio-vs-upheno">PHENIO vs uPHENO</h1>
+<h2 id="what-is-the-difference-between-phenio-and-upheno">What is the difference between PHENIO and uPHENO?</h2>
+<p>PHENIO is an application ontology: it is a collection of other ontologies. These ontologies are designed to work together to make it easier to compare knowledge concerning phenotypes across species and genetic backgrounds.</p>
+<p>uPHENO is part of PHENIO, but it is also its own ontology for comparing phenotypes. More detail here: <a href="https://obophenotype.github.io/upheno/about/">https://obophenotype.github.io/upheno/about/</a></p>
 
 
 
@@ -713,10 +759,10 @@ by right-clicking on the docker whale in your system bar--&gt;Preferences--&gt;R
     </div>
     
     
-    <script id="__config" type="application/json">{"base": "../..", "features": ["content.tabs.link"], "search": "../../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "..", "features": ["content.tabs.link"], "search": "../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
-      <script src="../../assets/javascripts/bundle.fe8b6f2b.min.js"></script>
+      <script src="../assets/javascripts/bundle.fe8b6f2b.min.js"></script>
       
     
   </body>
