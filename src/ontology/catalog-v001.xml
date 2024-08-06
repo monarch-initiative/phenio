@@ -27,9 +27,6 @@
   <uri name="http://purl.obolibrary.org/obo/phenio/imports/uberon-bridge-to-zfa_import.owl" uri="imports/uberon-bridge-to-zfa_import.owl"/>
   <uri name="http://purl.obolibrary.org/obo/phenio/imports/uberon-bridge-to-zfa_import.obo" uri="imports/uberon-bridge-to-zfa_import.obo"/>
   
-  <uri name="http://purl.obolibrary.org/obo/phenio/imports/uberon-bridge-to-ma_import.owl" uri="imports/uberon-bridge-to-ma_import.owl"/>
-  <uri name="http://purl.obolibrary.org/obo/phenio/imports/uberon-bridge-to-ma_import.obo" uri="imports/uberon-bridge-to-ma_import.obo"/>
-  
   <uri name="http://purl.obolibrary.org/obo/phenio/imports/uberon-bridge-to-wbbt_import.owl" uri="imports/uberon-bridge-to-wbbt_import.owl"/>
   <uri name="http://purl.obolibrary.org/obo/phenio/imports/uberon-bridge-to-wbbt_import.obo" uri="imports/uberon-bridge-to-wbbt_import.obo"/>
   
@@ -41,9 +38,6 @@
   
 #  <uri name="http://purl.obolibrary.org/obo/phenio/imports/uberon-bridge-to-nifstd_import.owl" uri="imports/uberon-bridge-to-nifstd_import.owl"/>
 #  <uri name="http://purl.obolibrary.org/obo/phenio/imports/uberon-bridge-to-nifstd_import.obo" uri="imports/uberon-bridge-to-nifstd_import.obo"/>
-  
-  <uri name="http://purl.obolibrary.org/obo/phenio/imports/cl-bridge-to-ma_import.owl" uri="imports/cl-bridge-to-ma_import.owl"/>
-  <uri name="http://purl.obolibrary.org/obo/phenio/imports/cl-bridge-to-ma_import.obo" uri="imports/cl-bridge-to-ma_import.obo"/>
   
   <uri name="http://purl.obolibrary.org/obo/phenio/imports/cl-bridge-to-fma_import.owl" uri="imports/cl-bridge-to-fma_import.owl"/>
   <uri name="http://purl.obolibrary.org/obo/phenio/imports/cl-bridge-to-fma_import.obo" uri="imports/cl-bridge-to-fma_import.obo"/>
@@ -62,8 +56,6 @@
   
   <uri name="http://purl.obolibrary.org/obo/phenio/components/bfo.owl" uri="components/bfo.owl"/>
   
-  <uri name="http://purl.obolibrary.org/obo/phenio/components/emapa.owl" uri="components/emapa.owl"/>
-
 #  <uri name="http://purl.obolibrary.org/obo/phenio/components/fao.owl" uri="components/fao.owl"/>
   
   <uri name="http://purl.obolibrary.org/obo/phenio/components/fbbt.owl" uri="components/fbbt.owl"/>
