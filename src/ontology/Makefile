@@ -10,7 +10,7 @@
 # More information: https://github.com/INCATools/ontology-development-kit/
 
 # Fingerprint of the configuration file when this Makefile was last generated
-CONFIG_HASH=                a7400499770835ac42c0f2ec0b77aed6f6ae09ee464f7aa073ecb9c1e92d2c8d
+CONFIG_HASH=                f62edbb77b824d9d98a8a8d1bf6f269d7845bea52b68c8563b61f981b9734253
 
 
 # ----------------------------------------
@@ -53,7 +53,7 @@ OBODATE ?=                  $(shell date +'%d:%m:%Y %H:%M')
 VERSION=                    $(TODAY)
 ANNOTATE_ONTOLOGY_VERSION = annotate -V $(ONTBASE)/releases/$(VERSION)/$@ --annotation owl:versionInfo $(VERSION)
 ANNOTATE_CONVERT_FILE =     annotate --ontology-iri $(ONTBASE)/$@ $(ANNOTATE_ONTOLOGY_VERSION) convert -f ofn --output $@.tmp.owl && mv $@.tmp.owl $@
-OTHER_SRC =                 $(COMPONENTSDIR)/bfo.owl $(COMPONENTSDIR)/fbbt.owl $(COMPONENTSDIR)/go.owl $(COMPONENTSDIR)/hsapdv.owl $(COMPONENTSDIR)/mondo.owl $(COMPONENTSDIR)/mpath.owl $(COMPONENTSDIR)/nbo.owl $(COMPONENTSDIR)/ro.owl $(COMPONENTSDIR)/uberon.owl $(COMPONENTSDIR)/upheno.owl $(COMPONENTSDIR)/wbbt.owl $(COMPONENTSDIR)/zfa.owl 
+OTHER_SRC =                 $(COMPONENTSDIR)/bfo.owl $(COMPONENTSDIR)/emapa.owl $(COMPONENTSDIR)/fbbt.owl $(COMPONENTSDIR)/go.owl $(COMPONENTSDIR)/hsapdv.owl $(COMPONENTSDIR)/mondo.owl $(COMPONENTSDIR)/mpath.owl $(COMPONENTSDIR)/nbo.owl $(COMPONENTSDIR)/ro.owl $(COMPONENTSDIR)/uberon.owl $(COMPONENTSDIR)/upheno.owl $(COMPONENTSDIR)/wbbt.owl $(COMPONENTSDIR)/zfa.owl 
 ONTOLOGYTERMS =             $(TMPDIR)/ontologyterms.txt
 EDIT_PREPROCESSED =         $(TMPDIR)/$(ONT)-preprocess.owl
 
@@ -162,7 +162,7 @@ all_main: $(MAIN_FILES)
 # ----------------------------------------
 
 
-IMPORTS =  chebi eco ncbitaxon-taxslim oba pato uberon-bridge-to-zfa uberon-bridge-to-wbbt uberon-bridge-to-fbbt uberon-bridge-to-fma cl-bridge-to-fma cl-bridge-to-wbbt cl-bridge-to-fbbt cl-bridge-to-zfa
+IMPORTS =  chebi eco ncbitaxon-taxslim oba pato uberon-bridge-to-emapa uberon-bridge-to-zfa uberon-bridge-to-ma uberon-bridge-to-wbbt uberon-bridge-to-fbbt uberon-bridge-to-fma cl-bridge-to-emapa cl-bridge-to-ma cl-bridge-to-fma cl-bridge-to-wbbt cl-bridge-to-fbbt cl-bridge-to-zfa
 
 IMPORT_ROOTS =  $(IMPORTDIR)/merged_import
 IMPORT_OWL_FILES = $(foreach n,$(IMPORT_ROOTS), $(n).owl)
@@ -457,6 +457,21 @@ $(COMPONENTSDIR)/bfo.owl: component-download-bfo.owl
 .PRECIOUS: $(COMPONENTSDIR)/bfo.owl
 
 
+.PHONY: component-download-emapa.owl
+component-download-emapa.owl: | $(TMPDIR)
+	if [ $(MIR) = true ] && [ $(COMP) = true ]; then $(ROBOT) merge -I http://purl.obolibrary.org/obo/emapa.owl \
+	remove --base-iri http://purl.obolibrary.org/obo/emapa# --base-iri http://purl.obolibrary.org/obo/EMAPA_ --axioms external --preserve-structure false --trim false \
+	annotate --ontology-iri $(ONTBASE)/$@ $(ANNOTATE_ONTOLOGY_VERSION) -o $(TMPDIR)/$@.owl; fi
+
+$(COMPONENTSDIR)/emapa.owl: component-download-emapa.owl
+	if [ $(COMP) = true ]; then if cmp -s $(TMPDIR)/component-download-emapa.owl.owl $(TMPDIR)/component-download-emapa.owl.tmp.owl ; then echo "Component identical."; \
+      else echo "Component is different, updating." &&\
+		cp $(TMPDIR)/component-download-emapa.owl.owl $(TMPDIR)/component-download-emapa.owl.tmp.owl &&\
+		$(ROBOT) annotate -i $(TMPDIR)/component-download-emapa.owl.owl --ontology-iri $(ONTBASE)/$@ $(ANNOTATE_ONTOLOGY_VERSION) -o $@; fi; fi
+
+.PRECIOUS: $(COMPONENTSDIR)/emapa.owl
+
+
 .PHONY: component-download-fbbt.owl
 component-download-fbbt.owl: | $(TMPDIR)
 	if [ $(MIR) = true ] && [ $(COMP) = true ]; then $(ROBOT) merge -I http://purl.obolibrary.org/obo/fbbt.owl \
@@ -674,11 +689,25 @@ mirror-pato: | $(TMPDIR)
 	$(ROBOT) convert -i $(TMPDIR)/pato-download.owl -o $(TMPDIR)/$@.owl
 
 
+## ONTOLOGY: uberon-bridge-to-emapa
+.PHONY: mirror-uberon-bridge-to-emapa
+.PRECIOUS: $(MIRRORDIR)/uberon-bridge-to-emapa.owl
+mirror-uberon-bridge-to-emapa: | $(TMPDIR)
+	$(ROBOT) convert -I http://purl.obolibrary.org/obo/uberon/bridge/uberon-bridge-to-emapa.owl -o $(TMPDIR)/$@.owl
+
+
 ## ONTOLOGY: uberon-bridge-to-zfa
 .PHONY: mirror-uberon-bridge-to-zfa
 .PRECIOUS: $(MIRRORDIR)/uberon-bridge-to-zfa.owl
 mirror-uberon-bridge-to-zfa: | $(TMPDIR)
 	$(ROBOT) convert -I http://purl.obolibrary.org/obo/uberon/bridge/uberon-bridge-to-zfa.owl -o $(TMPDIR)/$@.owl
+
+
+## ONTOLOGY: uberon-bridge-to-ma
+.PHONY: mirror-uberon-bridge-to-ma
+.PRECIOUS: $(MIRRORDIR)/uberon-bridge-to-ma.owl
+mirror-uberon-bridge-to-ma: | $(TMPDIR)
+	$(ROBOT) convert -I http://purl.obolibrary.org/obo/uberon/bridge/uberon-bridge-to-ma.owl -o $(TMPDIR)/$@.owl
 
 
 ## ONTOLOGY: uberon-bridge-to-wbbt
@@ -700,6 +729,20 @@ mirror-uberon-bridge-to-fbbt: | $(TMPDIR)
 .PRECIOUS: $(MIRRORDIR)/uberon-bridge-to-fma.owl
 mirror-uberon-bridge-to-fma: | $(TMPDIR)
 	$(ROBOT) convert -I http://purl.obolibrary.org/obo/uberon/bridge/uberon-bridge-to-fma.owl -o $(TMPDIR)/$@.owl
+
+
+## ONTOLOGY: cl-bridge-to-emapa
+.PHONY: mirror-cl-bridge-to-emapa
+.PRECIOUS: $(MIRRORDIR)/cl-bridge-to-emapa.owl
+mirror-cl-bridge-to-emapa: | $(TMPDIR)
+	$(ROBOT) convert -I http://purl.obolibrary.org/obo/uberon/bridge/cl-bridge-to-emapa.owl -o $(TMPDIR)/$@.owl
+
+
+## ONTOLOGY: cl-bridge-to-ma
+.PHONY: mirror-cl-bridge-to-ma
+.PRECIOUS: $(MIRRORDIR)/cl-bridge-to-ma.owl
+mirror-cl-bridge-to-ma: | $(TMPDIR)
+	$(ROBOT) convert -I http://purl.obolibrary.org/obo/uberon/bridge/cl-bridge-to-ma.owl -o $(TMPDIR)/$@.owl
 
 
 ## ONTOLOGY: cl-bridge-to-fma
