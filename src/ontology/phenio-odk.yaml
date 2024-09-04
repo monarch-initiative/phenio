@@ -123,7 +123,7 @@ components:
         - http://purl.obolibrary.org/obo/uberon/core#
         - http://purl.obolibrary.org/obo/UBPROP_
     - filename: upheno.owl
-      source: http://purl.obolibrary.org/obo/upheno/v2/upheno.owl
+      source: https://github.com/obophenotype/upheno-dev/releases/latest/download/upheno.owl
       make_base: TRUE
       base_iris:
         - http://purl.obolibrary.org/obo/UPHENO_
@@ -134,6 +134,11 @@ components:
         - http://purl.obolibrary.org/obo/ZP_
         - http://purl.obolibrary.org/obo/FYPO_
         - http://purl.obolibrary.org/obo/DDPHENO_
+    - filename: ddanat.owl
+      source: http://purl.obolibrary.org/obo/ddanat.owl
+      make_base: TRUE
+      base_iris:
+        - http://purl.obolibrary.org/obo/ddanat#
         - http://purl.obolibrary.org/obo/DDANAT_
     - filename: wbbt.owl
       source: http://purl.obolibrary.org/obo/wbbt.owl
