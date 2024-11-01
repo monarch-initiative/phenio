@@ -10,7 +10,7 @@
 # More information: https://github.com/INCATools/ontology-development-kit/
 
 # Fingerprint of the configuration file when this Makefile was last generated
-CONFIG_HASH=                f62edbb77b824d9d98a8a8d1bf6f269d7845bea52b68c8563b61f981b9734253
+CONFIG_HASH=                2dd55808df8951daeb5dc2851230a214d7c786ee95cd5e7d6d38799ce37a1d95
 
 
 # ----------------------------------------
@@ -53,7 +53,7 @@ OBODATE ?=                  $(shell date +'%d:%m:%Y %H:%M')
 VERSION=                    $(TODAY)
 ANNOTATE_ONTOLOGY_VERSION = annotate -V $(ONTBASE)/releases/$(VERSION)/$@ --annotation owl:versionInfo $(VERSION)
 ANNOTATE_CONVERT_FILE =     annotate --ontology-iri $(ONTBASE)/$@ $(ANNOTATE_ONTOLOGY_VERSION) convert -f ofn --output $@.tmp.owl && mv $@.tmp.owl $@
-OTHER_SRC =                 $(COMPONENTSDIR)/bfo.owl $(COMPONENTSDIR)/emapa.owl $(COMPONENTSDIR)/fbbt.owl $(COMPONENTSDIR)/go.owl $(COMPONENTSDIR)/hsapdv.owl $(COMPONENTSDIR)/mondo.owl $(COMPONENTSDIR)/mpath.owl $(COMPONENTSDIR)/nbo.owl $(COMPONENTSDIR)/ro.owl $(COMPONENTSDIR)/uberon.owl $(COMPONENTSDIR)/upheno.owl $(COMPONENTSDIR)/wbbt.owl $(COMPONENTSDIR)/zfa.owl 
+OTHER_SRC =                 $(COMPONENTSDIR)/bfo.owl $(COMPONENTSDIR)/emapa.owl $(COMPONENTSDIR)/fbbt.owl $(COMPONENTSDIR)/go.owl $(COMPONENTSDIR)/hsapdv.owl $(COMPONENTSDIR)/mondo.owl $(COMPONENTSDIR)/mpath.owl $(COMPONENTSDIR)/nbo.owl $(COMPONENTSDIR)/ro.owl $(COMPONENTSDIR)/uberon.owl $(COMPONENTSDIR)/upheno.owl $(COMPONENTSDIR)/ddanat.owl $(COMPONENTSDIR)/wbbt.owl $(COMPONENTSDIR)/zfa.owl 
 ONTOLOGYTERMS =             $(TMPDIR)/ontologyterms.txt
 EDIT_PREPROCESSED =         $(TMPDIR)/$(ONT)-preprocess.owl
 
@@ -593,8 +593,8 @@ $(COMPONENTSDIR)/uberon.owl: component-download-uberon.owl
 
 .PHONY: component-download-upheno.owl
 component-download-upheno.owl: | $(TMPDIR)
-	if [ $(MIR) = true ] && [ $(COMP) = true ]; then $(ROBOT) merge -I http://purl.obolibrary.org/obo/upheno/v2/upheno.owl \
-	remove --base-iri http://purl.obolibrary.org/obo/UPHENO_ --base-iri http://purl.obolibrary.org/obo/HP_ --base-iri http://purl.obolibrary.org/obo/MP_ --base-iri http://purl.obolibrary.org/obo/WBPhenotype_ --base-iri http://purl.obolibrary.org/obo/XPO_ --base-iri http://purl.obolibrary.org/obo/ZP_ --base-iri http://purl.obolibrary.org/obo/FYPO_ --base-iri http://purl.obolibrary.org/obo/DDPHENO_ --base-iri http://purl.obolibrary.org/obo/DDANAT_ --axioms external --preserve-structure false --trim false \
+	if [ $(MIR) = true ] && [ $(COMP) = true ]; then $(ROBOT) merge -I https://github.com/obophenotype/upheno-dev/releases/latest/download/upheno.owl \
+	remove --base-iri http://purl.obolibrary.org/obo/UPHENO_ --base-iri http://purl.obolibrary.org/obo/HP_ --base-iri http://purl.obolibrary.org/obo/MP_ --base-iri http://purl.obolibrary.org/obo/WBPhenotype_ --base-iri http://purl.obolibrary.org/obo/XPO_ --base-iri http://purl.obolibrary.org/obo/ZP_ --base-iri http://purl.obolibrary.org/obo/FYPO_ --base-iri http://purl.obolibrary.org/obo/DDPHENO_ --axioms external --preserve-structure false --trim false \
 	annotate --ontology-iri $(ONTBASE)/$@ $(ANNOTATE_ONTOLOGY_VERSION) -o $(TMPDIR)/$@.owl; fi
 
 $(COMPONENTSDIR)/upheno.owl: component-download-upheno.owl
@@ -604,6 +604,21 @@ $(COMPONENTSDIR)/upheno.owl: component-download-upheno.owl
 		$(ROBOT) annotate -i $(TMPDIR)/component-download-upheno.owl.owl --ontology-iri $(ONTBASE)/$@ $(ANNOTATE_ONTOLOGY_VERSION) -o $@; fi; fi
 
 .PRECIOUS: $(COMPONENTSDIR)/upheno.owl
+
+
+.PHONY: component-download-ddanat.owl
+component-download-ddanat.owl: | $(TMPDIR)
+	if [ $(MIR) = true ] && [ $(COMP) = true ]; then $(ROBOT) merge -I http://purl.obolibrary.org/obo/ddanat.owl \
+	remove --base-iri http://purl.obolibrary.org/obo/ddanat# --base-iri http://purl.obolibrary.org/obo/DDANAT_ --axioms external --preserve-structure false --trim false \
+	annotate --ontology-iri $(ONTBASE)/$@ $(ANNOTATE_ONTOLOGY_VERSION) -o $(TMPDIR)/$@.owl; fi
+
+$(COMPONENTSDIR)/ddanat.owl: component-download-ddanat.owl
+	if [ $(COMP) = true ]; then if cmp -s $(TMPDIR)/component-download-ddanat.owl.owl $(TMPDIR)/component-download-ddanat.owl.tmp.owl ; then echo "Component identical."; \
+      else echo "Component is different, updating." &&\
+		cp $(TMPDIR)/component-download-ddanat.owl.owl $(TMPDIR)/component-download-ddanat.owl.tmp.owl &&\
+		$(ROBOT) annotate -i $(TMPDIR)/component-download-ddanat.owl.owl --ontology-iri $(ONTBASE)/$@ $(ANNOTATE_ONTOLOGY_VERSION) -o $@; fi; fi
+
+.PRECIOUS: $(COMPONENTSDIR)/ddanat.owl
 
 
 .PHONY: component-download-wbbt.owl
