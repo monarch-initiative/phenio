@@ -55,6 +55,7 @@ These are the components in PHENIO
 | nbo.owl | http://purl.obolibrary.org/obo/nbo.owl |
 | ro.owl | http://purl.obolibrary.org/obo/ro.owl |
 | uberon.owl | http://purl.obolibrary.org/obo/uberon.owl |
-| upheno.owl | http://purl.obolibrary.org/obo/upheno/v2/upheno.owl |
+| upheno.owl | https://github.com/obophenotype/upheno-dev/releases/latest/download/upheno.owl |
+| ddanat.owl | http://purl.obolibrary.org/obo/ddanat.owl |
 | wbbt.owl | http://purl.obolibrary.org/obo/wbbt.owl |
 | zfa.owl | http://purl.obolibrary.org/obo/zfa.owl |
