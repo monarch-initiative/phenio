@@ -32,7 +32,6 @@ $(BLMODEL):
 
 $(ONT)-full.owl: $(TMPDIR)/$(ONT)-full-unreasoned.owl | all_robot_plugins
 	$(ROBOT) merge --input $< \
-		relax \
 		merge --input $(BLMODEL) \
 		query --update $(BLQUERY) \
 		unmerge --input $(BLMODEL) \
