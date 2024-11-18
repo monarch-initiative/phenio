@@ -123,16 +123,36 @@ components:
         - http://purl.obolibrary.org/obo/uberon/core#
         - http://purl.obolibrary.org/obo/UBPROP_
     - filename: upheno.owl
-      source: https://github.com/obophenotype/upheno-dev/releases/latest/download/upheno.owl
-      make_base: TRUE
+      source: https://github.com/obophenotype/upheno-dev/releases/latest/download/upheno-base-with-bridge.owl
       base_iris:
         - http://purl.obolibrary.org/obo/UPHENO_
+    - filename: hp.owl
+      source: http://purl.obolibrary.org/obo/hp/hp-base.owl
+      base_iris:
         - http://purl.obolibrary.org/obo/HP_
-        - http://purl.obolibrary.org/obo/MP_
-        - http://purl.obolibrary.org/obo/WBPhenotype_
-        - http://purl.obolibrary.org/obo/XPO_
-        - http://purl.obolibrary.org/obo/ZP_
+    - filename: fypo.owl
+      source: http://purl.obolibrary.org/obo/fypo/fypo-base.owl
+      base_iris:
         - http://purl.obolibrary.org/obo/FYPO_
+    - filename: zp.owl
+      source: http://purl.obolibrary.org/obo/zp/zp-base.owl
+      base_iris:
+        - http://purl.obolibrary.org/obo/ZP_
+    - filename: xpo.owl
+      source: http://purl.obolibrary.org/obo/xpo/xpo-base.owl
+      base_iris:
+        - http://purl.obolibrary.org/obo/XPO_
+    - filename: mp.owl
+      source: http://purl.obolibrary.org/obo/mp/mp-base.owl
+      base_iris:
+        - http://purl.obolibrary.org/obo/MP_
+    - filename: wbphenotype.owl
+      source: http://purl.obolibrary.org/obo/wbphenotype/wbphenotype-base.owl
+      base_iris:
+        - http://purl.obolibrary.org/obo/WBPhenotype_
+    - filename: ddpheno.owl
+      source: http://purl.obolibrary.org/obo/ddpheno/ddpheno-base.owl
+      base_iris:
         - http://purl.obolibrary.org/obo/DDPHENO_
     - filename: ddanat.owl
       source: http://purl.obolibrary.org/obo/ddanat.owl

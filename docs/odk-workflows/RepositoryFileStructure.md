@@ -55,7 +55,14 @@ These are the components in PHENIO
 | nbo.owl | http://purl.obolibrary.org/obo/nbo.owl |
 | ro.owl | http://purl.obolibrary.org/obo/ro.owl |
 | uberon.owl | http://purl.obolibrary.org/obo/uberon.owl |
-| upheno.owl | https://github.com/obophenotype/upheno-dev/releases/latest/download/upheno.owl |
+| upheno.owl | https://github.com/obophenotype/upheno-dev/releases/latest/download/upheno-base-with-bridge.owl |
+| hp.owl | http://purl.obolibrary.org/obo/hp/hp-base.owl |
+| fypo.owl | http://purl.obolibrary.org/obo/fypo/fypo-base.owl |
+| zp.owl | http://purl.obolibrary.org/obo/zp/zp-base.owl |
+| xpo.owl | http://purl.obolibrary.org/obo/xpo/xpo-base.owl |
+| mp.owl | http://purl.obolibrary.org/obo/mp/mp-base.owl |
+| wbphenotype.owl | http://purl.obolibrary.org/obo/wbphenotype/wbphenotype-base.owl |
+| ddpheno.owl | http://purl.obolibrary.org/obo/ddpheno/ddpheno-base.owl |
 | ddanat.owl | http://purl.obolibrary.org/obo/ddanat.owl |
 | wbbt.owl | http://purl.obolibrary.org/obo/wbbt.owl |
 | zfa.owl | http://purl.obolibrary.org/obo/zfa.owl |
