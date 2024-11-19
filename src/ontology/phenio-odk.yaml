@@ -18,20 +18,67 @@ import_group:
     - <http://purl.obolibrary.org/obo/NCBITaxon_Union_*>
     - <http://www.informatics.jax.org/marker/MGI:*>
     - <http://purl.obolibrary.org/obo/CARO_*>
+    - <http://flybase.org/reports/*>
+    - <http://birdgenenames.org/cgnc/*>
+    - <http://purl.obolibrary.org/obo/ECTO_*>
+    - <http://purl.obolibrary.org/obo/ENVO_*>
+    - <http://purl.obolibrary.org/obo/MFOMD_*>
+    - <http://purl.obolibrary.org/obo/MF_*>
+    - <http://purl.obolibrary.org/obo/OBI_*>
+    - <http://purl.obolibrary.org/obo/TS_*>
+    # Reconsider adding these:
+    - <http://purl.obolibrary.org/obo/SO_*>
+    - <http://purl.obolibrary.org/obo/WBls_*>
+    - <http://purl.obolibrary.org/obo/ZFS_*>
+    - <http://purl.obolibrary.org/obo/BSPO_*>
+    - <http://purl.obolibrary.org/obo/MOD_*>
+    - <http://purl.obolibrary.org/obo/PO_*>
+    - <http://purl.obolibrary.org/obo/OGMS_*>
+    - <http://purl.obolibrary.org/obo/CHR_*>
+    - <http://identifiers.org/hgnc/*>
+    - <http://identifiers.org/ncbigene/*>
+    # From PRO:
+    - <http://www.ncbi.nlm.nih.gov/gene/*>
   slme_individuals: exclude
   mirror_max_time_download: 400
   products:
-#    - id: caro
     - id: chebi
-      is_large: TRUE
-      use_gzipped: TRUE
+      make_base: TRUE
+      mirror_from: https://raw.githubusercontent.com/obophenotype/chebi_obo_slim/main/chebi_slim.owl
+      base_iris:
+        - http://purl.obolibrary.org/obo/CHEBI_
+    - id: pr
+      make_base: TRUE
+      mirror_from: https://raw.githubusercontent.com/obophenotype/pro_obo_slim/master/pr_slim.owl
+      base_iris:
+        - http://purl.obolibrary.org/obo/PR_
     - id: eco
       make_base: TRUE
+      base_iris:
+        - http://purl.obolibrary.org/obo/ECO_
+    - id: bfo
+      make_base: TRUE
+      base_iris:
+        - http://purl.obolibrary.org/obo/BFO_
+    - id: ro
+      use_base: TRUE
     - id: ncbitaxon-taxslim
       mirror_from: http://purl.obolibrary.org/obo/ncbitaxon/subsets/taxslim.owl
-    - id: oba
+      make_base: TRUE
+      base_iris:
+        - http://purl.obolibrary.org/obo/NCBITaxon_
     - id: pato
-#    - id: stato
+      use_base: TRUE
+    - id: mpath.owl
+      make_base: TRUE
+      base_iris:
+        - http://purl.obolibrary.org/obo/MPATH_
+    - id: nbo.owl
+      make_base: TRUE
+      base_iris:
+        - http://purl.obolibrary.org/obo/NBO_
+    
+    # Bridge Ontologies (Anatomy)
     - id: uberon-bridge-to-emapa
       mirror_from: http://purl.obolibrary.org/obo/uberon/bridge/uberon-bridge-to-emapa.owl
     - id: uberon-bridge-to-zfa
@@ -44,8 +91,8 @@ import_group:
       mirror_from: http://purl.obolibrary.org/obo/uberon/bridge/uberon-bridge-to-fbbt.owl
     - id: uberon-bridge-to-fma
       mirror_from: http://purl.obolibrary.org/obo/uberon/bridge/uberon-bridge-to-fma.owl
-#    - id: uberon-bridge-to-nifstd
-#      mirror_from: http://purl.obolibrary.org/obo/uberon/bridge/uberon-bridge-to-nifstd.owl
+    - id: uberon-bridge-to-xao
+      mirror_from: http://purl.obolibrary.org/obo/uberon/bridge/uberon-bridge-to-xao.owl
     - id: cl-bridge-to-emapa
       mirror_from: http://purl.obolibrary.org/obo/uberon/bridge/cl-bridge-to-emapa.owl
     - id: cl-bridge-to-ma
@@ -56,76 +103,34 @@ import_group:
       mirror_from: http://purl.obolibrary.org/obo/uberon/bridge/cl-bridge-to-wbbt.owl
     - id: cl-bridge-to-fbbt
       mirror_from: http://purl.obolibrary.org/obo/uberon/bridge/cl-bridge-to-fbbt.owl
+    - id: cl-bridge-to-xao
+      mirror_from: http://purl.obolibrary.org/obo/uberon/bridge/cl-bridge-to-xao.owl
     - id: cl-bridge-to-zfa
       mirror_from: http://purl.obolibrary.org/obo/uberon/bridge/cl-bridge-to-zfa.owl
-#    - id: sepio
-#      make_base: TRUE
 components:
   products:
-#    - filename: mondo-equivalents.owl
-#      source: http://purl.obolibrary.org/obo/mondo/imports/equivalencies.owl
-    - filename: bfo.owl
-      source: http://purl.obolibrary.org/obo/bfo.owl
-#    - filename: fao.owl
-#      source: http://purl.obolibrary.org/obo/fao.owl
-#      make_base: TRUE
-#      base_iris:
-#        - http://purl.obolibrary.org/obo/FAO_
-    - filename: emapa.owl
-      source: http://purl.obolibrary.org/obo/emapa.owl
-      make_base: TRUE
-      base_iris:
-        - http://purl.obolibrary.org/obo/emapa#
-        - http://purl.obolibrary.org/obo/EMAPA_
-    - filename: fbbt.owl
-      source: http://purl.obolibrary.org/obo/fbbt.owl
-      make_base: TRUE
-      base_iris:
-        - http://purl.obolibrary.org/obo/fbbt#
-        - http://purl.obolibrary.org/obo/FBbt_
     - filename: go.owl
-      source: http://purl.obolibrary.org/obo/go.owl
+      source: http://purl.obolibrary.org/obo/go/go-base.owl
       make_base: TRUE
       base_iris:
         - http://purl.obolibrary.org/obo/go#
         - http://purl.obolibrary.org/obo/GO_
-    - filename: hsapdv.owl
-      source: http://purl.obolibrary.org/obo/hsapdv.owl
-      make_base: TRUE
-      base_iris:
-        - http://purl.obolibrary.org/obo/hsapdv#
-        - http://purl.obolibrary.org/obo/HsapDv_
     - filename: mondo.owl
-      source: http://purl.obolibrary.org/obo/mondo.owl
-      make_base: TRUE
+      source: http://purl.obolibrary.org/obo/mondo/mondo-base.owl
+      make_base: FALSE
       base_iris:
         - http://purl.obolibrary.org/obo/mondo#
         - http://purl.obolibrary.org/obo/MONDO_
-    - filename: mpath.owl
-      source: http://purl.obolibrary.org/obo/mpath.owl
-      make_base: TRUE
-      base_iris:
-        - http://purl.obolibrary.org/obo/mpath#
-        - http://purl.obolibrary.org/obo/MPATH_
-    - filename: nbo.owl
-      source: http://purl.obolibrary.org/obo/nbo.owl
-      make_base: TRUE
-      base_iris:
-        - http://purl.obolibrary.org/obo/nbo.owl#
-        - http://purl.obolibrary.org/obo/NBO_
-    - filename: ro.owl
-      source: http://purl.obolibrary.org/obo/ro.owl
-    - filename: uberon.owl
-      source: http://purl.obolibrary.org/obo/uberon.owl
-      make_base: TRUE
-      base_iris:
-        - http://purl.obolibrary.org/obo/UBERON_
-        - http://purl.obolibrary.org/obo/uberon/core#
-        - http://purl.obolibrary.org/obo/UBPROP_
+     
+    # Phenotype Ontologies
     - filename: upheno.owl
-      source: https://github.com/obophenotype/upheno-dev/releases/latest/download/upheno-base-with-bridge.owl
+      # This should be a PURL!
+      source: https://github.com/obophenotype/upheno-dev/releases/latest/download/upheno-base.owl
       base_iris:
         - http://purl.obolibrary.org/obo/UPHENO_
+    - filename: oba.owl
+      # THIS IS MISSING THE UPHENO-OBA BRIDGE
+      source: http://purl.obolibrary.org/obo/oba/oba-base.owl
     - filename: hp.owl
       source: http://purl.obolibrary.org/obo/hp/hp-base.owl
       base_iris:
@@ -154,6 +159,26 @@ components:
       source: http://purl.obolibrary.org/obo/ddpheno/ddpheno-base.owl
       base_iris:
         - http://purl.obolibrary.org/obo/DDPHENO_
+    - filename: dpo.owl
+      source: http://purl.obolibrary.org/obo/dpo/dpo-base.owl
+      base_iris:
+        - http://purl.obolibrary.org/obo/FBcv_
+    
+    # Species specific anatomy Ontologies
+    # Consider replacing by Uberon metazoan?
+    - filename: uberon.owl
+      source: http://purl.obolibrary.org/obo/uberon/uberon-base.owl
+      make_base: FALSE
+      base_iris:
+        - http://purl.obolibrary.org/obo/UBERON_
+        - http://purl.obolibrary.org/obo/uberon/core#
+        - http://purl.obolibrary.org/obo/UBPROP_
+    - filename: cl.owl
+      source: http://purl.obolibrary.org/obo/cl/cl-base.owl
+      make_base: FALSE
+      base_iris:
+        - http://purl.obolibrary.org/obo/CL_
+        - http://purl.obolibrary.org/obo/cl#
     - filename: ddanat.owl
       source: http://purl.obolibrary.org/obo/ddanat.owl
       make_base: TRUE
@@ -166,13 +191,37 @@ components:
       base_iris:
         - http://purl.obolibrary.org/obo/wbbt#
         - http://purl.obolibrary.org/obo/WBbt_
+    - filename: fbbt.owl
+      source: http://purl.obolibrary.org/obo/fbbt.owl
+      make_base: TRUE
+      base_iris:
+        - http://purl.obolibrary.org/obo/fbbt#
+        - http://purl.obolibrary.org/obo/FBbt_
     - filename: zfa.owl
       source: http://purl.obolibrary.org/obo/zfa.owl
       make_base: TRUE
       base_iris:
-        - http://purl.obolibrary.org/obo/zfa#
         - http://purl.obolibrary.org/obo/ZFA_
-
+    - filename: xao.owl
+      source: http://purl.obolibrary.org/obo/xao.owl
+      make_base: TRUE
+      base_iris:
+        - http://purl.obolibrary.org/obo/XAO_
+    # Use case for EMAPA: https://github.com/monarch-initiative/phenio/issues/16
+    - filename: emapa.owl
+      source: http://purl.obolibrary.org/obo/emapa.owl
+      make_base: TRUE
+      base_iris:
+        - http://purl.obolibrary.org/obo/emapa#
+        - http://purl.obolibrary.org/obo/EMAPA_
+    
+    # It is weird to have human life stages and SSAOs, but no SSLSOs??
+    - filename: hsapdv.owl
+      source: http://purl.obolibrary.org/obo/hsapdv.owl
+      make_base: TRUE
+      base_iris:
+        - http://purl.obolibrary.org/obo/hsapdv#
+        - http://purl.obolibrary.org/obo/HsapDv_
 
 robot_java_args: '-Xmx30G'
 
