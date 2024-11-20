@@ -14,34 +14,74 @@ allow_equivalents: all
 import_group:
   use_base_merging: TRUE
   exclude_iri_patterns:
-    - <http://purl.obolibrary.org/obo/GOCHE_*>
-    - <http://purl.obolibrary.org/obo/NCBITaxon_Union_*>
-    - <http://www.informatics.jax.org/marker/MGI:*>
-    - <http://purl.obolibrary.org/obo/CARO_*>
-    - <http://flybase.org/reports/*>
-    - <http://birdgenenames.org/cgnc/*>
-    - <http://purl.obolibrary.org/obo/ECTO_*>
-    - <http://purl.obolibrary.org/obo/ENVO_*>
-    - <http://purl.obolibrary.org/obo/MFOMD_*>
-    - <http://purl.obolibrary.org/obo/MF_*>
-    - <http://purl.obolibrary.org/obo/OBI_*>
-    - <http://purl.obolibrary.org/obo/TS_*>
-    # Reconsider adding these:
-    - <http://purl.obolibrary.org/obo/SO_*>
-    - <http://purl.obolibrary.org/obo/WBls_*>
-    - <http://purl.obolibrary.org/obo/ZFS_*>
-    - <http://purl.obolibrary.org/obo/BSPO_*>
-    - <http://purl.obolibrary.org/obo/MOD_*>
-    - <http://purl.obolibrary.org/obo/PO_*>
-    - <http://purl.obolibrary.org/obo/OGMS_*>
-    - <http://purl.obolibrary.org/obo/CHR_*>
-    - <http://identifiers.org/hgnc/*>
-    - <http://identifiers.org/ncbigene/*>
+    - <http://birdgenenames.org/cgnc/>
+    - <http://flybase.org/reports/>
+    - <http://purl.obolibrary.org/obo/CARO_>
+    - <http://purl.obolibrary.org/obo/ECTO_>
+    - <http://purl.obolibrary.org/obo/ENVO_>
+    - <http://purl.obolibrary.org/obo/FAO_>
+    - <http://purl.obolibrary.org/obo/GOCHE_>
+    - <http://purl.obolibrary.org/obo/MFOMD_>
+    - <http://purl.obolibrary.org/obo/MF_>
+    - <http://purl.obolibrary.org/obo/MOD_>
+    - <http://purl.obolibrary.org/obo/NCBITaxon_Union_>
+    - <http://purl.obolibrary.org/obo/NCIT_>
+    - <http://purl.obolibrary.org/obo/OBI_>
+    - <http://purl.obolibrary.org/obo/OGMS_>
+    - <http://purl.obolibrary.org/obo/PCO_>
+    - <http://purl.obolibrary.org/obo/PO_>
+    - <http://purl.obolibrary.org/obo/TS_>
+    - <http://www.informatics.jax.org/marker/MGI:>
+    - <https://swisslipids.org/rdf/SLM_>
+    - <https://w3id.org/biolink/vocab/>
+
     # From PRO:
     - <http://www.ncbi.nlm.nih.gov/gene/*>
   slme_individuals: exclude
   mirror_max_time_download: 400
   products:
+    - id: monochrom
+      make_base: TRUE
+      mirror_from: https://raw.githubusercontent.com/monarch-initiative/monochrom/refs/heads/master/chr-base.owl
+      base_iris:
+        - http://purl.obolibrary.org/obo/CHR_
+    - id: ncbigene
+      make_base: TRUE
+      # The following looks weird, but we pull from the latest Mondo imports to avoid huge build times
+      # We might have to revisit this and use the same process as Mondo
+      # Which requires pull the ncbigene mega dump.
+      mirror_from: http://purl.obolibrary.org/obo/mondo/imports/merged_import.owl
+      base_iris:
+        - http://identifiers.org/ncbigene/
+    - id: hgnc
+      make_base: TRUE
+      # The following looks weird, but we pull from the latest Mondo imports to avoid huge build times
+      # We might have to revisit this and use the same process as Mondo
+      # Which requires pull the hgnc mega dump.
+      mirror_from: http://purl.obolibrary.org/obo/mondo/imports/merged_import.owl
+      base_iris:
+        - http://identifiers.org/hgnc/
+    - id: so
+      make_base: TRUE
+      base_iris:
+        - http://purl.obolibrary.org/obo/SO_
+    - id: bspo
+      use_base: TRUE
+      base_iris:
+        - http://purl.obolibrary.org/obo/BSPO_
+    - id: wbls
+      use_base: TRUE
+      base_iris:
+        - http://purl.obolibrary.org/obo/WBls_
+    - id: zfs
+      make_base: TRUE
+      mirror_from: http://purl.obolibrary.org/obo/zfa.owl
+      base_iris:
+        - http://purl.obolibrary.org/obo/ZFS_
+    - id: fbdv
+      use_base: TRUE
+      base_iris:
+        - http://purl.obolibrary.org/obo/FBdv_
     - id: chebi
       make_base: TRUE
       mirror_from: https://raw.githubusercontent.com/obophenotype/chebi_obo_slim/main/chebi_slim.owl
@@ -69,16 +109,18 @@ import_group:
         - http://purl.obolibrary.org/obo/NCBITaxon_
     - id: pato
       use_base: TRUE
-    - id: mpath.owl
+    - id: mpath
       make_base: TRUE
       base_iris:
         - http://purl.obolibrary.org/obo/MPATH_
-    - id: nbo.owl
+    - id: nbo
       make_base: TRUE
       base_iris:
         - http://purl.obolibrary.org/obo/NBO_
     
     # Bridge Ontologies (Anatomy)
+    - id: upheno-bridge
+      mirror_from: https://raw.githubusercontent.com/obophenotype/upheno-dev/refs/heads/master/src/ontology/components/upheno-bridge.owl
     - id: uberon-bridge-to-emapa
       mirror_from: http://purl.obolibrary.org/obo/uberon/bridge/uberon-bridge-to-emapa.owl
     - id: uberon-bridge-to-zfa
