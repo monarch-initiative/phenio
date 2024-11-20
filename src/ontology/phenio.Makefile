@@ -18,7 +18,7 @@ RELEASE_ASSETS_AFTER_RELEASE=$(foreach n,$(RELEASE_ASSETS), ./$(n))
 RELEASE_ASSETS = $(ONT).owl $(ONT).json $(ONT)-relation-graph.tar.gz $(ONT)-test.owl
 
 # Base file assembly
-$(TMPDIR)/$(ONT)-full-unreasoned.owl: $(SRC) $(OTHER_SRC)
+$(TMPDIR)/$(ONT)-full-unreasoned.owl: $(SRC) $(OTHER_SRC) $(IMPORT_FILES)
 	$(ROBOT) merge --input $< $(patsubst %, -i %, $(OTHER_SRC)) $(patsubst %, -i %, $(IMPORT_FILES)) \
 		--output $@
 
@@ -32,9 +32,30 @@ $(BLMODEL):
 
 $(ONT)-full.owl: $(TMPDIR)/$(ONT)-full-unreasoned.owl | all_robot_plugins
 	$(ROBOT) merge --input $< \
+		remove --select <http://birdgenenames.org/cgnc/*> \
+		remove --select <http://flybase.org/reports/*> \
+		remove --select <http://purl.obolibrary.org/obo/CARO_*> \
+		remove --select <http://purl.obolibrary.org/obo/ECTO_*> \
+		remove --select <http://purl.obolibrary.org/obo/ENVO_*> \
+		remove --select <http://purl.obolibrary.org/obo/FAO_*> \
+		remove --select <http://purl.obolibrary.org/obo/GOCHE_*> \
+		remove --select <http://purl.obolibrary.org/obo/MFOMD_*> \
+		remove --select <http://purl.obolibrary.org/obo/MF_*> \
+		remove --select <http://purl.obolibrary.org/obo/MOD_*> \
+		remove --select <http://purl.obolibrary.org/obo/NCBITaxon_Union_*> \
+		remove --select <http://purl.obolibrary.org/obo/NCIT_*> \
+		remove --select <http://purl.obolibrary.org/obo/OBI_*> \
+		remove --select <http://purl.obolibrary.org/obo/OGMS_*> \
+		remove --select <http://purl.obolibrary.org/obo/PCO_*> \
+		remove --select <http://purl.obolibrary.org/obo/PO_*> \
+		remove --select <http://purl.obolibrary.org/obo/TS_*> \
+		remove --select <http://www.informatics.jax.org/marker/MGI:*> \
+		remove --select <https://swisslipids.org/rdf/SLM_*> \
+		remove --select <https://w3id.org/biolink/vocab/*> \
 		merge --input $(BLMODEL) \
 		query --update $(BLQUERY) \
 		unmerge --input $(BLMODEL) \
+		remove --select <https://w3id.org/biolink/vocab/*> \
 		upheno:extract-upheno-relations --root-phenotype UPHENO:0001001 --relation UPHENO:0000003 --relation UPHENO:0000001 \
 		annotate --ontology-iri $(URIBASE)/$@ $(ANNOTATE_ONTOLOGY_VERSION) \
 		convert -o $@.tmp.owl && mv $@.tmp.owl $@
