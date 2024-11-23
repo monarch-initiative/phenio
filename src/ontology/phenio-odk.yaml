@@ -148,6 +148,12 @@ components:
       base_iris:
         - http://purl.obolibrary.org/obo/mondo#
         - http://purl.obolibrary.org/obo/MONDO_
+    - filename: maxo.owl
+      source: http://purl.obolibrary.org/obo/maxo/maxo-base.owl
+      make_base: FALSE
+      base_iris:
+        - http://purl.obolibrary.org/obo/maxo#
+        - http://purl.obolibrary.org/obo/MAXO_
      
     # Phenotype Ontologies
     - filename: upheno.owl
@@ -234,7 +240,9 @@ components:
       make_base: TRUE
       base_iris:
         - http://purl.obolibrary.org/obo/XAO_
+    
     # Use case for EMAPA: https://github.com/monarch-initiative/phenio/issues/16
+    # Debate whether Uberon alignment is enough.
     - filename: emapa.owl
       source: http://purl.obolibrary.org/obo/emapa.owl
       make_base: TRUE
