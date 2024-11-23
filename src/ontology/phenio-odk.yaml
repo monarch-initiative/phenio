@@ -3,6 +3,7 @@ title: "Phenomics Integrated Ontology"
 github_org: monarch-initiative
 repo: phenio
 report_fail_on: none
+use_mappings: True
 release_artefacts:
   - base
   - full
@@ -11,31 +12,41 @@ export_formats:
   - owl
   - json
 allow_equivalents: all
+sssom_mappingset_group:
+  products:
+    - id: uberon
+      maintenance: mirror
+      mirror_from: http://purl.obolibrary.org/obo/uberon/uberon.sssom.tsv
+    - id: cl
+      maintenance: mirror
+      mirror_from: https://raw.githubusercontent.com/obophenotype/uberon/refs/heads/master/src/mappings/cl.sssom.tsv
 import_group:
   use_base_merging: TRUE
   exclude_iri_patterns:
-    - <http://birdgenenames.org/cgnc/>
-    - <http://flybase.org/reports/>
-    - <http://purl.obolibrary.org/obo/CARO_>
-    - <http://purl.obolibrary.org/obo/ECTO_>
-    - <http://purl.obolibrary.org/obo/ENVO_>
-    - <http://purl.obolibrary.org/obo/FAO_>
-    - <http://purl.obolibrary.org/obo/GOCHE_>
-    - <http://purl.obolibrary.org/obo/MFOMD_>
-    - <http://purl.obolibrary.org/obo/MF_>
-    - <http://purl.obolibrary.org/obo/MOD_>
-    - <http://purl.obolibrary.org/obo/NCBITaxon_Union_>
-    - <http://purl.obolibrary.org/obo/NCIT_>
-    - <http://purl.obolibrary.org/obo/OBI_>
-    - <http://purl.obolibrary.org/obo/OGMS_>
-    - <http://purl.obolibrary.org/obo/PCO_>
-    - <http://purl.obolibrary.org/obo/PO_>
-    - <http://purl.obolibrary.org/obo/TS_>
-    - <http://www.informatics.jax.org/marker/MGI:>
-    - <https://swisslipids.org/rdf/SLM_>
-    - <https://w3id.org/biolink/vocab/>
-
-    # From PRO:
+    - <http://birdgenenames.org/cgnc/*>
+    - <http://flybase.org/reports/*>
+    - <http://purl.obolibrary.org/obo/CARO_*>
+    - <http://purl.obolibrary.org/obo/ECTO_*>
+    - <http://purl.obolibrary.org/obo/ENVO_*>
+    - <http://purl.obolibrary.org/obo/FAO_*>
+    - <http://purl.obolibrary.org/obo/GOCHE_*>
+    - <http://purl.obolibrary.org/obo/MFOMD_*>
+    - <http://purl.obolibrary.org/obo/MF_*>
+    - <http://purl.obolibrary.org/obo/MOD_*>
+    - <http://purl.obolibrary.org/obo/NCBITaxon_Union_*>
+    - <http://purl.obolibrary.org/obo/NCIT_*>
+    - <http://purl.obolibrary.org/obo/OBI_*>
+    - <http://purl.obolibrary.org/obo/OGMS_*>
+    - <http://purl.obolibrary.org/obo/PCO_*>
+    - <http://purl.obolibrary.org/obo/PO_*>
+    - <http://purl.obolibrary.org/obo/TS_*>
+    - <http://www.informatics.jax.org/marker/MGI:*>
+    - <https://swisslipids.org/rdf/SLM_*>
+    - <https://w3id.org/biolink/vocab/*>
+    - <http://www.ensembl.org/id/*>
+    - <http://purl.obolibrary.org/obo/OPL_*>
+    - <https://w3id.org/linkml/*>
+    - <https://bioregistry.io/lipidmaps*>
     - <http://www.ncbi.nlm.nih.gov/gene/*>
   slme_individuals: exclude
   mirror_max_time_download: 400
@@ -121,39 +132,13 @@ import_group:
     # Bridge Ontologies (Anatomy)
     - id: upheno-bridge
       mirror_from: https://raw.githubusercontent.com/obophenotype/upheno-dev/refs/heads/master/src/ontology/components/upheno-bridge.owl
-    - id: uberon-bridge-to-emapa
-      mirror_from: http://purl.obolibrary.org/obo/uberon/bridge/uberon-bridge-to-emapa.owl
-    - id: uberon-bridge-to-zfa
-      mirror_from: http://purl.obolibrary.org/obo/uberon/bridge/uberon-bridge-to-zfa.owl
-    - id: uberon-bridge-to-ma
-      mirror_from: http://purl.obolibrary.org/obo/uberon/bridge/uberon-bridge-to-ma.owl
-    - id: uberon-bridge-to-wbbt
-      mirror_from: http://purl.obolibrary.org/obo/uberon/bridge/uberon-bridge-to-wbbt.owl
-    - id: uberon-bridge-to-fbbt
-      mirror_from: http://purl.obolibrary.org/obo/uberon/bridge/uberon-bridge-to-fbbt.owl
-    - id: uberon-bridge-to-fma
-      mirror_from: http://purl.obolibrary.org/obo/uberon/bridge/uberon-bridge-to-fma.owl
-    - id: uberon-bridge-to-xao
-      mirror_from: http://purl.obolibrary.org/obo/uberon/bridge/uberon-bridge-to-xao.owl
-    - id: cl-bridge-to-emapa
-      mirror_from: http://purl.obolibrary.org/obo/uberon/bridge/cl-bridge-to-emapa.owl
-    - id: cl-bridge-to-ma
-      mirror_from: http://purl.obolibrary.org/obo/uberon/bridge/cl-bridge-to-ma.owl
-    - id: cl-bridge-to-fma
-      mirror_from: http://purl.obolibrary.org/obo/uberon/bridge/cl-bridge-to-fma.owl
-    - id: cl-bridge-to-wbbt
-      mirror_from: http://purl.obolibrary.org/obo/uberon/bridge/cl-bridge-to-wbbt.owl
-    - id: cl-bridge-to-fbbt
-      mirror_from: http://purl.obolibrary.org/obo/uberon/bridge/cl-bridge-to-fbbt.owl
-    - id: cl-bridge-to-xao
-      mirror_from: http://purl.obolibrary.org/obo/uberon/bridge/cl-bridge-to-xao.owl
-    - id: cl-bridge-to-zfa
-      mirror_from: http://purl.obolibrary.org/obo/uberon/bridge/cl-bridge-to-zfa.owl
+    - id: upheno-alignments
+      mirror_from: https://raw.githubusercontent.com/obophenotype/upheno-dev/refs/heads/master/src/ontology/components/upheno-alignments.owl
 components:
   products:
     - filename: go.owl
       source: http://purl.obolibrary.org/obo/go/go-base.owl
-      make_base: TRUE
+      make_base: FALSE
       base_iris:
         - http://purl.obolibrary.org/obo/go#
         - http://purl.obolibrary.org/obo/GO_
