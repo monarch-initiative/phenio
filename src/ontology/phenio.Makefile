@@ -76,7 +76,7 @@ $(EXPLAIN_OUT_PATH): $(TMPDIR)/$(ONT)-full-unreasoned.owl
 	$(ROBOT) explain -i $< -M unsatisfiability --unsatisfiable random:10 --explanation $@
 
 # removed this --update $(SPARQLDIR)/bl-categories.ru as we decided it was no longer needed here.
-phenio-full.owl: $(TMPDIR)/$(ONT)-full-unreasoned.owl $(MAPPINGDIR)/cl.sssom.tsv $(MAPPINGDIR)/uberon.sssom.tsv | all_robot_plugins
+phenio-full.owl: $(TMPDIR)/$(ONT)-full-unreasoned.owl $(MAPPINGDIR)/cl.sssom.tsv $(MAPPINGDIR)/uberon.sssom.tsv $(MAPPINGDIR)/upheno-oba.sssom.tsv | all_robot_plugins
 	$(ROBOT) merge --input $< \
 		remove --select "<http://birdgenenames.org/cgnc/*>" \
 		remove --select "<http://flybase.org/reports/*>" \
@@ -93,21 +93,26 @@ phenio-full.owl: $(TMPDIR)/$(ONT)-full-unreasoned.owl $(MAPPINGDIR)/cl.sssom.tsv
 		remove --select "<http://purl.obolibrary.org/obo/OBI_*>" \
 		remove --select "<http://purl.obolibrary.org/obo/OGMS_*>" \
 		remove --select "<http://purl.obolibrary.org/obo/PCO_*>" \
+		remove --select "<http://purl.obolibrary.org/obo/FOODON_*>" \
 		remove --select "<http://purl.obolibrary.org/obo/PO_*>" \
 		remove --select "<http://purl.obolibrary.org/obo/BTO_*>" \
 		remove --select "<http://purl.obolibrary.org/obo/RnorDv_*>" \
-		remove --select "<http://purl.obolibrary.org/obo/emapa#Tmp_new_group*>" \
+		remove --select "<http://purl.obolibrary.org/obo/COB_*>" \
+		remove --select "<http://purl.obolibrary.org/obo/emapa#*>" \
 		remove --select "<http://www.ebi.ac.uk/efo/EFO_*>" \
 		remove --select "<http://purl.obolibrary.org/obo/TS_*>" \
 		remove --select "<http://www.informatics.jax.org/marker/MGI:*>" \
 		remove --select "<https://swisslipids.org/rdf/SLM_*>" \
 		remove --select "<http://purl.obolibrary.org/obo/OPL_*>" \
 		remove --select "<https://bioregistry.io/lipidmaps*>" \
+		remove --select "<http://org.semanticweb.owlapi/error*>" \
 		remove --term owl:Thing --term owl:Nothing \
 		rename --mappings config/property-map.tsv --allow-missing-entities true --allow-duplicates true \
 		sssom:inject --sssom $(MAPPINGDIR)/uberon.sssom.tsv \
 		             --sssom $(MAPPINGDIR)/cl.sssom.tsv \
 		              --ruleset config/mappings-to-uberon-bridge.rules \
+		sssom:inject --sssom $(MAPPINGDIR)/upheno-oba.sssom.tsv \
+		              --ruleset config/mappings-to-upheno-oba.rules \
 		upheno:extract-upheno-relations --root-phenotype UPHENO:0001001 --relation UPHENO:0000003 --relation UPHENO:0000001 \
 		annotate --ontology-iri $(URIBASE)/$@ $(ANNOTATE_ONTOLOGY_VERSION) \
 		convert -o $@.tmp.owl && mv $@.tmp.owl $@

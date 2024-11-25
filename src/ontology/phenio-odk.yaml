@@ -19,7 +19,10 @@ sssom_mappingset_group:
       mirror_from: http://purl.obolibrary.org/obo/uberon/uberon.sssom.tsv
     - id: cl
       maintenance: mirror
-      mirror_from: https://raw.githubusercontent.com/obophenotype/uberon/refs/heads/master/src/mappings/cl.sssom.tsv
+      mirror_from: http://purl.obolibrary.org/obo/cl/cl.sssom.tsv
+    - id: upheno-oba
+      maintenance: mirror
+      mirror_from: https://raw.githubusercontent.com/obophenotype/upheno-dev/refs/heads/master/src/mappings/upheno-oba.sssom.tsv
 import_group:
   use_base_merging: TRUE
   exclude_iri_patterns:
@@ -190,7 +193,10 @@ components:
         - http://purl.obolibrary.org/obo/FBcv_
     
     # Species specific anatomy Ontologies
-    # Consider replacing by Uberon metazoan?
+    # Due to unfolding (removing classes from SSAO that have a direct equivalent in Uberon)
+    # we chose for the time being not to use uberon-composite-metazoan.owl. 
+    # We should revisit this in the future, but for now
+    # We want hour users to have species specific entry points to our KG
     - filename: uberon.owl
       source: http://purl.obolibrary.org/obo/uberon/uberon-base.owl
       make_base: FALSE
