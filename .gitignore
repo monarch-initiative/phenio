@@ -51,3 +51,8 @@ src/ontology/phenio-relation-graph.tar.gz
 src/ontology/phenio-relation-graph.tsv
 src/ontology/phenio-test.owl
 src/ontology/imports/merged_import.owl
+phenio.tar.gz
+phenio.owl
+phenio.json
+phenio-test.owl
+phenio-relation-graph.tar.gz
