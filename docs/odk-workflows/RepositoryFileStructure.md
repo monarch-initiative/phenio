@@ -17,8 +17,8 @@ These are the current imports in PHENIO
 | Import | URL | Type |
 | ------ | --- | ---- |
 | monochrom | https://raw.githubusercontent.com/monarch-initiative/monochrom/refs/heads/master/chr-base.owl | None |
-| ncbigene | http://purl.obolibrary.org/obo/mondo/imports/merged_import.owl | None |
-| hgnc | http://purl.obolibrary.org/obo/mondo/imports/merged_import.owl | None |
+| ncbigene | http://purl.obolibrary.org/obo/ncbigene.owl | None |
+| hgnc | http://purl.obolibrary.org/obo/hgnc.owl | None |
 | so | http://purl.obolibrary.org/obo/so.owl | None |
 | bspo | http://purl.obolibrary.org/obo/bspo.owl | None |
 | wbls | http://purl.obolibrary.org/obo/wbls.owl | None |

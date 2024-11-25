@@ -35,6 +35,32 @@ $(COMPONENTSDIR)/emapa.owl: component-download-emapa.owl
 		$(ROBOT) query -i $(TMPDIR)/component-download-emapa.owl.owl --update ../sparql/inject-emapa-root.ru \
 		relax reduce annotate --ontology-iri $(ONTBASE)/$@ $(ANNOTATE_ONTOLOGY_VERSION) -o $@; fi; fi
 
+################################################################
+#### Imports ###################################################
+################################################################
+
+ifeq ($(strip $(MIR)),true)
+
+ONTS_WITH_NCBIGENE_DATA = $(COMPONENTSDIR)/mondo.owl
+
+$(TMPDIR)/ncbigene_dependencies.txt: # $(ONTS_WITH_NCBIGENE_DATA)
+	$(ROBOT) merge $(foreach n,$(ONTS_WITH_NCBIGENE_DATA), -i $(n)) \
+		query --query ../sparql/terms.sparql $(TMPDIR)/all_terms_for_ncbigene_dependencies.txt
+	tr -d '\r' < $(TMPDIR)/all_terms_for_ncbigene_dependencies.txt | sed 's/.*/<&>/' | grep ncbigene  > $@
+
+../sparql/construct-ncbigene.sparql: ../sparql/construct-ncbigene.sparql.template $(TMPDIR)/ncbigene_dependencies.txt
+	@sed "/{{VALUES}}/r $(TMPDIR)/ncbigene_dependencies.txt" $< | sed '/{{VALUES}}/d' > $@
+
+mirror-ncbigene: | $(TMPDIR)
+	curl -L https://github.com/monarch-initiative/ncbi-gene/releases/latest/download/ncbi_gene.nt.gz --create-dirs --retry 4 --max-time 400 | gzip -d > $(TMPDIR)/ncbigene-download.nt
+	$(MAKE) ../sparql/construct-ncbigene.sparql
+	arq --data=$(TMPDIR)/ncbigene-download.nt --query=../sparql/construct-ncbigene.sparql > $(TMPDIR)/mirror-ncbigene.owl
+
+mirror-hgnc: | $(TMPDIR)
+	curl -L https://data.monarchinitiative.org/monarch-kg/latest/rdf/hgnc_gene.nt.gz --create-dirs --retry 4 --max-time 400 | gzip -d > $(TMPDIR)/hgnc-download.nt && \
+	arq --data=$(TMPDIR)/hgnc-download.nt --query=../sparql/construct-hgnc.sparql > $(TMPDIR)/mirror-hgnc.owl
+
+endif
 
 ################################################################
 #### Release files #############################################

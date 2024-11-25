@@ -10,7 +10,7 @@
 # More information: https://github.com/INCATools/ontology-development-kit/
 
 # Fingerprint of the configuration file when this Makefile was last generated
-CONFIG_HASH=                ddadea7554b7f8cc15beeba3ac5d87ab6ec92a3e967889358659e364a0aadab2
+CONFIG_HASH=                c2ff26c7919fc7b23fddf250247587e5add7dae1081861e656446c80d493a94b
 
 
 # ----------------------------------------
@@ -59,7 +59,7 @@ EDIT_PREPROCESSED =         $(TMPDIR)/$(ONT)-preprocess.owl
 MAPPINGDIR=                 ../mappings
 MAPPING_TESTER=             sssom validate
 SSSOMPY=                    sssom
-MAPPINGS=                   uberon cl 
+MAPPINGS=                   uberon cl upheno-oba 
 MAPPING_RELEASE_FILES=      $(foreach n,$(MAPPINGS), $(MAPPINGDIR)/$(n).sssom.tsv)
 
 
@@ -196,7 +196,7 @@ all_subsets: $(SUBSET_FILES)
 # ----------------------------------------
 
 
-MAPPINGS =  uberon cl
+MAPPINGS =  uberon cl upheno-oba
 
 MAPPING_FILES = $(patsubst %, $(MAPPINGDIR)/%.sssom.tsv, $(MAPPINGS))
 
@@ -777,14 +777,16 @@ mirror-monochrom: | $(TMPDIR)
 .PHONY: mirror-ncbigene
 .PRECIOUS: $(MIRRORDIR)/ncbigene.owl
 mirror-ncbigene: | $(TMPDIR)
-	$(ROBOT) remove -I http://purl.obolibrary.org/obo/mondo/imports/merged_import.owl --base-iri http://identifiers.org/ncbigene/  --axioms external --preserve-structure false --trim false -o $(TMPDIR)/$@.owl
+	curl -L $(OBOBASE)/ncbigene.owl --create-dirs -o $(TMPDIR)/ncbigene-download.owl --retry 4 --max-time 400 && \
+	$(ROBOT) remove -i $(TMPDIR)/ncbigene-download.owl --base-iri http://identifiers.org/ncbigene/ --axioms external --preserve-structure false --trim false -o $(TMPDIR)/$@.owl
 
 
 ## ONTOLOGY: hgnc
 .PHONY: mirror-hgnc
 .PRECIOUS: $(MIRRORDIR)/hgnc.owl
 mirror-hgnc: | $(TMPDIR)
-	$(ROBOT) remove -I http://purl.obolibrary.org/obo/mondo/imports/merged_import.owl --base-iri http://identifiers.org/hgnc/  --axioms external --preserve-structure false --trim false -o $(TMPDIR)/$@.owl
+	curl -L $(OBOBASE)/hgnc.owl --create-dirs -o $(TMPDIR)/hgnc-download.owl --retry 4 --max-time 400 && \
+	$(ROBOT) remove -i $(TMPDIR)/hgnc-download.owl --base-iri http://identifiers.org/hgnc/ --axioms external --preserve-structure false --trim false -o $(TMPDIR)/$@.owl
 
 
 ## ONTOLOGY: so
@@ -971,7 +973,10 @@ $(MAPPINGDIR)/uberon.sssom.tsv:
 	wget "http://purl.obolibrary.org/obo/uberon/uberon.sssom.tsv" -O $@
 
 $(MAPPINGDIR)/cl.sssom.tsv:
-	wget "https://raw.githubusercontent.com/obophenotype/uberon/refs/heads/master/src/mappings/cl.sssom.tsv" -O $@
+	wget "http://purl.obolibrary.org/obo/cl/cl.sssom.tsv" -O $@
+
+$(MAPPINGDIR)/upheno-oba.sssom.tsv:
+	wget "https://raw.githubusercontent.com/obophenotype/upheno-dev/refs/heads/master/src/mappings/upheno-oba.sssom.tsv" -O $@
 
 validate_mappings:
 	$(MAKE_FAST) $(foreach n,$(MAPPINGS), validate-sssom-$(n))

@@ -58,18 +58,10 @@ import_group:
         - http://purl.obolibrary.org/obo/CHR_
     - id: ncbigene
       make_base: TRUE
-      # The following looks weird, but we pull from the latest Mondo imports to avoid huge build times
-      # We might have to revisit this and use the same process as Mondo
-      # Which requires pull the ncbigene mega dump.
-      mirror_from: http://purl.obolibrary.org/obo/mondo/imports/merged_import.owl
       base_iris:
         - http://identifiers.org/ncbigene/
     - id: hgnc
       make_base: TRUE
-      # The following looks weird, but we pull from the latest Mondo imports to avoid huge build times
-      # We might have to revisit this and use the same process as Mondo
-      # Which requires pull the hgnc mega dump.
-      mirror_from: http://purl.obolibrary.org/obo/mondo/imports/merged_import.owl
       base_iris:
         - http://identifiers.org/hgnc/
     - id: so
