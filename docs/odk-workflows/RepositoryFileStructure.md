@@ -16,23 +16,25 @@ These are the current imports in PHENIO
 
 | Import | URL | Type |
 | ------ | --- | ---- |
-| chebi | http://purl.obolibrary.org/obo/chebi.owl | None |
+| monochrom | https://raw.githubusercontent.com/monarch-initiative/monochrom/refs/heads/master/chr-base.owl | None |
+| ncbigene | http://purl.obolibrary.org/obo/ncbigene.owl | None |
+| hgnc | http://purl.obolibrary.org/obo/hgnc.owl | None |
+| so | http://purl.obolibrary.org/obo/so.owl | None |
+| bspo | http://purl.obolibrary.org/obo/bspo.owl | None |
+| wbls | http://purl.obolibrary.org/obo/wbls.owl | None |
+| zfs | http://purl.obolibrary.org/obo/zfa.owl | None |
+| fbdv | http://purl.obolibrary.org/obo/fbdv.owl | None |
+| chebi | https://raw.githubusercontent.com/obophenotype/chebi_obo_slim/main/chebi_slim.owl | None |
+| pr | https://raw.githubusercontent.com/obophenotype/pro_obo_slim/master/pr_slim.owl | None |
 | eco | http://purl.obolibrary.org/obo/eco.owl | None |
+| bfo | http://purl.obolibrary.org/obo/bfo.owl | None |
+| ro | http://purl.obolibrary.org/obo/ro.owl | None |
 | ncbitaxon-taxslim | http://purl.obolibrary.org/obo/ncbitaxon/subsets/taxslim.owl | None |
-| oba | http://purl.obolibrary.org/obo/oba.owl | None |
 | pato | http://purl.obolibrary.org/obo/pato.owl | None |
-| uberon-bridge-to-emapa | http://purl.obolibrary.org/obo/uberon/bridge/uberon-bridge-to-emapa.owl | None |
-| uberon-bridge-to-zfa | http://purl.obolibrary.org/obo/uberon/bridge/uberon-bridge-to-zfa.owl | None |
-| uberon-bridge-to-ma | http://purl.obolibrary.org/obo/uberon/bridge/uberon-bridge-to-ma.owl | None |
-| uberon-bridge-to-wbbt | http://purl.obolibrary.org/obo/uberon/bridge/uberon-bridge-to-wbbt.owl | None |
-| uberon-bridge-to-fbbt | http://purl.obolibrary.org/obo/uberon/bridge/uberon-bridge-to-fbbt.owl | None |
-| uberon-bridge-to-fma | http://purl.obolibrary.org/obo/uberon/bridge/uberon-bridge-to-fma.owl | None |
-| cl-bridge-to-emapa | http://purl.obolibrary.org/obo/uberon/bridge/cl-bridge-to-emapa.owl | None |
-| cl-bridge-to-ma | http://purl.obolibrary.org/obo/uberon/bridge/cl-bridge-to-ma.owl | None |
-| cl-bridge-to-fma | http://purl.obolibrary.org/obo/uberon/bridge/cl-bridge-to-fma.owl | None |
-| cl-bridge-to-wbbt | http://purl.obolibrary.org/obo/uberon/bridge/cl-bridge-to-wbbt.owl | None |
-| cl-bridge-to-fbbt | http://purl.obolibrary.org/obo/uberon/bridge/cl-bridge-to-fbbt.owl | None |
-| cl-bridge-to-zfa | http://purl.obolibrary.org/obo/uberon/bridge/cl-bridge-to-zfa.owl | None |
+| mpath | http://purl.obolibrary.org/obo/mpath.owl | None |
+| nbo | http://purl.obolibrary.org/obo/nbo.owl | None |
+| upheno-bridge | https://raw.githubusercontent.com/obophenotype/upheno-dev/refs/heads/master/src/ontology/components/upheno-bridge.owl | None |
+| upheno-alignments | https://raw.githubusercontent.com/obophenotype/upheno-dev/refs/heads/master/src/ontology/components/upheno-alignments.owl | None |
 
 ## Components
 Components, in contrast to imports, are considered full members of the ontology. This means that any axiom in a component is also included in the ontology base - which means it is considered _native_ to the ontology. While this sounds complicated, consider this: conceptually, no component should be part of more than one ontology. If that seems to be the case, we are most likely talking about an import. Components are often not needed for ontologies, but there are some use cases:
@@ -45,17 +47,25 @@ These are the components in PHENIO
 
 | Filename | URL |
 | -------- | --- |
-| bfo.owl | http://purl.obolibrary.org/obo/bfo.owl |
-| emapa.owl | http://purl.obolibrary.org/obo/emapa.owl |
-| fbbt.owl | http://purl.obolibrary.org/obo/fbbt.owl |
-| go.owl | http://purl.obolibrary.org/obo/go.owl |
-| hsapdv.owl | http://purl.obolibrary.org/obo/hsapdv.owl |
-| mondo.owl | http://purl.obolibrary.org/obo/mondo.owl |
-| mpath.owl | http://purl.obolibrary.org/obo/mpath.owl |
-| nbo.owl | http://purl.obolibrary.org/obo/nbo.owl |
-| ro.owl | http://purl.obolibrary.org/obo/ro.owl |
-| uberon.owl | http://purl.obolibrary.org/obo/uberon.owl |
-| upheno.owl | https://github.com/obophenotype/upheno-dev/releases/latest/download/upheno.owl |
+| go.owl | http://purl.obolibrary.org/obo/go/go-base.owl |
+| mondo.owl | http://purl.obolibrary.org/obo/mondo/mondo-base.owl |
+| maxo.owl | http://purl.obolibrary.org/obo/maxo/maxo-base.owl |
+| upheno.owl | https://github.com/obophenotype/upheno-dev/releases/latest/download/upheno-base.owl |
+| oba.owl | http://purl.obolibrary.org/obo/oba/oba-base.owl |
+| hp.owl | http://purl.obolibrary.org/obo/hp/hp-base.owl |
+| fypo.owl | http://purl.obolibrary.org/obo/fypo/fypo-base.owl |
+| zp.owl | http://purl.obolibrary.org/obo/zp/zp-base.owl |
+| xpo.owl | http://purl.obolibrary.org/obo/xpo/xpo-base.owl |
+| mp.owl | http://purl.obolibrary.org/obo/mp/mp-base.owl |
+| wbphenotype.owl | http://purl.obolibrary.org/obo/wbphenotype/wbphenotype-base.owl |
+| ddpheno.owl | http://purl.obolibrary.org/obo/ddpheno/ddpheno-base.owl |
+| dpo.owl | http://purl.obolibrary.org/obo/dpo/dpo-base.owl |
+| uberon.owl | http://purl.obolibrary.org/obo/uberon/uberon-base.owl |
+| cl.owl | http://purl.obolibrary.org/obo/cl/cl-base.owl |
 | ddanat.owl | http://purl.obolibrary.org/obo/ddanat.owl |
 | wbbt.owl | http://purl.obolibrary.org/obo/wbbt.owl |
+| fbbt.owl | http://purl.obolibrary.org/obo/fbbt.owl |
 | zfa.owl | http://purl.obolibrary.org/obo/zfa.owl |
+| xao.owl | http://purl.obolibrary.org/obo/xao.owl |
+| emapa.owl | http://purl.obolibrary.org/obo/emapa.owl |
+| hsapdv.owl | http://purl.obolibrary.org/obo/hsapdv.owl |

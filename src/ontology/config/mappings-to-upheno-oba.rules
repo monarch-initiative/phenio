@@ -1,0 +1,14 @@
+prefix UPHENO:    <http://purl.obolibrary.org/obo/UPHENO_>
+prefix OBA:    <http://purl.obolibrary.org/obo/OBA_>
+prefix BFO:    <http://purl.obolibrary.org/obo/BFO_>
+
+# Make sure UBERON/CL classes, and only UBERON/CL classes, are on the object side
+subject==OBA:* -> invert();
+!object==OBA:* -> stop();
+
+# Ignore any mapping to/from an inexistent or obsolete class.
+predicate==* -> check_object_existence();
+predicate==* -> check_subject_existence();
+
+# Create the subclassOf axiom and annotate it with a subset of the mapping metadata
+predicate==UPHENO:phenotypeToTrait -> create_axiom('%subject_id SubClassOf: BFO:0000051 some %object_id', "direct:metadata");

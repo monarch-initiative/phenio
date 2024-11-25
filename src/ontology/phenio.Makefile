@@ -4,7 +4,6 @@
 # Constants
 BLMODEL = 					bl-model.ttl
 BLMODEL_URL =				"https://w3id.org/biolink/biolink-model.owl.ttl"
-BLQUERY =					$(SPARQLDIR)/bl-categories.ru
 MINIMAL_PATH=					$(TMPDIR)/$(ONT)-min.owl
 OT_MEMO=						50G
 OWLTOOLS=						OWLTOOLS_MEMORY=$(OT_MEMO) owltools --no-logging
@@ -17,24 +16,103 @@ RELEASE_ASSETS_AFTER_RELEASE=$(foreach n,$(RELEASE_ASSETS), ./$(n))
 
 RELEASE_ASSETS = $(ONT).owl $(ONT).json $(ONT)-relation-graph.tar.gz $(ONT)-test.owl
 
+################################################################
+#### Components ################################################
+################################################################
+
+$(COMPONENTSDIR)/go.owl: component-download-go.owl
+	if [ $(COMP) = true ]; then if cmp -s $(TMPDIR)/component-download-go.owl.owl $(TMPDIR)/component-download-go.owl.tmp.owl ; then echo "Component identical."; \
+      else echo "Component is different, updating." &&\
+		cp $(TMPDIR)/component-download-go.owl.owl $(TMPDIR)/component-download-go.owl.tmp.owl &&\
+		$(ROBOT) reason -i $(TMPDIR)/component-download-go.owl.owl relax reduce annotate --ontology-iri $(ONTBASE)/$@ $(ANNOTATE_ONTOLOGY_VERSION) -o $@; fi; fi
+
+.PRECIOUS: $(COMPONENTSDIR)/go.owl
+
+$(COMPONENTSDIR)/emapa.owl: component-download-emapa.owl
+	if [ $(COMP) = true ]; then if cmp -s $(TMPDIR)/component-download-emapa.owl.owl $(TMPDIR)/component-download-emapa.owl.tmp.owl ; then echo "Component identical."; \
+      else echo "Component is different, updating." &&\
+		cp $(TMPDIR)/component-download-emapa.owl.owl $(TMPDIR)/component-download-emapa.owl.tmp.owl &&\
+		$(ROBOT) query -i $(TMPDIR)/component-download-emapa.owl.owl --update ../sparql/inject-emapa-root.ru \
+		relax reduce annotate --ontology-iri $(ONTBASE)/$@ $(ANNOTATE_ONTOLOGY_VERSION) -o $@; fi; fi
+
+################################################################
+#### Imports ###################################################
+################################################################
+
+ifeq ($(strip $(MIR)),true)
+
+ONTS_WITH_NCBIGENE_DATA = $(COMPONENTSDIR)/mondo.owl
+
+$(TMPDIR)/ncbigene_dependencies.txt: # $(ONTS_WITH_NCBIGENE_DATA)
+	$(ROBOT) merge $(foreach n,$(ONTS_WITH_NCBIGENE_DATA), -i $(n)) \
+		query --query ../sparql/terms.sparql $(TMPDIR)/all_terms_for_ncbigene_dependencies.txt
+	tr -d '\r' < $(TMPDIR)/all_terms_for_ncbigene_dependencies.txt | sed 's/.*/<&>/' | grep ncbigene  > $@
+
+../sparql/construct-ncbigene.sparql: ../sparql/construct-ncbigene.sparql.template $(TMPDIR)/ncbigene_dependencies.txt
+	@sed "/{{VALUES}}/r $(TMPDIR)/ncbigene_dependencies.txt" $< | sed '/{{VALUES}}/d' > $@
+
+mirror-ncbigene: | $(TMPDIR)
+	curl -L https://github.com/monarch-initiative/ncbi-gene/releases/latest/download/ncbi_gene.nt.gz --create-dirs --retry 4 --max-time 400 | gzip -d > $(TMPDIR)/ncbigene-download.nt
+	$(MAKE) ../sparql/construct-ncbigene.sparql
+	arq --data=$(TMPDIR)/ncbigene-download.nt --query=../sparql/construct-ncbigene.sparql > $(TMPDIR)/mirror-ncbigene.owl
+
+mirror-hgnc: | $(TMPDIR)
+	curl -L https://data.monarchinitiative.org/monarch-kg/latest/rdf/hgnc_gene.nt.gz --create-dirs --retry 4 --max-time 400 | gzip -d > $(TMPDIR)/hgnc-download.nt && \
+	arq --data=$(TMPDIR)/hgnc-download.nt --query=../sparql/construct-hgnc.sparql > $(TMPDIR)/mirror-hgnc.owl
+
+endif
+
+################################################################
+#### Release files #############################################
+################################################################
+
 # Base file assembly
-$(TMPDIR)/$(ONT)-full-unreasoned.owl: $(SRC) $(OTHER_SRC)
+$(TMPDIR)/$(ONT)-full-unreasoned.owl: $(SRC) $(OTHER_SRC) $(IMPORT_FILES)
 	$(ROBOT) merge --input $< $(patsubst %, -i %, $(OTHER_SRC)) $(patsubst %, -i %, $(IMPORT_FILES)) \
-		--output $@
+		--annotate-derived-from true --output $@
 
 # Run a robot explain to check for unsatisfiable classes before next step
 $(EXPLAIN_OUT_PATH): $(TMPDIR)/$(ONT)-full-unreasoned.owl
 	$(ROBOT) explain -i $< -M unsatisfiability --unsatisfiable random:10 --explanation $@
 
-### Merge Biolink Model categories
-$(BLMODEL):
-	wget $(BLMODEL_URL) -O $@
-
-$(ONT)-full.owl: $(TMPDIR)/$(ONT)-full-unreasoned.owl | all_robot_plugins
+# removed this --update $(SPARQLDIR)/bl-categories.ru as we decided it was no longer needed here.
+phenio-full.owl: $(TMPDIR)/$(ONT)-full-unreasoned.owl $(MAPPINGDIR)/cl.sssom.tsv $(MAPPINGDIR)/uberon.sssom.tsv $(MAPPINGDIR)/upheno-oba.sssom.tsv | all_robot_plugins
 	$(ROBOT) merge --input $< \
-		merge --input $(BLMODEL) \
-		query --update $(BLQUERY) \
-		unmerge --input $(BLMODEL) \
+		remove --select "<http://birdgenenames.org/cgnc/*>" \
+		remove --select "<http://flybase.org/reports/*>" \
+		remove --select "<http://purl.obolibrary.org/obo/CARO_*>" \
+		remove --select "<http://purl.obolibrary.org/obo/ECTO_*>" \
+		remove --select "<http://purl.obolibrary.org/obo/ENVO_*>" \
+		remove --select "<http://purl.obolibrary.org/obo/FAO_*>" \
+		remove --select "<http://purl.obolibrary.org/obo/GOCHE_*>" \
+		remove --select "<http://purl.obolibrary.org/obo/MFOMD_*>" \
+		remove --select "<http://purl.obolibrary.org/obo/MF_*>" \
+		remove --select "<http://purl.obolibrary.org/obo/MOD_*>" \
+		remove --select "<http://purl.obolibrary.org/obo/NCBITaxon_Union_*>" \
+		remove --select "<http://purl.obolibrary.org/obo/NCIT_*>" \
+		remove --select "<http://purl.obolibrary.org/obo/OBI_*>" \
+		remove --select "<http://purl.obolibrary.org/obo/OGMS_*>" \
+		remove --select "<http://purl.obolibrary.org/obo/PCO_*>" \
+		remove --select "<http://purl.obolibrary.org/obo/FOODON_*>" \
+		remove --select "<http://purl.obolibrary.org/obo/PO_*>" \
+		remove --select "<http://purl.obolibrary.org/obo/BTO_*>" \
+		remove --select "<http://purl.obolibrary.org/obo/RnorDv_*>" \
+		remove --select "<http://purl.obolibrary.org/obo/COB_*>" \
+		remove --select "<http://purl.obolibrary.org/obo/emapa#*>" \
+		remove --select "<http://www.ebi.ac.uk/efo/EFO_*>" \
+		remove --select "<http://purl.obolibrary.org/obo/TS_*>" \
+		remove --select "<http://www.informatics.jax.org/marker/MGI:*>" \
+		remove --select "<https://swisslipids.org/rdf/SLM_*>" \
+		remove --select "<http://purl.obolibrary.org/obo/OPL_*>" \
+		remove --select "<https://bioregistry.io/lipidmaps*>" \
+		remove --select "<http://org.semanticweb.owlapi/error*>" \
+		remove --term owl:Thing --term owl:Nothing \
+		rename --mappings config/property-map.tsv --allow-missing-entities true --allow-duplicates true \
+		sssom:inject --sssom $(MAPPINGDIR)/uberon.sssom.tsv \
+		             --sssom $(MAPPINGDIR)/cl.sssom.tsv \
+		              --ruleset config/mappings-to-uberon-bridge.rules \
+		sssom:inject --sssom $(MAPPINGDIR)/upheno-oba.sssom.tsv \
+		              --ruleset config/mappings-to-upheno-oba.rules \
 		upheno:extract-upheno-relations --root-phenotype UPHENO:0001001 --relation UPHENO:0000003 --relation UPHENO:0000001 \
 		annotate --ontology-iri $(URIBASE)/$@ $(ANNOTATE_ONTOLOGY_VERSION) \
 		convert -o $@.tmp.owl && mv $@.tmp.owl $@
