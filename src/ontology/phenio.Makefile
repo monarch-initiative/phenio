@@ -14,7 +14,7 @@ UPDATE_QUERY_PATH=              $(TMPDIR)/subq_update.sparql
 EXPLAIN_OUT_PATH=               $(TMPDIR)/explain_unsat.md
 RELEASE_ASSETS_AFTER_RELEASE=$(foreach n,$(RELEASE_ASSETS), ./$(n))
 
-RELEASE_ASSETS = $(ONT).owl $(ONT).json $(ONT)-relation-graph.tar.gz $(ONT)-test.owl
+RELEASE_ASSETS = $(ONT).owl.tar.gz $(ONT).json $(ONT)-relation-graph.tar.gz $(ONT)-test.owl
 
 ################################################################
 #### Components ################################################
@@ -43,10 +43,10 @@ ifeq ($(strip $(MIR)),true)
 
 ONTS_WITH_NCBIGENE_DATA = $(COMPONENTSDIR)/mondo.owl
 
-$(TMPDIR)/ncbigene_dependencies.txt: # $(ONTS_WITH_NCBIGENE_DATA)
+$(TMPDIR)/ncbigene_dependencies.txt: $(ONTS_WITH_NCBIGENE_DATA)
 	$(ROBOT) merge $(foreach n,$(ONTS_WITH_NCBIGENE_DATA), -i $(n)) \
 		query --query ../sparql/terms.sparql $(TMPDIR)/all_terms_for_ncbigene_dependencies.txt
-	tr -d '\r' < $(TMPDIR)/all_terms_for_ncbigene_dependencies.txt | sed 's/.*/<&>/' | grep ncbigene  > $@
+	tr -d '\r' < $(TMPDIR)/all_terms_for_ncbigene_dependencies.txt | sed 's/.*/<&>/' | grep ncbigene | sort | uniq  > $@
 
 ../sparql/construct-ncbigene.sparql: ../sparql/construct-ncbigene.sparql.template $(TMPDIR)/ncbigene_dependencies.txt
 	@sed "/{{VALUES}}/r $(TMPDIR)/ncbigene_dependencies.txt" $< | sed '/{{VALUES}}/d' > $@
@@ -155,6 +155,9 @@ $(ONT)-test.owl: $(ONT).owl
 
 # Compress relation-graph
 $(ONT)-relation-graph.tar.gz: $(ONT)-relation-graph.tsv
+	tar -czf $@ $<
+
+$(ONT).owl.tar.gz: $(ONT).owl
 	tar -czf $@ $<
 
 # Do release to Github
