@@ -56,3 +56,5 @@ phenio.owl
 phenio.json
 phenio-test.owl
 phenio-relation-graph.tar.gz
+src/ontology/phenio.owl.gz
+src/ontology/phenio-relation-graph.gz
