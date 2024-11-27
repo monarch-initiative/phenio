@@ -14,7 +14,7 @@ UPDATE_QUERY_PATH=              $(TMPDIR)/subq_update.sparql
 EXPLAIN_OUT_PATH=               $(TMPDIR)/explain_unsat.md
 RELEASE_ASSETS_AFTER_RELEASE=$(foreach n,$(RELEASE_ASSETS), ./$(n))
 
-RELEASE_ASSETS = $(ONT).owl.tar.gz $(ONT).json $(ONT)-relation-graph.tar.gz $(ONT)-test.owl
+RELEASE_ASSETS = $(ONT).owl.gz $(ONT).json $(ONT)-relation-graph.gz $(ONT)-test.owl
 
 ################################################################
 #### Components ################################################
@@ -154,11 +154,11 @@ $(ONT)-test.owl: $(ONT).owl
 	$(ROBOT) extract --method MIREOT --input $< --branch-from-term "UPHENO:0084945" --output $@
 
 # Compress relation-graph
-$(ONT)-relation-graph.tar.gz: $(ONT)-relation-graph.tsv
-	tar -czf $@ $<
+$(ONT)-relation-graph.gz: $(ONT)-relation-graph.tsv
+	gzip -c $< > $@
 
-$(ONT).owl.tar.gz: $(ONT).owl
-	tar -czf $@ $<
+$(ONT).owl.gz: $(ONT).owl
+	gzip -c $< > $@
 
 # Do release to Github
 public_release:
