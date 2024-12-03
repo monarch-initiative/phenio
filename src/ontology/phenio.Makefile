@@ -2,8 +2,6 @@
 # similar process including subq reconstruction
 
 # Constants
-BLMODEL = 					bl-model.ttl
-BLMODEL_URL =				"https://w3id.org/biolink/biolink-model.owl.ttl"
 MINIMAL_PATH=					$(TMPDIR)/$(ONT)-min.owl
 OT_MEMO=						50G
 OWLTOOLS=						OWLTOOLS_MEMORY=$(OT_MEMO) owltools --no-logging
