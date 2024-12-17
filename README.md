@@ -10,9 +10,9 @@ The latest version of the ontology can always be found at:
 
 https://github.com/monarch-initiative/phenio/releases/
 
-To download the latest version of `phenio.owl`, please use:
+To download the latest version of `phenio.owl` (note it is gzip compressed), please use:
 
-https://github.com/monarch-initiative/phenio/releases/latest/download/phenio.owl
+https://github.com/monarch-initiative/phenio/releases/latest/download/phenio.owl.gz
 
 ### Editors' version
 
