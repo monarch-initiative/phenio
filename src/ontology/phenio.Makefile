@@ -60,6 +60,11 @@ mirror-hgnc: | $(TMPDIR)
 
 endif
 
+# Retrieve list of node IDs expected to be in PHENIO by downstream consumers
+# Specifically Monarch
+missing_phenio_nodes.tsv: | $(TMPDIR)
+	curl -L https://data.monarchinitiative.org/monarch-kg-dev/latest/qc/missing_phenio_nodes.tsv --create-dirs --retry 4 --max-time 400 > $@
+
 ################################################################
 #### Release files #############################################
 ################################################################
