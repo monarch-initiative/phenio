@@ -75,7 +75,7 @@ add_chebi_ids: $(IMPORTDIR)/chebi_terms.txt missing_phenio_nodes.tsv
 ################################################################
 
 # Base file assembly
-$(TMPDIR)/$(ONT)-full-unreasoned.owl: $(SRC) $(OTHER_SRC) $(IMPORT_FILES)
+$(TMPDIR)/$(ONT)-full-unreasoned.owl: $(SRC) $(OTHER_SRC) $(IMPORT_FILES) add_chebi_ids
 	$(ROBOT) merge --input $< $(patsubst %, -i %, $(OTHER_SRC)) $(patsubst %, -i %, $(IMPORT_FILES)) \
 		--annotate-derived-from true --output $@
 
