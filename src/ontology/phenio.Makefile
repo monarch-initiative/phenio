@@ -65,17 +65,16 @@ endif
 missing_phenio_nodes.tsv: | $(TMPDIR)
 	curl -L https://data.monarchinitiative.org/monarch-kg-dev/latest/qc/missing_phenio_nodes.tsv --create-dirs --retry 4 --max-time 400 > $@
 
-# This could be done for all imports, but we are only doing it for ChEBI
-# Need to add all CHEBI IDs from missing_phenio_nodes.tsv to chebi_terms.txt
-add_chebi_ids: $(IMPORTDIR)/chebi_terms.txt missing_phenio_nodes.tsv
-	cat $^ | grep CHEBI | cut -f 1 > $(IMPORTDIR)/chebi_terms.txt
+# Just get the CHEBI IDs
+$(TMPDIR)/monarch_chebi_terms.txt: missing_phenio_nodes.tsv
+	cat $^ | grep CHEBI | cut -f 1 > $@
 
 ################################################################
 #### Release files #############################################
 ################################################################
 
 # Base file assembly
-$(TMPDIR)/$(ONT)-full-unreasoned.owl: $(SRC) $(OTHER_SRC) $(IMPORT_FILES) add_chebi_ids
+$(TMPDIR)/$(ONT)-full-unreasoned.owl: $(SRC) $(OTHER_SRC) $(IMPORT_FILES)
 	$(ROBOT) merge --input $< $(patsubst %, -i %, $(OTHER_SRC)) $(patsubst %, -i %, $(IMPORT_FILES)) \
 		--annotate-derived-from true --output $@
 
