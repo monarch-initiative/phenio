@@ -363,6 +363,9 @@ ANNOTATION_PROPERTIES=rdfs:label IAO:0000115
 $(IMPORTDIR)/%_terms_combined.txt: $(IMPORTSEED) $(IMPORTDIR)/%_terms.txt
 	if [ $(IMP) = true ]; then cat $^ | grep -v ^# | sort | uniq >  $@; fi
 
+# if the import is from chebi, we need to add the extra chebi terms
+$(IMPORTDIR)/chebi_terms_combined.txt: $(IMPORTSEED) $(TMPDIR)/monarch_chebi_terms.txt
+	if [ $(IMP) = true ]; then cat $^ | grep -v ^# | sort | uniq >  $@; fi
 
 ALL_TERMS_COMBINED = $(patsubst %, $(IMPORTDIR)/%_terms_combined.txt, $(IMPORTS))
 $(IMPORTDIR)/merged_terms_combined.txt: $(ALL_TERMS_COMBINED)
