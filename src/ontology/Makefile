@@ -362,7 +362,7 @@ ANNOTATION_PROPERTIES=rdfs:label IAO:0000115
 # Should be able to drop this if robot can just take a big messy list of terms as input.
 $(IMPORTDIR)/%_terms_combined.txt: $(IMPORTSEED) $(IMPORTDIR)/%_terms.txt $(TMPDIR)/monarch_chebi_terms.txt
 	if [ $(IMP) = true ]; then \
-		if [ "$*" = "chebi_terms_combined" ]; then \
+		if [ "$*" = "chebi" ]; then \
 			echo "Processing chebi terms"; \
 			cat $(word 1,$^) $(word 3,$^) | grep -v ^# | sort | uniq > $@; \
 		fi; \
