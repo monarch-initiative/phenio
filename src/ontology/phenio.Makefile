@@ -60,6 +60,16 @@ mirror-hgnc: | $(TMPDIR)
 
 endif
 
+# Retrieve list of node IDs expected to be in PHENIO by downstream consumers
+# Specifically Monarch
+missing_phenio_nodes.tsv: | $(TMPDIR)
+	curl -L https://data.monarchinitiative.org/monarch-kg-dev/latest/qc/missing_phenio_nodes.tsv --create-dirs --retry 4 --max-time 400 > $@
+
+# Just get the CHEBI IDs
+# and change them to URIs
+$(TMPDIR)/monarch_chebi_terms.txt: missing_phenio_nodes.tsv
+	cat $^ | grep CHEBI | cut -f 1 | sed 's/CHEBI:/http:\/\/purl.obolibrary.org\/obo\/CHEBI_/' > $@
+
 ################################################################
 #### Release files #############################################
 ################################################################
