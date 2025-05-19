@@ -360,9 +360,16 @@ ANNOTATION_PROPERTIES=rdfs:label IAO:0000115
 # This pattern uses ROBOT to generate an import module
 
 # Should be able to drop this if robot can just take a big messy list of terms as input.
-$(IMPORTDIR)/%_terms_combined.txt: $(IMPORTSEED) $(IMPORTDIR)/%_terms.txt
-	if [ $(IMP) = true ]; then cat $^ | grep -v ^# | sort | uniq >  $@; fi
-
+$(IMPORTDIR)/%_terms_combined.txt: $(IMPORTSEED) $(IMPORTDIR)/%_terms.txt $(TMPDIR)/monarch_chebi_terms.txt $(TMPDIR)/monarch_pr_terms.txt
+	if [ $(IMP) = true ] && [ "$*" = "chebi" ]; then \
+		echo "Processing chebi terms"; \
+		cat $(word 1,$^) $(word 3,$^) | grep -v ^# | sort | uniq > $@; \
+	elif [ $(IMP) = true ] && [ "$*" = "pr" ]; then \
+		echo "Processing pr terms"; \
+		cat $(word 1,$^) $(word 4,$^) | grep -v ^# | sort | uniq > $@; \
+	elif [ $(IMP) = true ]; then \
+		cat $(word 1,$^) $(word 2,$^) | grep -v ^# | sort | uniq > $@; \
+	fi
 
 ALL_TERMS_COMBINED = $(patsubst %, $(IMPORTDIR)/%_terms_combined.txt, $(IMPORTS))
 $(IMPORTDIR)/merged_terms_combined.txt: $(ALL_TERMS_COMBINED)
