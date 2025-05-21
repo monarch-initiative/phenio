@@ -69,9 +69,15 @@ missing_phenio_nodes.tsv: | $(TMPDIR)
 $(TMPDIR)/monarch_chebi_terms.txt: missing_phenio_nodes.tsv
 	cat $^ | grep CHEBI | cut -f 1 > $@
 
+$(IMPORTDIR)/chebi_terms_combined.txt:  $(IMPORTSEED) $(IMPORTDIR)/chebi_terms.txt $(TMPDIR)/monarch_chebi_terms.txt
+	cat $^ | grep -v ^# | sort | uniq > $@
+
 # Just get the PR IDs
 $(TMPDIR)/monarch_pr_terms.txt: missing_phenio_nodes.tsv
 	cat $^ | grep PR | cut -f 1 > $@
+
+$(IMPORTDIR)/pr_terms_combined.txt:  $(IMPORTSEED) $(IMPORTDIR)/pr_terms.txt $(TMPDIR)/monarch_pr_terms.txt
+	cat $^ | grep -v ^# | sort | uniq > $@
 
 ################################################################
 #### Release files #############################################
