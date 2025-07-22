@@ -16,26 +16,25 @@ These are the current imports in PHENIO
 
 | Import | URL | Type |
 | ------ | --- | ---- |
-| monochrom | https://raw.githubusercontent.com/monarch-initiative/monochrom/refs/heads/master/chr-base.owl | None |
-| ncbigene | http://purl.obolibrary.org/obo/ncbigene.owl | None |
-| hgnc | http://purl.obolibrary.org/obo/hgnc.owl | None |
-| so | http://purl.obolibrary.org/obo/so.owl | None |
-| bspo | http://purl.obolibrary.org/obo/bspo.owl | None |
-| wbls | http://purl.obolibrary.org/obo/wbls.owl | None |
-| zfs | http://purl.obolibrary.org/obo/zfa.owl | None |
-| fbdv | http://purl.obolibrary.org/obo/fbdv.owl | None |
-| chebi | https://raw.githubusercontent.com/obophenotype/chebi_obo_slim/main/chebi_slim.owl | None |
-| pr | https://raw.githubusercontent.com/obophenotype/pro_obo_slim/master/pr_slim.owl | None |
-| eco | http://purl.obolibrary.org/obo/eco.owl | None |
-| bfo | http://purl.obolibrary.org/obo/bfo.owl | None |
-| ro | http://purl.obolibrary.org/obo/ro.owl | None |
-| ncbitaxon-taxslim | http://purl.obolibrary.org/obo/ncbitaxon/subsets/taxslim.owl | None |
-| pato | http://purl.obolibrary.org/obo/pato.owl | None |
-| mpath | http://purl.obolibrary.org/obo/mpath.owl | None |
-| nbo | http://purl.obolibrary.org/obo/nbo.owl | None |
-| upheno-bridge | https://raw.githubusercontent.com/obophenotype/upheno-dev/refs/heads/master/src/ontology/components/upheno-bridge.owl | None |
-| upheno-alignments | https://raw.githubusercontent.com/obophenotype/upheno-dev/refs/heads/master/src/ontology/components/upheno-alignments.owl | None |
-
+| monochrom | https://raw.githubusercontent.com/monarch-initiative/monochrom/refs/heads/master/chr-base.owl | slme |
+| ncbigene | http://purl.obolibrary.org/obo/ncbigene.owl | slme |
+| hgnc | http://purl.obolibrary.org/obo/hgnc.owl | slme |
+| so | http://purl.obolibrary.org/obo/so.owl | slme |
+| bspo | http://purl.obolibrary.org/obo/bspo.owl | slme |
+| wbls | http://purl.obolibrary.org/obo/wbls.owl | slme |
+| zfs | http://purl.obolibrary.org/obo/zfa.owl | slme |
+| fbdv | http://purl.obolibrary.org/obo/fbdv.owl | slme |
+| chebi | https://raw.githubusercontent.com/obophenotype/chebi_obo_slim/main/chebi_slim.owl | slme |
+| pr | https://raw.githubusercontent.com/obophenotype/pro_obo_slim/master/pr_slim.owl | slme |
+| eco | http://purl.obolibrary.org/obo/eco.owl | slme |
+| bfo | http://purl.obolibrary.org/obo/bfo.owl | slme |
+| ro | http://purl.obolibrary.org/obo/ro.owl | slme |
+| ncbitaxon-taxslim | http://purl.obolibrary.org/obo/ncbitaxon/subsets/taxslim.owl | slme |
+| pato | http://purl.obolibrary.org/obo/pato.owl | slme |
+| mpath | http://purl.obolibrary.org/obo/mpath.owl | slme |
+| nbo | http://purl.obolibrary.org/obo/nbo.owl | slme |
+| upheno-bridge | https://raw.githubusercontent.com/obophenotype/upheno-dev/refs/heads/master/src/ontology/components/upheno-bridge.owl | slme |
+| upheno-alignments | https://raw.githubusercontent.com/obophenotype/upheno-dev/refs/heads/master/src/ontology/components/upheno-alignments.owl | slme |
 ## Components
 Components, in contrast to imports, are considered full members of the ontology. This means that any axiom in a component is also included in the ontology base - which means it is considered _native_ to the ontology. While this sounds complicated, consider this: conceptually, no component should be part of more than one ontology. If that seems to be the case, we are most likely talking about an import. Components are often not needed for ontologies, but there are some use cases:
 
