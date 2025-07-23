@@ -4,6 +4,7 @@ github_org: monarch-initiative
 repo: phenio
 report_fail_on: none
 use_mappings: True
+manage_import_declarations: False
 release_artefacts:
   - base
   - full
