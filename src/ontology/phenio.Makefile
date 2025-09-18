@@ -184,6 +184,11 @@ public_release:
 	gh auth login
 	gh release create $(GHVERSION) --title "$(VERSION)" --draft $(RELEASE_ASSETS_AFTER_RELEASE) --generate-notes
 
+# Do release to Github, but assume the gh auth is already done
+public_release_auto:
+	ls -alt $(RELEASE_ASSETS_AFTER_RELEASE)
+	gh release create $(GHVERSION) --title "$(VERSION)" --draft $(RELEASE_ASSETS_AFTER_RELEASE) --generate-notes
+
 # Produce the relation graph (i.e., the fully materialized set of relations) in KGX format and json
 # Note that this will also produce the main ontology file (OWL)
 relation_graph: $(ONT)-relation-graph.tsv $(ONT).json
