@@ -1,0 +1,30 @@
+PREFIX semapv: <https://w3id.org/semapv/vocab/>
+PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl:    <http://www.w3.org/2002/07/owl#>
+PREFIX prov:   <http://www.w3.org/ns/prov#>
+PREFIX UPHENO: <http://purl.obolibrary.org/obo/UPHENO_>
+
+CONSTRUCT {
+  ?x rdfs:subClassOf ?upheno .
+  _:axiom a owl:Axiom ;
+          owl:annotatedSource ?x ;
+          owl:annotatedProperty rdfs:subClassOf ;
+          owl:annotatedTarget ?upheno ;
+          prov:wasGeneratedBy <http://purl.obolibrary.org/obo/upheno/phenio-sspo-subclass.sparql> .
+}
+WHERE {
+  {
+    ?x semapv:crossSpeciesExactMatch ?y .
+  }
+  UNION
+  {
+    ?y semapv:crossSpeciesExactMatch ?x .
+  }
+
+  ?y rdfs:subClassOf ?upheno .
+  ?upheno rdfs:subClassOf+ UPHENO:0001001 .
+  FILTER STRSTARTS(STR(?upheno), "http://purl.obolibrary.org/obo/UPHENO_")
+  FILTER (?x != ?y)
+
+  MINUS { ?x rdfs:subClassOf ?upheno }
+}

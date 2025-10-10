@@ -10,7 +10,7 @@
 # More information: https://github.com/INCATools/ontology-development-kit/
 
 # Fingerprint of the configuration file when this Makefile was last generated
-CONFIG_HASH=                582f442ebbc916c37e05a44ef3ece6007f5ff214328af4f60a444d6ea6fbbebc
+CONFIG_HASH=                40abc1a177c5f6e0296e7bb2662cd01950ab9ec7196c6417d42de29a0e601334
 
 
 # ----------------------------------------
@@ -70,7 +70,7 @@ MAPPING_RELEASE_FILES=      $(foreach n,$(MAPPINGS), $(MAPPINGDIR)/$(n).sssom.ts
 
 FORMATS = $(sort  owl json owl)
 FORMATS_INCL_TSV = $(sort $(FORMATS) tsv)
-RELEASE_ARTEFACTS = $(sort $(ONT)-base $(ONT)-full phenio-sspo-equivalent phenio-sspo-subclass phenio-sspo-nosubclass )
+RELEASE_ARTEFACTS = $(sort $(ONT)-base $(ONT)-full phenio-sspo-equivalent )
 
 ifeq ($(ODK_DEBUG),yes)
 ODK_DEBUG_FILE = debug.log
@@ -607,7 +607,7 @@ endif # MIR=true
 ifeq ($(MIR),true)
 .PHONY: component-download-upheno.owl
 component-download-upheno.owl: | $(TMPDIR)
-	$(ROBOT) merge -I https://github.com/obophenotype/upheno-dev/releases/latest/download/upheno-base.owl \
+	$(ROBOT) merge -I http://purl.obolibrary.org/obo/upheno/upheno-base.owl \
 		 annotate --annotation owl:versionInfo $(VERSION) --output $(TMPDIR)/$@.owl
 
 $(COMPONENTSDIR)/upheno.owl: component-download-upheno.owl $(TMPDIR)/stamp-component-upheno.owl
@@ -1127,14 +1127,14 @@ mirror-nbo: | $(TMPDIR)
 .PHONY: mirror-upheno-bridge
 .PRECIOUS: $(MIRRORDIR)/upheno-bridge.owl
 mirror-upheno-bridge: | $(TMPDIR)
-	$(ROBOT) convert -I https://raw.githubusercontent.com/obophenotype/upheno-dev/refs/heads/master/src/ontology/components/upheno-bridge.owl -o $(TMPDIR)/$@.owl
+	$(ROBOT) convert -I https://raw.githubusercontent.com/obophenotype/upheno/refs/heads/master/src/ontology/components/upheno-bridge.owl -o $(TMPDIR)/$@.owl
 
 
 ## ONTOLOGY: upheno-alignments
 .PHONY: mirror-upheno-alignments
 .PRECIOUS: $(MIRRORDIR)/upheno-alignments.owl
 mirror-upheno-alignments: | $(TMPDIR)
-	$(ROBOT) convert -I https://raw.githubusercontent.com/obophenotype/upheno-dev/refs/heads/master/src/ontology/components/upheno-alignments.owl -o $(TMPDIR)/$@.owl
+	$(ROBOT) convert -I https://raw.githubusercontent.com/obophenotype/upheno/refs/heads/master/src/ontology/components/upheno-alignments.owl -o $(TMPDIR)/$@.owl
 
 ALL_MIRRORS = $(patsubst %, $(MIRRORDIR)/%.owl, $(IMPORTS))
 MERGE_MIRRORS = true
@@ -1215,7 +1215,7 @@ endif
 
 ifeq ($(MIR),true)
 $(MAPPINGDIR)/upheno-oba.sssom.tsv:
-	wget "https://raw.githubusercontent.com/obophenotype/upheno-dev/refs/heads/master/src/mappings/upheno-oba.sssom.tsv" -O $@
+	wget "https://raw.githubusercontent.com/obophenotype/upheno/refs/heads/master/src/mappings/upheno-oba.sssom.tsv" -O $@
 endif
 
 # ----------------------------------------
@@ -1232,14 +1232,6 @@ $(ONT)-full.json: $(ONT)-full.owl
 		convert --check false -f json -o $@.tmp.json &&\
 		mv $@.tmp.json $@
 phenio-sspo-equivalent.json: phenio-sspo-equivalent.owl
-	$(ROBOT) annotate --input $< --ontology-iri $(ONTBASE)/$@ $(ANNOTATE_ONTOLOGY_VERSION) \
-		convert --check false -f json -o $@.tmp.json &&\
-		mv $@.tmp.json $@
-phenio-sspo-subclass.json: phenio-sspo-subclass.owl
-	$(ROBOT) annotate --input $< --ontology-iri $(ONTBASE)/$@ $(ANNOTATE_ONTOLOGY_VERSION) \
-		convert --check false -f json -o $@.tmp.json &&\
-		mv $@.tmp.json $@
-phenio-sspo-nosubclass.json: phenio-sspo-nosubclass.owl
 	$(ROBOT) annotate --input $< --ontology-iri $(ONTBASE)/$@ $(ANNOTATE_ONTOLOGY_VERSION) \
 		convert --check false -f json -o $@.tmp.json &&\
 		mv $@.tmp.json $@
@@ -1289,12 +1281,6 @@ $(ONT)-full.owl: $(EDIT_PREPROCESSED) $(OTHER_SRC) $(IMPORT_FILES)
 		$(SHARED_ROBOT_COMMANDS) annotate --ontology-iri $(ONTBASE)/$@ $(ANNOTATE_ONTOLOGY_VERSION) --output $@.tmp.owl && mv $@.tmp.owl $@
 
 phenio-sspo-equivalent.owl:
-	echo "ERROR: You have configured a custom release artefact ($@); this release artefact needs to be define in phenio.Makefile!" && false
-
-phenio-sspo-subclass.owl:
-	echo "ERROR: You have configured a custom release artefact ($@); this release artefact needs to be define in phenio.Makefile!" && false
-
-phenio-sspo-nosubclass.owl:
 	echo "ERROR: You have configured a custom release artefact ($@); this release artefact needs to be define in phenio.Makefile!" && false
 # ----------------------------------------
 # Debugging Tools

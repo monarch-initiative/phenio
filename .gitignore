@@ -94,3 +94,5 @@ phenio-test.owl
 phenio-relation-graph.tar.gz
 src/ontology/phenio.owl.gz
 src/ontology/phenio-relation-graph.gz
+src/ontology/phenio-sspo-equivalent.owl
+src/ontology/phenio-sspo-subclass.owl

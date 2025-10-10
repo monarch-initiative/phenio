@@ -134,6 +134,46 @@ phenio-full.owl: $(TMPDIR)/$(ONT)-full-unreasoned.owl $(MAPPINGDIR)/cl.sssom.tsv
 		annotate --ontology-iri $(URIBASE)/$@ $(ANNOTATE_ONTOLOGY_VERSION) \
 		convert -o $@.tmp.owl && mv $@.tmp.owl $@
 
+###############################
+## Custom release variants ####
+###############################
+
+tmp/phenio-sspo-equivalent.owl: phenio.owl
+	$(ROBOT) query --input phenio.owl \
+		 --query ../sparql/phenio-sspo-equivalent.sparql $@
+
+phenio-sspo-equivalent.owl: tmp/phenio-sspo-equivalent.owl phenio.owl
+	$(ROBOT) merge -i phenio.owl -i tmp/phenio-sspo-equivalent.owl \
+		remove --axioms "disjoint" \
+		reason \
+		relax \
+		reduce \
+		annotate --ontology-iri $(URIBASE)/$@ $(ANNOTATE_ONTOLOGY_VERSION) \
+		convert -o $@
+
+# The below was a failed attempt to  create a phenio version without subclass axioms between SSPO phenotypes
+#tmp/phenio-sspo-subclass.owl: phenio.owl
+#	$(ROBOT) query --input phenio.owl \
+#		 --query ../sparql/phenio-sspo-subclass.sparql $@
+#
+#phenio-sspo-subclass.owl: tmp/phenio-sspo-subclass.owl phenio.owl
+#	$(ROBOT) merge -i phenio.owl -i tmp/phenio-sspo-subclass.owl \
+#		remove --axioms "disjoint" \
+#		remove --term UPHENO:0001001 --select "descendants" --select "HP:* MP:* ZP:*" --drop-axiom-annotations all \
+#		remove --term UPHENO:0001001 --select "descendants" --select "HP:* MP:* ZP:*" --axioms "SubClassOf" --trim false --signature true \
+#		relax \
+#		reduce \
+#		annotate --ontology-iri $(URIBASE)/$@ $(ANNOTATE_ONTOLOGY_VERSION) \
+#		convert -o $@
+
+full_test_build_equivalent:
+	$(MAKE) phenio-sspo-equivalent.owl
+	$(MAKE) diff-phenio-sspo-equivalent
+
+diff-%: phenio.owl
+	$(ROBOT) diff --left phenio.owl --right $*.owl -o tmp/diff_$*.txt
+	$(ROBOT) merge -i $*.owl unmerge -i phenio.owl -o tmp/unmerged_$*.owl
+
 tmp/diff.txt: $(ONT).owl $(ONT)-old.owl
 	$(ROBOT) diff --left $< --right $(word 2,$^) --format txt -o $@
 

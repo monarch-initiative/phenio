@@ -8,6 +8,7 @@ manage_import_declarations: False
 release_artefacts:
   - base
   - full
+  - custom-phenio-sspo-equivalent
 primary_release: full
 export_formats:
   - owl
@@ -23,7 +24,7 @@ sssom_mappingset_group:
       mirror_from: http://purl.obolibrary.org/obo/cl/cl.sssom.tsv
     - id: upheno-oba
       maintenance: mirror
-      mirror_from: https://raw.githubusercontent.com/obophenotype/upheno-dev/refs/heads/master/src/mappings/upheno-oba.sssom.tsv
+      mirror_from: https://raw.githubusercontent.com/obophenotype/upheno/refs/heads/master/src/mappings/upheno-oba.sssom.tsv
 import_group:
   use_base_merging: TRUE
   exclude_iri_patterns:
@@ -125,11 +126,11 @@ import_group:
       base_iris:
         - http://purl.obolibrary.org/obo/NBO_
     
-    # Bridge Ontologies (Anatomy)
+    # Bridge Ontologies (Phenotypes) - we import these as import modules to only get the bridging axioms relevant to PHENIO
     - id: upheno-bridge
-      mirror_from: https://raw.githubusercontent.com/obophenotype/upheno-dev/refs/heads/master/src/ontology/components/upheno-bridge.owl
+      mirror_from: https://raw.githubusercontent.com/obophenotype/upheno/refs/heads/master/src/ontology/components/upheno-bridge.owl
     - id: upheno-alignments
-      mirror_from: https://raw.githubusercontent.com/obophenotype/upheno-dev/refs/heads/master/src/ontology/components/upheno-alignments.owl
+      mirror_from: https://raw.githubusercontent.com/obophenotype/upheno/refs/heads/master/src/ontology/components/upheno-alignments.owl
 components:
   products:
     - filename: go.owl
@@ -154,7 +155,7 @@ components:
     # Phenotype Ontologies
     - filename: upheno.owl
       # This should be a PURL!
-      source: https://github.com/obophenotype/upheno-dev/releases/latest/download/upheno-base.owl
+      source: http://purl.obolibrary.org/obo/upheno/upheno-base.owl
       base_iris:
         - http://purl.obolibrary.org/obo/UPHENO_
     - filename: oba.owl
