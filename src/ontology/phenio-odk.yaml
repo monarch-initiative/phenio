@@ -92,7 +92,7 @@ import_group:
         - http://purl.obolibrary.org/obo/FBdv_
     - id: chebi
       make_base: TRUE
-      mirror_from: https://raw.githubusercontent.com/obophenotype/chebi_obo_slim/main/chebi_slim.owl
+      mirror_from: https://github.com/obophenotype/chebi_obo_slim/releases/latest/download/chebi_slim.owl
       base_iris:
         - http://purl.obolibrary.org/obo/CHEBI_
     - id: pr

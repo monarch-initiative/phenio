@@ -24,7 +24,7 @@ These are the current imports in PHENIO
 | wbls | http://purl.obolibrary.org/obo/wbls.owl | slme |
 | zfs | http://purl.obolibrary.org/obo/zfa.owl | slme |
 | fbdv | http://purl.obolibrary.org/obo/fbdv.owl | slme |
-| chebi | https://raw.githubusercontent.com/obophenotype/chebi_obo_slim/main/chebi_slim.owl | slme |
+| chebi | https://github.com/obophenotype/chebi_obo_slim/releases/latest/download/chebi_slim.owl | slme |
 | pr | https://raw.githubusercontent.com/obophenotype/pro_obo_slim/master/pr_slim.owl | slme |
 | eco | http://purl.obolibrary.org/obo/eco.owl | slme |
 | bfo | http://purl.obolibrary.org/obo/bfo.owl | slme |
