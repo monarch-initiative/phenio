@@ -10,13 +10,15 @@ SUBQ_QUERY_PATH=                $(SPARQLDIR)/subq_construct.sparql
 SUBQ_QUERY_RESULT_PATH=         $(TMPDIR)/$(ONT)-full_subqs_queryresult.tmp.owl
 UPDATE_QUERY_PATH=              $(TMPDIR)/subq_update.sparql
 EXPLAIN_OUT_PATH=               $(TMPDIR)/explain_unsat.md
-RELEASE_ASSETS_AFTER_RELEASE=$(foreach n,$(RELEASE_ASSETS), ./$(n))
 
-RELEASE_ASSETS = $(ONT).owl.gz $(ONT).json $(ONT)-relation-graph.gz $(ONT)-test.owl
+RELEASE_ASSETS = $(ONT).owl.gz $(ONT).json $(ONT)-relation-graph.gz $(ONT)-test.owl $(ONT)-sspo-equivalent.owl.gz
+RELEASE_ASSETS_AFTER_RELEASE=$(foreach n,$(RELEASE_ASSETS), ./$(n))
 
 ################################################################
 #### Components ################################################
 ################################################################
+
+ifeq ($(MIR),true)
 
 $(COMPONENTSDIR)/go.owl: component-download-go.owl
 	if [ $(COMP) = true ]; then if cmp -s $(TMPDIR)/component-download-go.owl.owl $(TMPDIR)/component-download-go.owl.tmp.owl ; then echo "Component identical."; \
@@ -32,6 +34,8 @@ $(COMPONENTSDIR)/emapa.owl: component-download-emapa.owl
 		cp $(TMPDIR)/component-download-emapa.owl.owl $(TMPDIR)/component-download-emapa.owl.tmp.owl &&\
 		$(ROBOT) query -i $(TMPDIR)/component-download-emapa.owl.owl --update ../sparql/inject-emapa-root.ru \
 		relax reduce annotate --ontology-iri $(ONTBASE)/$@ $(ANNOTATE_ONTOLOGY_VERSION) -o $@; fi; fi
+
+endif # MIR=true
 
 ################################################################
 #### Imports ###################################################
@@ -110,6 +114,8 @@ phenio-full.owl: $(TMPDIR)/$(ONT)-full-unreasoned.owl $(MAPPINGDIR)/cl.sssom.tsv
 		remove --select "<http://purl.obolibrary.org/obo/OBI_*>" \
 		remove --select "<http://purl.obolibrary.org/obo/OGMS_*>" \
 		remove --select "<http://purl.obolibrary.org/obo/PCO_*>" \
+		remove --select "<hhttps://purl.brain-bican.org/ontology/mbao/MBA_*>" \
+		remove --select "<http://purl.obolibrary.org/obo/CLM_*>" \
 		remove --select "<http://purl.obolibrary.org/obo/FOODON_*>" \
 		remove --select "<http://purl.obolibrary.org/obo/PO_*>" \
 		remove --select "<http://purl.obolibrary.org/obo/BTO_*>" \
@@ -133,6 +139,46 @@ phenio-full.owl: $(TMPDIR)/$(ONT)-full-unreasoned.owl $(MAPPINGDIR)/cl.sssom.tsv
 		upheno:extract-upheno-relations --root-phenotype UPHENO:0001001 --relation UPHENO:0000003 --relation UPHENO:0000001 \
 		annotate --ontology-iri $(URIBASE)/$@ $(ANNOTATE_ONTOLOGY_VERSION) \
 		convert -o $@.tmp.owl && mv $@.tmp.owl $@
+
+###############################
+## Custom release variants ####
+###############################
+
+tmp/phenio-sspo-equivalent.owl: phenio.owl
+	$(ROBOT) query --input phenio.owl \
+		 --query ../sparql/phenio-sspo-equivalent.sparql $@
+
+phenio-sspo-equivalent.owl: tmp/phenio-sspo-equivalent.owl phenio.owl
+	$(ROBOT) merge -i phenio.owl -i tmp/phenio-sspo-equivalent.owl \
+		remove --axioms "disjoint" \
+		reason \
+		relax \
+		reduce \
+		annotate --ontology-iri $(URIBASE)/$@ $(ANNOTATE_ONTOLOGY_VERSION) \
+		convert -o $@
+
+# The below was a failed attempt to  create a phenio version without subclass axioms between SSPO phenotypes
+#tmp/phenio-sspo-subclass.owl: phenio.owl
+#	$(ROBOT) query --input phenio.owl \
+#		 --query ../sparql/phenio-sspo-subclass.sparql $@
+#
+#phenio-sspo-subclass.owl: tmp/phenio-sspo-subclass.owl phenio.owl
+#	$(ROBOT) merge -i phenio.owl -i tmp/phenio-sspo-subclass.owl \
+#		remove --axioms "disjoint" \
+#		remove --term UPHENO:0001001 --select "descendants" --select "HP:* MP:* ZP:*" --drop-axiom-annotations all \
+#		remove --term UPHENO:0001001 --select "descendants" --select "HP:* MP:* ZP:*" --axioms "SubClassOf" --trim false --signature true \
+#		relax \
+#		reduce \
+#		annotate --ontology-iri $(URIBASE)/$@ $(ANNOTATE_ONTOLOGY_VERSION) \
+#		convert -o $@
+
+full_test_build_equivalent:
+	$(MAKE) phenio-sspo-equivalent.owl
+	$(MAKE) diff-phenio-sspo-equivalent
+
+diff-%: phenio.owl
+	$(ROBOT) diff --left phenio.owl --right $*.owl -o tmp/diff_$*.txt
+	$(ROBOT) merge -i $*.owl unmerge -i phenio.owl -o tmp/unmerged_$*.owl
 
 tmp/diff.txt: $(ONT).owl $(ONT)-old.owl
 	$(ROBOT) diff --left $< --right $(word 2,$^) --format txt -o $@
@@ -175,6 +221,9 @@ $(ONT)-relation-graph.gz: $(ONT)-relation-graph.tsv
 	gzip -c $< > $@
 
 $(ONT).owl.gz: $(ONT).owl
+	gzip -c $< > $@
+
+phenio-sspo-equivalent.owl.gz: phenio-sspo-equivalent.owl
 	gzip -c $< > $@
 
 # Do release to Github

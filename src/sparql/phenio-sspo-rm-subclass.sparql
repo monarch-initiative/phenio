@@ -1,0 +1,17 @@
+PREFIX semapv: <https://w3id.org/semapv/vocab/>
+PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl:    <http://www.w3.org/2002/07/owl#>
+PREFIX oio:    <http://www.geneontology.org/formats/oboInOwl#>
+PREFIX UPHENO: <http://purl.obolibrary.org/obo/UPHENO_>
+
+DELETE {
+    ?sspo_phenotype rdfs:subClassOf ?not_upheno_parent .
+}
+WHERE {
+    ?sspo_phenotype rdfs:subClassOf+ UPHENO:0001001 .
+    ?sspo_phenotype rdfs:subClassOf ?not_upheno_parent .
+
+    FILTER (!STRSTARTS(STR(?sspo_phenotype), "http://purl.obolibrary.org/obo/UPHENO_"))
+    FILTER (!STRSTARTS(STR(?not_upheno_parent), "http://purl.obolibrary.org/obo/UPHENO_"))
+    FILTER (?sspo_phenotype != ?not_upheno_parent)
+}

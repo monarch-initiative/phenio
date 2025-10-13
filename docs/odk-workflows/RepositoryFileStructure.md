@@ -24,7 +24,7 @@ These are the current imports in PHENIO
 | wbls | http://purl.obolibrary.org/obo/wbls.owl | slme |
 | zfs | http://purl.obolibrary.org/obo/zfa.owl | slme |
 | fbdv | http://purl.obolibrary.org/obo/fbdv.owl | slme |
-| chebi | https://raw.githubusercontent.com/obophenotype/chebi_obo_slim/main/chebi_slim.owl | slme |
+| chebi | https://github.com/obophenotype/chebi_obo_slim/releases/latest/download/chebi_slim.owl | slme |
 | pr | https://raw.githubusercontent.com/obophenotype/pro_obo_slim/master/pr_slim.owl | slme |
 | eco | http://purl.obolibrary.org/obo/eco.owl | slme |
 | bfo | http://purl.obolibrary.org/obo/bfo.owl | slme |
@@ -33,8 +33,8 @@ These are the current imports in PHENIO
 | pato | http://purl.obolibrary.org/obo/pato.owl | slme |
 | mpath | http://purl.obolibrary.org/obo/mpath.owl | slme |
 | nbo | http://purl.obolibrary.org/obo/nbo.owl | slme |
-| upheno-bridge | https://raw.githubusercontent.com/obophenotype/upheno-dev/refs/heads/master/src/ontology/components/upheno-bridge.owl | slme |
-| upheno-alignments | https://raw.githubusercontent.com/obophenotype/upheno-dev/refs/heads/master/src/ontology/components/upheno-alignments.owl | slme |
+| upheno-bridge | https://raw.githubusercontent.com/obophenotype/upheno/refs/heads/master/src/ontology/components/upheno-bridge.owl | slme |
+| upheno-alignments | https://raw.githubusercontent.com/obophenotype/upheno/refs/heads/master/src/ontology/components/upheno-alignments.owl | slme |
 ## Components
 Components, in contrast to imports, are considered full members of the ontology. This means that any axiom in a component is also included in the ontology base - which means it is considered _native_ to the ontology. While this sounds complicated, consider this: conceptually, no component should be part of more than one ontology. If that seems to be the case, we are most likely talking about an import. Components are often not needed for ontologies, but there are some use cases:
 
@@ -49,7 +49,7 @@ These are the components in PHENIO
 | go.owl | http://purl.obolibrary.org/obo/go/go-base.owl |
 | mondo.owl | http://purl.obolibrary.org/obo/mondo/mondo-base.owl |
 | maxo.owl | http://purl.obolibrary.org/obo/maxo/maxo-base.owl |
-| upheno.owl | https://github.com/obophenotype/upheno-dev/releases/latest/download/upheno-base.owl |
+| upheno.owl | http://purl.obolibrary.org/obo/upheno/upheno-base.owl |
 | oba.owl | http://purl.obolibrary.org/obo/oba/oba-base.owl |
 | hp.owl | http://purl.obolibrary.org/obo/hp/hp-base.owl |
 | fypo.owl | http://purl.obolibrary.org/obo/fypo/fypo-base.owl |
