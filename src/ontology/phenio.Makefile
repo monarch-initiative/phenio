@@ -10,13 +10,15 @@ SUBQ_QUERY_PATH=                $(SPARQLDIR)/subq_construct.sparql
 SUBQ_QUERY_RESULT_PATH=         $(TMPDIR)/$(ONT)-full_subqs_queryresult.tmp.owl
 UPDATE_QUERY_PATH=              $(TMPDIR)/subq_update.sparql
 EXPLAIN_OUT_PATH=               $(TMPDIR)/explain_unsat.md
-RELEASE_ASSETS_AFTER_RELEASE=$(foreach n,$(RELEASE_ASSETS), ./$(n))
 
-RELEASE_ASSETS = $(ONT).owl.gz $(ONT).json $(ONT)-relation-graph.gz $(ONT)-test.owl
+RELEASE_ASSETS = $(ONT).owl.gz $(ONT).json $(ONT)-relation-graph.gz $(ONT)-test.owl $(ONT)-sspo-equivalent.owl.gz
+RELEASE_ASSETS_AFTER_RELEASE=$(foreach n,$(RELEASE_ASSETS), ./$(n))
 
 ################################################################
 #### Components ################################################
 ################################################################
+
+ifeq ($(MIR),true)
 
 $(COMPONENTSDIR)/go.owl: component-download-go.owl
 	if [ $(COMP) = true ]; then if cmp -s $(TMPDIR)/component-download-go.owl.owl $(TMPDIR)/component-download-go.owl.tmp.owl ; then echo "Component identical."; \
@@ -32,6 +34,8 @@ $(COMPONENTSDIR)/emapa.owl: component-download-emapa.owl
 		cp $(TMPDIR)/component-download-emapa.owl.owl $(TMPDIR)/component-download-emapa.owl.tmp.owl &&\
 		$(ROBOT) query -i $(TMPDIR)/component-download-emapa.owl.owl --update ../sparql/inject-emapa-root.ru \
 		relax reduce annotate --ontology-iri $(ONTBASE)/$@ $(ANNOTATE_ONTOLOGY_VERSION) -o $@; fi; fi
+
+endif # MIR=true
 
 ################################################################
 #### Imports ###################################################
@@ -215,6 +219,9 @@ $(ONT)-relation-graph.gz: $(ONT)-relation-graph.tsv
 	gzip -c $< > $@
 
 $(ONT).owl.gz: $(ONT).owl
+	gzip -c $< > $@
+
+phenio-sspo-equivalent.owl.gz: phenio-sspo-equivalent.owl
 	gzip -c $< > $@
 
 # Do release to Github
