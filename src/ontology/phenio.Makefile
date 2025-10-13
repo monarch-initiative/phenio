@@ -114,6 +114,8 @@ phenio-full.owl: $(TMPDIR)/$(ONT)-full-unreasoned.owl $(MAPPINGDIR)/cl.sssom.tsv
 		remove --select "<http://purl.obolibrary.org/obo/OBI_*>" \
 		remove --select "<http://purl.obolibrary.org/obo/OGMS_*>" \
 		remove --select "<http://purl.obolibrary.org/obo/PCO_*>" \
+		remove --select "<hhttps://purl.brain-bican.org/ontology/mbao/MBA_*>" \
+		remove --select "<http://purl.obolibrary.org/obo/CLM_*>" \
 		remove --select "<http://purl.obolibrary.org/obo/FOODON_*>" \
 		remove --select "<http://purl.obolibrary.org/obo/PO_*>" \
 		remove --select "<http://purl.obolibrary.org/obo/BTO_*>" \
