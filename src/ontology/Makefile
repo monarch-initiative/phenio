@@ -10,7 +10,7 @@
 # More information: https://github.com/INCATools/ontology-development-kit/
 
 # Fingerprint of the configuration file when this Makefile was last generated
-CONFIG_HASH=                54f36db115c6c77e8be9f3c4ce65dc2c04c59ba8bda026bc48bf5607dc7e4345
+CONFIG_HASH=                8a1e7113eb999f6d8e09c96cc08cc2dcec13f87d8e4d4ef643c332d1fa5da07b
 
 
 # ----------------------------------------
@@ -196,7 +196,7 @@ all_main: $(MAIN_FILES)
 # ----------------------------------------
 
 
-IMPORTS =  monochrom ncbigene hgnc so bspo wbls zfs fbdv chebi pr eco bfo ro ncbitaxon-taxslim pato mpath nbo upheno-bridge upheno-alignments
+IMPORTS =  monochrom ncbigene hgnc so bspo wbls zfs fbdv chebi pr eco bfo ro ncbitaxon-taxslim pato mpath nbo foodon upheno-bridge upheno-alignments
 
 IMPORT_ROOTS =  $(IMPORTDIR)/merged_import
 IMPORT_OWL_FILES = $(foreach n,$(IMPORT_ROOTS), $(n).owl)
@@ -1121,6 +1121,14 @@ mirror-mpath: | $(TMPDIR)
 mirror-nbo: | $(TMPDIR)
 	curl -L $(OBOBASE)/nbo.owl --create-dirs -o $(TMPDIR)/nbo-download.owl --retry 4 --max-time 400 && \
 	$(ROBOT) remove -i $(TMPDIR)/nbo-download.owl --base-iri http://purl.obolibrary.org/obo/NBO_ --axioms external --preserve-structure false --trim false -o $(TMPDIR)/$@.owl
+
+
+## ONTOLOGY: foodon
+.PHONY: mirror-foodon
+.PRECIOUS: $(MIRRORDIR)/foodon.owl
+mirror-foodon: | $(TMPDIR)
+	curl -L $(OBOBASE)/foodon.owl --create-dirs -o $(TMPDIR)/foodon-download.owl --retry 4 --max-time 400 && \
+	$(ROBOT) remove -i $(TMPDIR)/foodon-download.owl --base-iri http://purl.obolibrary.org/obo/FOODON_ --axioms external --preserve-structure false --trim false -o $(TMPDIR)/$@.owl
 
 
 ## ONTOLOGY: upheno-bridge

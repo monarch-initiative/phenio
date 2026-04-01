@@ -33,6 +33,7 @@ These are the current imports in PHENIO
 | pato | http://purl.obolibrary.org/obo/pato.owl | slme |
 | mpath | http://purl.obolibrary.org/obo/mpath.owl | slme |
 | nbo | http://purl.obolibrary.org/obo/nbo.owl | slme |
+| foodon | http://purl.obolibrary.org/obo/foodon.owl | slme |
 | upheno-bridge | https://raw.githubusercontent.com/obophenotype/upheno/refs/heads/master/src/ontology/components/upheno-bridge.owl | slme |
 | upheno-alignments | https://raw.githubusercontent.com/obophenotype/upheno/refs/heads/master/src/ontology/components/upheno-alignments.owl | slme |
 ## Components
