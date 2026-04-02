@@ -125,7 +125,11 @@ import_group:
       make_base: TRUE
       base_iris:
         - http://purl.obolibrary.org/obo/NBO_
-    
+    - id: foodon
+      make_base: TRUE
+      base_iris:
+        - http://purl.obolibrary.org/obo/FOODON_
+
     # Bridge Ontologies (Phenotypes) - we import these as import modules to only get the bridging axioms relevant to PHENIO
     - id: upheno-bridge
       mirror_from: https://raw.githubusercontent.com/obophenotype/upheno/refs/heads/master/src/ontology/components/upheno-bridge.owl
