@@ -1305,7 +1305,7 @@ GHVERSION=v$(VERSION)
 public_release:
 	@test $(GHVERSION)
 	ls -alt $(RELEASE_ASSETS_AFTER_RELEASE)
-	gh release create $(GHVERSION) --title "$(VERSION) Release" --draft $(RELEASE_ASSETS_AFTER_RELEASE) --generate-notes
+	gh release create $(GHVERSION) --title "$(VERSION) Release" --latest $(RELEASE_ASSETS_AFTER_RELEASE) --generate-notes
 
 # ----------------------------------------
 # General Validation
