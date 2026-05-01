@@ -11,8 +11,13 @@ SUBQ_QUERY_RESULT_PATH=         $(TMPDIR)/$(ONT)-full_subqs_queryresult.tmp.owl
 UPDATE_QUERY_PATH=              $(TMPDIR)/subq_update.sparql
 EXPLAIN_OUT_PATH=               $(TMPDIR)/explain_unsat.md
 
-RELEASE_ASSETS = $(ONT).owl.gz $(ONT).json $(ONT)-relation-graph.gz $(ONT)-test.owl $(ONT)-sspo-equivalent.owl.gz
+RELEASE_ASSETS = $(ONT).owl.gz $(ONT).json $(ONT)-relation-graph.gz $(ONT)-test.owl $(ONT)-sspo-equivalent.owl.gz $(ONT)-upstream-versions.tsv
 RELEASE_ASSETS_AFTER_RELEASE=$(foreach n,$(RELEASE_ASSETS), ./$(n))
+
+# Add the upstream-versions component to the OTHER_SRC list defined in the
+# auto-generated Makefile so it gets merged into phenio.owl alongside the
+# other components.
+OTHER_SRC += $(COMPONENTSDIR)/upstream-versions.owl
 
 ################################################################
 #### Components ################################################
@@ -38,6 +43,36 @@ $(COMPONENTSDIR)/emapa.owl: component-download-emapa.owl
 endif # MIR=true
 
 ################################################################
+#### Upstream version manifest #################################
+################################################################
+
+# Capture the versionIRI / versionInfo of each upstream ontology consumed
+# by this build. Produces:
+#   - $(COMPONENTSDIR)/upstream-versions.owl: a tiny RDF/XML component
+#     merged into phenio.owl, asserting one dcterms:source per upstream
+#     versionIRI on the phenio ontology IRI.
+#   - $(ONT)-upstream-versions.tsv: human-readable manifest, shipped as
+#     a release asset.
+#
+# The script streams each upstream's HTTP response and stops once the
+# Ontology header has been parsed, so this step is bandwidth- and
+# memory-light and does not require the full pipeline to run.
+
+UPSTREAM_VERSIONS_SCRIPT = ../scripts/extract_upstream_versions.py
+
+.PHONY: upstream_versions
+upstream_versions: $(ONT)-upstream-versions.tsv $(COMPONENTSDIR)/upstream-versions.owl
+
+$(ONT)-upstream-versions.tsv $(COMPONENTSDIR)/upstream-versions.owl: \
+		$(UPSTREAM_VERSIONS_SCRIPT) phenio-odk.yaml | $(COMPONENTSDIR)
+	python3 $(UPSTREAM_VERSIONS_SCRIPT) \
+		--odk-yaml phenio-odk.yaml \
+		--tsv-out $(ONT)-upstream-versions.tsv \
+		--owl-out $(COMPONENTSDIR)/upstream-versions.owl
+
+.PRECIOUS: $(COMPONENTSDIR)/upstream-versions.owl
+
+################################################################
 #### Imports ###################################################
 ################################################################
 
@@ -59,7 +94,7 @@ mirror-ncbigene: | $(TMPDIR)
 	arq --data=$(TMPDIR)/ncbigene-download.nt --query=../sparql/construct-ncbigene.sparql > $(TMPDIR)/mirror-ncbigene.owl
 
 mirror-hgnc: | $(TMPDIR)
-	curl -L https://data.monarchinitiative.org/monarch-kg/latest/rdf/hgnc_gene.nt.gz --create-dirs --retry 4 --max-time 400 | gzip -d > $(TMPDIR)/hgnc-download.nt && \
+	curl -L https://github.com/monarch-initiative/hgnc-ingest/releases/latest/download/hgnc_gene.nt.gz --create-dirs --retry 4 --max-time 400 | gzip -d > $(TMPDIR)/hgnc-download.nt && \
 	arq --data=$(TMPDIR)/hgnc-download.nt --query=../sparql/construct-hgnc.sparql > $(TMPDIR)/mirror-hgnc.owl
 
 endif
