@@ -11,8 +11,13 @@ SUBQ_QUERY_RESULT_PATH=         $(TMPDIR)/$(ONT)-full_subqs_queryresult.tmp.owl
 UPDATE_QUERY_PATH=              $(TMPDIR)/subq_update.sparql
 EXPLAIN_OUT_PATH=               $(TMPDIR)/explain_unsat.md
 
-RELEASE_ASSETS = $(ONT).owl.gz $(ONT).json $(ONT)-relation-graph.gz $(ONT)-test.owl $(ONT)-sspo-equivalent.owl.gz
+RELEASE_ASSETS = $(ONT).owl.gz $(ONT).json $(ONT)-relation-graph.gz $(ONT)-test.owl $(ONT)-sspo-equivalent.owl.gz $(ONT)-upstream-versions.tsv
 RELEASE_ASSETS_AFTER_RELEASE=$(foreach n,$(RELEASE_ASSETS), ./$(n))
+
+# Add the upstream-versions component to the OTHER_SRC list defined in the
+# auto-generated Makefile so it gets merged into phenio.owl alongside the
+# other components.
+OTHER_SRC += $(COMPONENTSDIR)/upstream-versions.owl
 
 ################################################################
 #### Components ################################################
@@ -38,6 +43,65 @@ $(COMPONENTSDIR)/emapa.owl: component-download-emapa.owl
 endif # MIR=true
 
 ################################################################
+#### Upstream version manifest #################################
+################################################################
+
+# Capture versionIRI / versionInfo of each upstream by querying the
+# already-downloaded $(TMPDIR)/mirror-*.owl files. Produces:
+#   - $(ONT)-upstream-versions.tsv: human-readable manifest, shipped as
+#     a release asset.
+#   - $(COMPONENTSDIR)/upstream-versions.owl: a tiny RDF/XML component
+#     merged into phenio.owl, asserting one dcterms:source per upstream
+#     versionIRI on the phenio ontology IRI.
+#
+# Mirrors are globbed in the recipe (not via $(wildcard) at parse time),
+# so this works on a fresh clone where the mirrors do not exist yet —
+# they get built earlier in the release flow and are present by the time
+# OTHER_SRC is consumed.
+
+UPSTREAM_VERSIONS_SPARQL = $(SPARQLDIR)/get-upstream-version.sparql
+
+.PHONY: upstream_versions
+upstream_versions: $(ONT)-upstream-versions.tsv $(COMPONENTSDIR)/upstream-versions.owl
+
+.PHONY: $(ONT)-upstream-versions.tsv
+$(ONT)-upstream-versions.tsv: $(UPSTREAM_VERSIONS_SPARQL) | $(TMPDIR)
+	@printf "source\tontologyIRI\tversionIRI\tversionInfo\n" > $@
+	@for f in $(TMPDIR)/mirror-*.owl; do \
+	  [ -s "$$f" ] || continue; \
+	  src=$$(basename "$$f" .owl); src=$${src#mirror-}; \
+	  out=$(TMPDIR)/upstream-version-$$src.tsv; \
+	  $(ROBOT) query -i "$$f" -f tsv --query $< "$$out" >/dev/null 2>&1 || continue; \
+	  tail -n +2 "$$out" \
+	    | awk -v src="$$src" 'BEGIN{FS=OFS="\t"} \
+	        { for (i=1;i<=NF;i++) { sub(/^</,"",$$i); sub(/>$$/,"",$$i); \
+	                                sub(/^"/,"",$$i); sub(/"$$/,"",$$i) } } \
+	        $$1!="" {print src,$$1,$$2,$$3}' >> $@; \
+	done
+
+$(COMPONENTSDIR)/upstream-versions.owl: $(ONT)-upstream-versions.tsv | $(COMPONENTSDIR)
+	@awk 'BEGIN { \
+	    FS = "\t"; \
+	    print "<?xml version=\"1.0\"?>"; \
+	    print "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\""; \
+	    print "         xmlns:owl=\"http://www.w3.org/2002/07/owl#\""; \
+	    print "         xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\""; \
+	    print "         xmlns:dcterms=\"http://purl.org/dc/terms/\">"; \
+	    print "    <owl:Ontology rdf:about=\"http://purl.obolibrary.org/obo/phenio.owl\">"; \
+	    print "        <rdfs:comment>Upstream ontology versions used in this PHENIO release. Each dcterms:source links to the versionIRI of the upstream artifact consumed at build time.</rdfs:comment>"; \
+	  } \
+	  NR > 1 { \
+	    target = ($$3 != "") ? $$3 : $$2; \
+	    if (target != "") printf "        <dcterms:source rdf:resource=\"%s\"/>\n", target; \
+	  } \
+	  END { \
+	    print "    </owl:Ontology>"; \
+	    print "</rdf:RDF>"; \
+	  }' $< > $@
+
+.PRECIOUS: $(COMPONENTSDIR)/upstream-versions.owl
+
+################################################################
 #### Imports ###################################################
 ################################################################
 
@@ -59,7 +123,7 @@ mirror-ncbigene: | $(TMPDIR)
 	arq --data=$(TMPDIR)/ncbigene-download.nt --query=../sparql/construct-ncbigene.sparql > $(TMPDIR)/mirror-ncbigene.owl
 
 mirror-hgnc: | $(TMPDIR)
-	curl -L https://data.monarchinitiative.org/monarch-kg/latest/rdf/hgnc_gene.nt.gz --create-dirs --retry 4 --max-time 400 | gzip -d > $(TMPDIR)/hgnc-download.nt && \
+	curl -L https://github.com/monarch-initiative/hgnc-ingest/releases/latest/download/hgnc_gene.nt.gz --create-dirs --retry 4 --max-time 400 | gzip -d > $(TMPDIR)/hgnc-download.nt && \
 	arq --data=$(TMPDIR)/hgnc-download.nt --query=../sparql/construct-hgnc.sparql > $(TMPDIR)/mirror-hgnc.owl
 
 endif
