@@ -307,12 +307,14 @@ public_release:
 	@test $(GHVERSION)
 	ls -alt $(RELEASE_ASSETS_AFTER_RELEASE)
 	gh auth login
-	gh release create $(GHVERSION) --title "$(VERSION)" --draft $(RELEASE_ASSETS_AFTER_RELEASE) --generate-notes
+	gh release create $(GHVERSION) --title "$(VERSION)" --latest $(RELEASE_ASSETS_AFTER_RELEASE) --generate-notes
 
-# Do release to Github, but assume the gh auth is already done
+# Do release to Github, but assume the gh auth is already done.
+# Used by Jenkins after `all_release`; relies on $GH_TOKEN being exported
+# (Jenkinsfile aliases its GH_RELEASE_TOKEN credential into GH_TOKEN).
 public_release_auto:
 	ls -alt $(RELEASE_ASSETS_AFTER_RELEASE)
-	gh release create $(GHVERSION) --title "$(VERSION)" --draft $(RELEASE_ASSETS_AFTER_RELEASE) --generate-notes
+	gh release create $(GHVERSION) --title "$(VERSION)" --latest $(RELEASE_ASSETS_AFTER_RELEASE) --generate-notes
 
 # Produce the relation graph (i.e., the fully materialized set of relations) in KGX format and json
 # Note that this will also produce the main ontology file (OWL)
