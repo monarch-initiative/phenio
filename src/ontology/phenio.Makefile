@@ -16,8 +16,14 @@ RELEASE_ASSETS_AFTER_RELEASE=$(foreach n,$(RELEASE_ASSETS), ./$(n))
 
 # Add the upstream-versions component to the OTHER_SRC list defined in the
 # auto-generated Makefile so it gets merged into phenio.owl alongside the
-# other components.
+# other components. The recipe bodies (which use `$(OTHER_SRC)` lazily)
+# pick this up; the rule prereq lists, however, were resolved at parse
+# time before this file was included, so they don't see the `+=`.
+# Declare the dep explicitly on each rule that consumes $(OTHER_SRC) so
+# make builds upstream-versions.owl before those merges run.
 OTHER_SRC += $(COMPONENTSDIR)/upstream-versions.owl
+
+$(SRCMERGED) $(ONT)-base.owl $(ONT)-full.owl all_components: $(COMPONENTSDIR)/upstream-versions.owl
 
 ################################################################
 #### Components ################################################
