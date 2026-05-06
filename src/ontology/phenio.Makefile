@@ -71,7 +71,13 @@ endif # MIR=true
 # this very TSV).
 
 UPSTREAM_VERSIONS_SPARQL = $(SPARQLDIR)/get-upstream-version.sparql
-UPSTREAM_VERSIONS_DEPS = $(IMPORT_FILES) $(filter-out $(COMPONENTSDIR)/upstream-versions.owl,$(OTHER_SRC))
+# We need each upstream's mirror-X .PHONY target to have run (so
+# $(TMPDIR)/mirror-*.owl files exist) before this recipe globs them.
+# `$(MIRRORDIR)/merged.owl` is the one parent-Makefile target that
+# transitively depends on every mirror via the `$(MIRRORDIR)/%.owl: mirror-%`
+# pattern rule, and (unlike $(IMPORT_FILES)) it doesn't cycle back through
+# $(IMPORTSEED) → $(PRESEED) → $(SRCMERGED).
+UPSTREAM_VERSIONS_DEPS = $(MIRRORDIR)/merged.owl
 
 .PHONY: upstream_versions
 upstream_versions: $(ONT)-upstream-versions.tsv $(COMPONENTSDIR)/upstream-versions.owl
