@@ -54,18 +54,24 @@ endif # MIR=true
 #     merged into phenio.owl, asserting one dcterms:source per upstream
 #     versionIRI on the phenio ontology IRI.
 #
-# Mirrors are globbed in the recipe (not via $(wildcard) at parse time),
-# so this works on a fresh clone where the mirrors do not exist yet —
-# they get built earlier in the release flow and are present by the time
-# OTHER_SRC is consumed.
+# The recipe globs $(TMPDIR)/mirror-*.owl at recipe-execution time. To make
+# that safe under parallel make (-j N) — where the TSV target would
+# otherwise run as a sibling of the mirror-producing targets and finish
+# before any mirror exists — we declare order-only prerequisites on the
+# imports and non-self components, both of which transitively pull mirror
+# downloads. Order-only (`|`) prevents these prereqs from re-triggering the
+# .PHONY recipe; they only enforce ordering. We filter out
+# upstream-versions.owl from OTHER_SRC to avoid a self-cycle (it depends on
+# this very TSV).
 
 UPSTREAM_VERSIONS_SPARQL = $(SPARQLDIR)/get-upstream-version.sparql
+UPSTREAM_VERSIONS_DEPS = $(IMPORT_FILES) $(filter-out $(COMPONENTSDIR)/upstream-versions.owl,$(OTHER_SRC))
 
 .PHONY: upstream_versions
 upstream_versions: $(ONT)-upstream-versions.tsv $(COMPONENTSDIR)/upstream-versions.owl
 
 .PHONY: $(ONT)-upstream-versions.tsv
-$(ONT)-upstream-versions.tsv: $(UPSTREAM_VERSIONS_SPARQL) | $(TMPDIR)
+$(ONT)-upstream-versions.tsv: $(UPSTREAM_VERSIONS_SPARQL) | $(UPSTREAM_VERSIONS_DEPS) $(TMPDIR)
 	@printf "source\tontologyIRI\tversionIRI\tversionInfo\n" > $@
 	@for f in $(TMPDIR)/mirror-*.owl; do \
 	  [ -s "$$f" ] || continue; \
@@ -78,6 +84,13 @@ $(ONT)-upstream-versions.tsv: $(UPSTREAM_VERSIONS_SPARQL) | $(TMPDIR)
 	                                sub(/^"/,"",$$i); sub(/"$$/,"",$$i) } } \
 	        $$1!="" {print src,$$1,$$2,$$3}' >> $@; \
 	done
+	@rows=$$(($$(wc -l < $@) - 1)); \
+	if [ $$rows -eq 0 ]; then \
+	  echo "ERROR: $@ produced zero data rows. Mirror files in $(TMPDIR) may not be ready." >&2; \
+	  ls -la $(TMPDIR)/mirror-*.owl 2>&1 >&2 || true; \
+	  exit 1; \
+	fi; \
+	echo "$@: wrote $$rows upstream version row(s)"
 
 $(COMPONENTSDIR)/upstream-versions.owl: $(ONT)-upstream-versions.tsv | $(COMPONENTSDIR)
 	@awk 'BEGIN { \
@@ -294,12 +307,14 @@ public_release:
 	@test $(GHVERSION)
 	ls -alt $(RELEASE_ASSETS_AFTER_RELEASE)
 	gh auth login
-	gh release create $(GHVERSION) --title "$(VERSION)" --draft $(RELEASE_ASSETS_AFTER_RELEASE) --generate-notes
+	gh release create $(GHVERSION) --title "$(VERSION)" --latest $(RELEASE_ASSETS_AFTER_RELEASE) --generate-notes
 
-# Do release to Github, but assume the gh auth is already done
+# Do release to Github, but assume the gh auth is already done.
+# Used by Jenkins after `all_release`; relies on $GH_TOKEN being exported
+# (Jenkinsfile aliases its GH_RELEASE_TOKEN credential into GH_TOKEN).
 public_release_auto:
 	ls -alt $(RELEASE_ASSETS_AFTER_RELEASE)
-	gh release create $(GHVERSION) --title "$(VERSION)" --draft $(RELEASE_ASSETS_AFTER_RELEASE) --generate-notes
+	gh release create $(GHVERSION) --title "$(VERSION)" --latest $(RELEASE_ASSETS_AFTER_RELEASE) --generate-notes
 
 # Produce the relation graph (i.e., the fully materialized set of relations) in KGX format and json
 # Note that this will also produce the main ontology file (OWL)
