@@ -1,7 +1,12 @@
 PREFIX owl: <http://www.w3.org/2002/07/owl#>
 
-SELECT ?ontologyIRI ?versionIRI ?versionInfo WHERE {
+# Component-downloaded base files (e.g. go-base.owl, hp-base.owl) carry both
+# the upstream's owl:versionInfo (the real release date) and a second
+# owl:versionInfo added by ODK matching $(VERSION). Aggregate with MIN to
+# collapse to one row and prefer the older (upstream) value.
+SELECT ?ontologyIRI ?versionIRI (MIN(?vi) AS ?versionInfo) WHERE {
   ?ontologyIRI a owl:Ontology .
   OPTIONAL { ?ontologyIRI owl:versionIRI ?versionIRI . }
-  OPTIONAL { ?ontologyIRI owl:versionInfo ?versionInfo . }
+  OPTIONAL { ?ontologyIRI owl:versionInfo ?vi . }
 }
+GROUP BY ?ontologyIRI ?versionIRI

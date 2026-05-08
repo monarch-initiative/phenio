@@ -77,7 +77,7 @@ UPSTREAM_VERSIONS_SPARQL = $(SPARQLDIR)/get-upstream-version.sparql
 # transitively depends on every mirror via the `$(MIRRORDIR)/%.owl: mirror-%`
 # pattern rule, and (unlike $(IMPORT_FILES)) it doesn't cycle back through
 # $(IMPORTSEED) → $(PRESEED) → $(SRCMERGED).
-UPSTREAM_VERSIONS_DEPS = $(MIRRORDIR)/merged.owl
+UPSTREAM_VERSIONS_DEPS = $(MIRRORDIR)/merged.owl $(filter-out $(COMPONENTSDIR)/upstream-versions.owl,$(OTHER_SRC))
 
 .PHONY: upstream_versions
 upstream_versions: $(ONT)-upstream-versions.tsv $(COMPONENTSDIR)/upstream-versions.owl
@@ -85,9 +85,14 @@ upstream_versions: $(ONT)-upstream-versions.tsv $(COMPONENTSDIR)/upstream-versio
 .PHONY: $(ONT)-upstream-versions.tsv
 $(ONT)-upstream-versions.tsv: $(UPSTREAM_VERSIONS_SPARQL) | $(UPSTREAM_VERSIONS_DEPS) $(TMPDIR)
 	@printf "source\tontologyIRI\tversionIRI\tversionInfo\n" > $@
-	@for f in $(TMPDIR)/mirror-*.owl; do \
+	@for f in $(TMPDIR)/mirror-*.owl $(TMPDIR)/component-download-*.owl.owl; do \
 	  [ -s "$$f" ] || continue; \
-	  src=$$(basename "$$f" .owl); src=$${src#mirror-}; \
+	  base=$$(basename "$$f"); \
+	  case "$$base" in \
+	    mirror-*) src=$${base#mirror-}; src=$${src%.owl} ;; \
+	    component-download-*) src=$${base#component-download-}; src=$${src%.owl.owl} ;; \
+	    *) continue ;; \
+	  esac; \
 	  out=$(TMPDIR)/upstream-version-$$src.tsv; \
 	  $(ROBOT) query -i "$$f" -f tsv --query $< "$$out" >/dev/null 2>&1 || continue; \
 	  tail -n +2 "$$out" \
@@ -96,6 +101,28 @@ $(ONT)-upstream-versions.tsv: $(UPSTREAM_VERSIONS_SPARQL) | $(UPSTREAM_VERSIONS_
 	                                sub(/^"/,"",$$i); sub(/"$$/,"",$$i) } } \
 	        $$1!="" {print src,$$1,$$2,$$3}' >> $@; \
 	done
+	@# Pass through Mondo's own source-versions.tsv for transitive upstreams
+	@# (doid, ncit, omim, ordo, icd*) — keyed off the mondo versionIRI we
+	@# just captured, so the manifest reflects exactly the Mondo release
+	@# that was merged into this phenio. Skip rows whose source we already
+	@# have directly (direct ingest wins over transitive).
+	@mondo_ver=$$(awk -F'\t' '$$1=="mondo"{print $$3; exit}' $@); \
+	date=$$(printf '%s' "$$mondo_ver" | grep -oE '[0-9]{4}-[0-9]{2}-[0-9]{2}' | head -1); \
+	if [ -n "$$date" ]; then \
+	  url="https://github.com/monarch-initiative/mondo/releases/download/v$$date/source-versions.tsv"; \
+	  if curl -sLf --retry 3 --max-time 60 "$$url" -o $(TMPDIR)/mondo-source-versions.tsv; then \
+	    awk -F'\t' 'NR>1{print $$1}' $@ | sort -u > $(TMPDIR)/upstream-versions-have.txt; \
+	    tail -n +2 $(TMPDIR)/mondo-source-versions.tsv \
+	      | awk 'BEGIN{FS=OFS="\t"} \
+	          { for (i=1;i<=NF;i++) { sub(/^</,"",$$i); sub(/>$$/,"",$$i); \
+	                                  sub(/^"/,"",$$i); sub(/"$$/,"",$$i) } } \
+	          $$1!=""' \
+	      | awk -F'\t' 'NR==FNR{seen[$$1]=1; next} !seen[$$1]' \
+	          $(TMPDIR)/upstream-versions-have.txt - >> $@; \
+	  else \
+	    echo "WARN: could not fetch $$url; mondo-transitive sources will be absent" >&2; \
+	  fi; \
+	fi
 	@rows=$$(($$(wc -l < $@) - 1)); \
 	if [ $$rows -eq 0 ]; then \
 	  echo "ERROR: $@ produced zero data rows. Mirror files in $(TMPDIR) may not be ready." >&2; \
