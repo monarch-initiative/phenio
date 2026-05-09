@@ -7,19 +7,28 @@ CONSTRUCT {
   ?gene a owl:Class ;
      rdfs:subClassOf <http://purl.obolibrary.org/obo/SO_0000704> ;
      rdfs:label ?symbol ;
-     <http://purl.org/dc/terms/description> ?description . 
+     rdfs:subClassOf [
+        owl:onProperty <http://purl.obolibrary.org/obo/RO_0002162> ;
+        owl:someValuesFrom ?taxon ] ;
+     <http://purl.org/dc/terms/description> ?description .
 }
 WHERE {
  ?gene <https://w3id.org/biolink/vocab/category> <https://w3id.org/biolink/vocab/Gene> ;
      <https://w3id.org/biolink/vocab/in_taxon> ?taxon_xref ;
      <https://w3id.org/biolink/vocab/symbol> ?symbol .
 
+ # hgnc-ingest's nt has no dc:terms/description; full_name carries the long form.
+ # Prefer dc:description when present, fall back to biolink:full_name.
  OPTIONAL {
-  ?gene <http://purl.org/dc/terms/description> ?description .
+  ?gene <http://purl.org/dc/terms/description> ?dc_description .
  }
- 
+ OPTIONAL {
+  ?gene <https://w3id.org/biolink/vocab/full_name> ?full_name .
+ }
+ BIND(COALESCE(?dc_description, ?full_name) AS ?description)
+
+ BIND(IRI(REPLACE(str(?taxon_xref), "NCBITaxon:", "http://purl.obolibrary.org/obo/NCBITaxon_")) AS ?taxon)
+
  FILTER (!isBlank(?gene))
  FILTER ( regex(str(?gene), "^http://identifiers.org/hgnc/"))
 }
-
-
