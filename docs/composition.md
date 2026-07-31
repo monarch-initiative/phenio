@@ -82,11 +82,9 @@ Components are ontologies merged into PHENIO as full modules using their base re
 
 * **OBA**: Ontology of Biological Attributes (https://obofoundry.org/ontology/oba.html) - an ontology that describes biological attributes such as size, shape, color, and behavior across different species.
 
-### Disease and Medical Action Ontologies
+### Disease Ontologies
 
 * **MONDO**: Monarch Disease Ontology (https://mondo.monarchinitiative.org/) - an ontology that integrates disease-related information from various sources to facilitate the understanding of human diseases.
-
-* **MAXO**: Medical Action Ontology (https://obofoundry.org/ontology/maxo.html) - an ontology of medical procedures, interventions, and therapies used in the treatment of diseases.
 
 ### Gene Ontology
 
