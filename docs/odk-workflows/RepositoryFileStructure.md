@@ -49,7 +49,6 @@ These are the components in PHENIO
 | -------- | --- |
 | go.owl | http://purl.obolibrary.org/obo/go/go-base.owl |
 | mondo.owl | http://purl.obolibrary.org/obo/mondo/mondo-base.owl |
-| maxo.owl | http://purl.obolibrary.org/obo/maxo/maxo-base.owl |
 | upheno.owl | http://purl.obolibrary.org/obo/upheno/upheno-base.owl |
 | oba.owl | http://purl.obolibrary.org/obo/oba/oba-base.owl |
 | hp.owl | http://purl.obolibrary.org/obo/hp/hp-base.owl |

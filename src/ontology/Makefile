@@ -10,7 +10,7 @@
 # More information: https://github.com/INCATools/ontology-development-kit/
 
 # Fingerprint of the configuration file when this Makefile was last generated
-CONFIG_HASH=                8a1e7113eb999f6d8e09c96cc08cc2dcec13f87d8e4d4ef643c332d1fa5da07b
+CONFIG_HASH=                2e729868602f3e169975a1b92b2869d529ef23748c4f7de8584c49e1818f7adf
 
 
 # ----------------------------------------
@@ -57,7 +57,7 @@ OBODATE ?=                  $(shell date +'%d:%m:%Y %H:%M')
 VERSION=                    $(TODAY)
 ANNOTATE_ONTOLOGY_VERSION = annotate -V $(ONTBASE)/releases/$(VERSION)/$@ --annotation owl:versionInfo $(VERSION)
 ANNOTATE_CONVERT_FILE =     annotate --ontology-iri $(ONTBASE)/$@ $(ANNOTATE_ONTOLOGY_VERSION) convert -f ofn --output $@.tmp.owl && mv $@.tmp.owl $@
-OTHER_SRC =                 $(COMPONENTSDIR)/go.owl $(COMPONENTSDIR)/mondo.owl $(COMPONENTSDIR)/maxo.owl $(COMPONENTSDIR)/upheno.owl $(COMPONENTSDIR)/oba.owl $(COMPONENTSDIR)/hp.owl $(COMPONENTSDIR)/fypo.owl $(COMPONENTSDIR)/zp.owl $(COMPONENTSDIR)/xpo.owl $(COMPONENTSDIR)/mp.owl $(COMPONENTSDIR)/wbphenotype.owl $(COMPONENTSDIR)/ddpheno.owl $(COMPONENTSDIR)/dpo.owl $(COMPONENTSDIR)/uberon.owl $(COMPONENTSDIR)/cl.owl $(COMPONENTSDIR)/ddanat.owl $(COMPONENTSDIR)/wbbt.owl $(COMPONENTSDIR)/fbbt.owl $(COMPONENTSDIR)/zfa.owl $(COMPONENTSDIR)/xao.owl $(COMPONENTSDIR)/emapa.owl $(COMPONENTSDIR)/hsapdv.owl 
+OTHER_SRC =                 $(COMPONENTSDIR)/go.owl $(COMPONENTSDIR)/mondo.owl $(COMPONENTSDIR)/upheno.owl $(COMPONENTSDIR)/oba.owl $(COMPONENTSDIR)/hp.owl $(COMPONENTSDIR)/fypo.owl $(COMPONENTSDIR)/zp.owl $(COMPONENTSDIR)/xpo.owl $(COMPONENTSDIR)/mp.owl $(COMPONENTSDIR)/wbphenotype.owl $(COMPONENTSDIR)/ddpheno.owl $(COMPONENTSDIR)/dpo.owl $(COMPONENTSDIR)/uberon.owl $(COMPONENTSDIR)/cl.owl $(COMPONENTSDIR)/ddanat.owl $(COMPONENTSDIR)/wbbt.owl $(COMPONENTSDIR)/fbbt.owl $(COMPONENTSDIR)/zfa.owl $(COMPONENTSDIR)/xao.owl $(COMPONENTSDIR)/emapa.owl $(COMPONENTSDIR)/hsapdv.owl 
 ONTOLOGYTERMS =             $(TMPDIR)/ontologyterms.txt
 EDIT_PREPROCESSED =         $(TMPDIR)/$(ONT)-preprocess.owl
 
@@ -481,7 +481,6 @@ all_components: $(OTHER_SRC)
 recreate-components:
 	$(MAKE) --assume-new=$(TMPDIR)/stamp-component-go.owl \
 		--assume-new=$(TMPDIR)/stamp-component-mondo.owl \
-		--assume-new=$(TMPDIR)/stamp-component-maxo.owl \
 		--assume-new=$(TMPDIR)/stamp-component-upheno.owl \
 		--assume-new=$(TMPDIR)/stamp-component-oba.owl \
 		--assume-new=$(TMPDIR)/stamp-component-hp.owl \
@@ -507,7 +506,6 @@ recreate-components:
 no-mirror-recreate-components:
 	$(MAKE) --assume-new=$(TMPDIR)/stamp-component-go.owl \
 		--assume-new=$(TMPDIR)/stamp-component-mondo.owl \
-		--assume-new=$(TMPDIR)/stamp-component-maxo.owl \
 		--assume-new=$(TMPDIR)/stamp-component-upheno.owl \
 		--assume-new=$(TMPDIR)/stamp-component-oba.owl \
 		--assume-new=$(TMPDIR)/stamp-component-hp.owl \
@@ -583,25 +581,6 @@ $(COMPONENTSDIR)/mondo.owl: component-download-mondo.owl $(TMPDIR)/stamp-compone
 	                          --output $@ ; \
 	fi
 .PRECIOUS: $(COMPONENTSDIR)/mondo.owl
-endif # MIR=true
-
-ifeq ($(MIR),true)
-.PHONY: component-download-maxo.owl
-component-download-maxo.owl: | $(TMPDIR)
-	$(ROBOT) merge -I http://purl.obolibrary.org/obo/maxo/maxo-base.owl \
-		 annotate --annotation owl:versionInfo $(VERSION) --output $(TMPDIR)/$@.owl
-
-$(COMPONENTSDIR)/maxo.owl: component-download-maxo.owl $(TMPDIR)/stamp-component-maxo.owl
-	@if cmp -s $(TMPDIR)/component-download-maxo.owl.owl $(TMPDIR)/component-download-maxo.owl.tmp.owl ; then \
-	        echo "Component identical." ; \
-	else \
-	        echo "Component different, updating." && \
-	        cp $(TMPDIR)/component-download-maxo.owl.owl $(TMPDIR)/component-download-maxo.owl.tmp.owl && \
-	        $(ROBOT) annotate --input $(TMPDIR)/component-download-maxo.owl.owl \
-	                          --ontology-iri $(ONTBASE)/$@ $(ANNOTATE_ONTOLOGY_VERSION) \
-	                          --output $@ ; \
-	fi
-.PRECIOUS: $(COMPONENTSDIR)/maxo.owl
 endif # MIR=true
 
 ifeq ($(MIR),true)

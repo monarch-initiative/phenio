@@ -4,7 +4,6 @@
     <uri name="http://purl.obolibrary.org/obo/phenio/imports/merged_import.owl" uri="imports/merged_import.owl" />
     <uri name="http://purl.obolibrary.org/obo/phenio/components/go.owl" uri="components/go.owl" />
     <uri name="http://purl.obolibrary.org/obo/phenio/components/mondo.owl" uri="components/mondo.owl" />
-    <uri name="http://purl.obolibrary.org/obo/phenio/components/maxo.owl" uri="components/maxo.owl" />
     <uri name="http://purl.obolibrary.org/obo/phenio/components/upheno.owl" uri="components/upheno.owl" />
     <uri name="http://purl.obolibrary.org/obo/phenio/components/oba.owl" uri="components/oba.owl" />
     <uri name="http://purl.obolibrary.org/obo/phenio/components/hp.owl" uri="components/hp.owl" />
