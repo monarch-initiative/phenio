@@ -135,6 +135,10 @@ import_group:
       mirror_from: https://raw.githubusercontent.com/obophenotype/upheno/refs/heads/master/src/ontology/components/upheno-bridge.owl
     - id: upheno-alignments
       mirror_from: https://raw.githubusercontent.com/obophenotype/upheno/refs/heads/master/src/ontology/components/upheno-alignments.owl
+    - id: dpo-ext-bridge
+      mirror_from: https://raw.githubusercontent.com/monarch-initiative/uphenotizer/main/release/dpo-ext-bridge.owl
+    - id: apo-ext-bridge
+      mirror_from: https://raw.githubusercontent.com/monarch-initiative/uphenotizer/main/release/apo-ext-bridge.owl
 components:
   products:
     - filename: go.owl
@@ -191,7 +195,17 @@ components:
       source: http://purl.obolibrary.org/obo/dpo/dpo-base.owl
       base_iris:
         - http://purl.obolibrary.org/obo/FBcv_
-    
+    # uphenotizer: FlyBase/SGD phenotypes pre-composed from Alliance annotations
+    # Raw GitHub URLs until https://w3id.org/monarch-initiative/uphenotizer/release/ resolves (perma-id/w3id.org#7041)
+    - filename: dpo-ext.owl
+      source: https://raw.githubusercontent.com/monarch-initiative/uphenotizer/main/release/dpo-ext-base.owl
+      base_iris:
+        - https://w3id.org/monarch-initiative/entity/PHENOTYPE_
+    - filename: apo-ext.owl
+      source: https://raw.githubusercontent.com/monarch-initiative/uphenotizer/main/release/apo-ext-base.owl
+      base_iris:
+        - https://w3id.org/monarch-initiative/entity/PHENOTYPE_
+
     # Species specific anatomy Ontologies
     # Due to unfolding (removing classes from SSAO that have a direct equivalent in Uberon)
     # we chose for the time being not to use uberon-composite-metazoan.owl. 

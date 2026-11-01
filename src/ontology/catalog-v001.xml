@@ -14,6 +14,8 @@
     <uri name="http://purl.obolibrary.org/obo/phenio/components/wbphenotype.owl" uri="components/wbphenotype.owl" />
     <uri name="http://purl.obolibrary.org/obo/phenio/components/ddpheno.owl" uri="components/ddpheno.owl" />
     <uri name="http://purl.obolibrary.org/obo/phenio/components/dpo.owl" uri="components/dpo.owl" />
+    <uri name="http://purl.obolibrary.org/obo/phenio/components/dpo-ext.owl" uri="components/dpo-ext.owl" />
+    <uri name="http://purl.obolibrary.org/obo/phenio/components/apo-ext.owl" uri="components/apo-ext.owl" />
     <uri name="http://purl.obolibrary.org/obo/phenio/components/uberon.owl" uri="components/uberon.owl" />
     <uri name="http://purl.obolibrary.org/obo/phenio/components/cl.owl" uri="components/cl.owl" />
     <uri name="http://purl.obolibrary.org/obo/phenio/components/ddanat.owl" uri="components/ddanat.owl" />
