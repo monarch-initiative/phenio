@@ -74,6 +74,8 @@ Components are ontologies merged into PHENIO as full modules using their base re
 
 * **DPO**: Drosophila Phenotype Ontology (https://obofoundry.org/ontology/dpo.html) - an ontology of phenotypes observed in *Drosophila melanogaster*.
 
+* **DPO-ext / APO-ext**: phenotype components from uphenotizer (https://github.com/monarch-initiative/uphenotizer) - _FlyBase_ and _SGD_ phenotypes pre-composed from Alliance annotations, for the annotation shapes DPO and APO have no class for (`PHENOTYPE:` prefix). Linked to uPheno by the DPO-ext / APO-ext bridges below.
+
 * **FYPO**: Fission Yeast Phenotype Ontology (https://obofoundry.org/ontology/fypo.html) - an ontology of phenotypes observed in fission yeast (*Schizosaccharomyces pombe*).
 
 * **WBPhenotype**: WormBase Phenotype Ontology (https://obofoundry.org/ontology/wbphenotype.html) - an ontology of phenotypes observed in *Caenorhabditis elegans*.
@@ -119,6 +121,8 @@ Bridge ontologies provide the axioms that link species-specific ontologies to th
 * **uPHENO Bridge**: (https://github.com/obophenotype/upheno) - bridge axioms linking species-specific phenotype ontologies to uPHENO.
 
 * **uPHENO Alignments**: (https://github.com/obophenotype/upheno) - alignment axioms for phenotype ontology integration across species.
+
+* **DPO-ext / APO-ext Bridges**: (https://github.com/monarch-initiative/uphenotizer) - `SubClassOf` axioms placing each DPO-ext / APO-ext class under its most specific uPheno grouping(s).
 
 ## SSSOM Mapping Sets
 

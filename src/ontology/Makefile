@@ -10,7 +10,7 @@
 # More information: https://github.com/INCATools/ontology-development-kit/
 
 # Fingerprint of the configuration file when this Makefile was last generated
-CONFIG_HASH=                2e729868602f3e169975a1b92b2869d529ef23748c4f7de8584c49e1818f7adf
+CONFIG_HASH=                2ed21c1897d660d5f0f545dad137c885a6c85bd1d69616cae29264416acd73e5
 
 
 # ----------------------------------------
@@ -57,7 +57,7 @@ OBODATE ?=                  $(shell date +'%d:%m:%Y %H:%M')
 VERSION=                    $(TODAY)
 ANNOTATE_ONTOLOGY_VERSION = annotate -V $(ONTBASE)/releases/$(VERSION)/$@ --annotation owl:versionInfo $(VERSION)
 ANNOTATE_CONVERT_FILE =     annotate --ontology-iri $(ONTBASE)/$@ $(ANNOTATE_ONTOLOGY_VERSION) convert -f ofn --output $@.tmp.owl && mv $@.tmp.owl $@
-OTHER_SRC =                 $(COMPONENTSDIR)/go.owl $(COMPONENTSDIR)/mondo.owl $(COMPONENTSDIR)/upheno.owl $(COMPONENTSDIR)/oba.owl $(COMPONENTSDIR)/hp.owl $(COMPONENTSDIR)/fypo.owl $(COMPONENTSDIR)/zp.owl $(COMPONENTSDIR)/xpo.owl $(COMPONENTSDIR)/mp.owl $(COMPONENTSDIR)/wbphenotype.owl $(COMPONENTSDIR)/ddpheno.owl $(COMPONENTSDIR)/dpo.owl $(COMPONENTSDIR)/uberon.owl $(COMPONENTSDIR)/cl.owl $(COMPONENTSDIR)/ddanat.owl $(COMPONENTSDIR)/wbbt.owl $(COMPONENTSDIR)/fbbt.owl $(COMPONENTSDIR)/zfa.owl $(COMPONENTSDIR)/xao.owl $(COMPONENTSDIR)/emapa.owl $(COMPONENTSDIR)/hsapdv.owl 
+OTHER_SRC =                 $(COMPONENTSDIR)/go.owl $(COMPONENTSDIR)/mondo.owl $(COMPONENTSDIR)/upheno.owl $(COMPONENTSDIR)/oba.owl $(COMPONENTSDIR)/hp.owl $(COMPONENTSDIR)/fypo.owl $(COMPONENTSDIR)/zp.owl $(COMPONENTSDIR)/xpo.owl $(COMPONENTSDIR)/mp.owl $(COMPONENTSDIR)/wbphenotype.owl $(COMPONENTSDIR)/ddpheno.owl $(COMPONENTSDIR)/dpo.owl $(COMPONENTSDIR)/dpo-ext.owl $(COMPONENTSDIR)/apo-ext.owl $(COMPONENTSDIR)/uberon.owl $(COMPONENTSDIR)/cl.owl $(COMPONENTSDIR)/ddanat.owl $(COMPONENTSDIR)/wbbt.owl $(COMPONENTSDIR)/fbbt.owl $(COMPONENTSDIR)/zfa.owl $(COMPONENTSDIR)/xao.owl $(COMPONENTSDIR)/emapa.owl $(COMPONENTSDIR)/hsapdv.owl 
 ONTOLOGYTERMS =             $(TMPDIR)/ontologyterms.txt
 EDIT_PREPROCESSED =         $(TMPDIR)/$(ONT)-preprocess.owl
 
@@ -196,7 +196,7 @@ all_main: $(MAIN_FILES)
 # ----------------------------------------
 
 
-IMPORTS =  monochrom ncbigene hgnc so bspo wbls zfs fbdv chebi pr eco bfo ro ncbitaxon-taxslim pato mpath nbo foodon upheno-bridge upheno-alignments
+IMPORTS =  monochrom ncbigene hgnc so bspo wbls zfs fbdv chebi pr eco bfo ro ncbitaxon-taxslim pato mpath nbo foodon upheno-bridge upheno-alignments dpo-ext-bridge apo-ext-bridge
 
 IMPORT_ROOTS =  $(IMPORTDIR)/merged_import
 IMPORT_OWL_FILES = $(foreach n,$(IMPORT_ROOTS), $(n).owl)
@@ -491,6 +491,8 @@ recreate-components:
 		--assume-new=$(TMPDIR)/stamp-component-wbphenotype.owl \
 		--assume-new=$(TMPDIR)/stamp-component-ddpheno.owl \
 		--assume-new=$(TMPDIR)/stamp-component-dpo.owl \
+		--assume-new=$(TMPDIR)/stamp-component-dpo-ext.owl \
+		--assume-new=$(TMPDIR)/stamp-component-apo-ext.owl \
 		--assume-new=$(TMPDIR)/stamp-component-uberon.owl \
 		--assume-new=$(TMPDIR)/stamp-component-cl.owl \
 		--assume-new=$(TMPDIR)/stamp-component-ddanat.owl \
@@ -516,6 +518,8 @@ no-mirror-recreate-components:
 		--assume-new=$(TMPDIR)/stamp-component-wbphenotype.owl \
 		--assume-new=$(TMPDIR)/stamp-component-ddpheno.owl \
 		--assume-new=$(TMPDIR)/stamp-component-dpo.owl \
+		--assume-new=$(TMPDIR)/stamp-component-dpo-ext.owl \
+		--assume-new=$(TMPDIR)/stamp-component-apo-ext.owl \
 		--assume-new=$(TMPDIR)/stamp-component-uberon.owl \
 		--assume-new=$(TMPDIR)/stamp-component-cl.owl \
 		--assume-new=$(TMPDIR)/stamp-component-ddanat.owl \
@@ -771,6 +775,44 @@ $(COMPONENTSDIR)/dpo.owl: component-download-dpo.owl $(TMPDIR)/stamp-component-d
 	                          --output $@ ; \
 	fi
 .PRECIOUS: $(COMPONENTSDIR)/dpo.owl
+endif # MIR=true
+
+ifeq ($(MIR),true)
+.PHONY: component-download-dpo-ext.owl
+component-download-dpo-ext.owl: | $(TMPDIR)
+	$(ROBOT) merge -I https://raw.githubusercontent.com/monarch-initiative/uphenotizer/main/release/dpo-ext-base.owl \
+		 annotate --annotation owl:versionInfo $(VERSION) --output $(TMPDIR)/$@.owl
+
+$(COMPONENTSDIR)/dpo-ext.owl: component-download-dpo-ext.owl $(TMPDIR)/stamp-component-dpo-ext.owl
+	@if cmp -s $(TMPDIR)/component-download-dpo-ext.owl.owl $(TMPDIR)/component-download-dpo-ext.owl.tmp.owl ; then \
+	        echo "Component identical." ; \
+	else \
+	        echo "Component different, updating." && \
+	        cp $(TMPDIR)/component-download-dpo-ext.owl.owl $(TMPDIR)/component-download-dpo-ext.owl.tmp.owl && \
+	        $(ROBOT) annotate --input $(TMPDIR)/component-download-dpo-ext.owl.owl \
+	                          --ontology-iri $(ONTBASE)/$@ $(ANNOTATE_ONTOLOGY_VERSION) \
+	                          --output $@ ; \
+	fi
+.PRECIOUS: $(COMPONENTSDIR)/dpo-ext.owl
+endif # MIR=true
+
+ifeq ($(MIR),true)
+.PHONY: component-download-apo-ext.owl
+component-download-apo-ext.owl: | $(TMPDIR)
+	$(ROBOT) merge -I https://raw.githubusercontent.com/monarch-initiative/uphenotizer/main/release/apo-ext-base.owl \
+		 annotate --annotation owl:versionInfo $(VERSION) --output $(TMPDIR)/$@.owl
+
+$(COMPONENTSDIR)/apo-ext.owl: component-download-apo-ext.owl $(TMPDIR)/stamp-component-apo-ext.owl
+	@if cmp -s $(TMPDIR)/component-download-apo-ext.owl.owl $(TMPDIR)/component-download-apo-ext.owl.tmp.owl ; then \
+	        echo "Component identical." ; \
+	else \
+	        echo "Component different, updating." && \
+	        cp $(TMPDIR)/component-download-apo-ext.owl.owl $(TMPDIR)/component-download-apo-ext.owl.tmp.owl && \
+	        $(ROBOT) annotate --input $(TMPDIR)/component-download-apo-ext.owl.owl \
+	                          --ontology-iri $(ONTBASE)/$@ $(ANNOTATE_ONTOLOGY_VERSION) \
+	                          --output $@ ; \
+	fi
+.PRECIOUS: $(COMPONENTSDIR)/apo-ext.owl
 endif # MIR=true
 
 ifeq ($(MIR),true)
@@ -1123,6 +1165,20 @@ mirror-upheno-bridge: | $(TMPDIR)
 mirror-upheno-alignments: | $(TMPDIR)
 	$(ROBOT) convert -I https://raw.githubusercontent.com/obophenotype/upheno/refs/heads/master/src/ontology/components/upheno-alignments.owl -o $(TMPDIR)/$@.owl
 
+
+## ONTOLOGY: dpo-ext-bridge
+.PHONY: mirror-dpo-ext-bridge
+.PRECIOUS: $(MIRRORDIR)/dpo-ext-bridge.owl
+mirror-dpo-ext-bridge: | $(TMPDIR)
+	$(ROBOT) convert -I https://raw.githubusercontent.com/monarch-initiative/uphenotizer/main/release/dpo-ext-bridge.owl -o $(TMPDIR)/$@.owl
+
+
+## ONTOLOGY: apo-ext-bridge
+.PHONY: mirror-apo-ext-bridge
+.PRECIOUS: $(MIRRORDIR)/apo-ext-bridge.owl
+mirror-apo-ext-bridge: | $(TMPDIR)
+	$(ROBOT) convert -I https://raw.githubusercontent.com/monarch-initiative/uphenotizer/main/release/apo-ext-bridge.owl -o $(TMPDIR)/$@.owl
+
 ALL_MIRRORS = $(patsubst %, $(MIRRORDIR)/%.owl, $(IMPORTS))
 MERGE_MIRRORS = true
 
@@ -1284,7 +1340,7 @@ GHVERSION=v$(VERSION)
 public_release:
 	@test $(GHVERSION)
 	ls -alt $(RELEASE_ASSETS_AFTER_RELEASE)
-	gh release create $(GHVERSION) --title "$(VERSION) Release" --latest $(RELEASE_ASSETS_AFTER_RELEASE) --generate-notes
+	gh release create $(GHVERSION) --title "$(VERSION) Release" --draft $(RELEASE_ASSETS_AFTER_RELEASE) --generate-notes
 
 # ----------------------------------------
 # General Validation

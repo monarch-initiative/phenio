@@ -36,6 +36,8 @@ These are the current imports in PHENIO
 | foodon | http://purl.obolibrary.org/obo/foodon.owl | slme |
 | upheno-bridge | https://raw.githubusercontent.com/obophenotype/upheno/refs/heads/master/src/ontology/components/upheno-bridge.owl | slme |
 | upheno-alignments | https://raw.githubusercontent.com/obophenotype/upheno/refs/heads/master/src/ontology/components/upheno-alignments.owl | slme |
+| dpo-ext-bridge | https://raw.githubusercontent.com/monarch-initiative/uphenotizer/main/release/dpo-ext-bridge.owl | slme |
+| apo-ext-bridge | https://raw.githubusercontent.com/monarch-initiative/uphenotizer/main/release/apo-ext-bridge.owl | slme |
 ## Components
 Components, in contrast to imports, are considered full members of the ontology. This means that any axiom in a component is also included in the ontology base - which means it is considered _native_ to the ontology. While this sounds complicated, consider this: conceptually, no component should be part of more than one ontology. If that seems to be the case, we are most likely talking about an import. Components are often not needed for ontologies, but there are some use cases:
 
@@ -59,6 +61,8 @@ These are the components in PHENIO
 | wbphenotype.owl | http://purl.obolibrary.org/obo/wbphenotype/wbphenotype-base.owl |
 | ddpheno.owl | http://purl.obolibrary.org/obo/ddpheno/ddpheno-base.owl |
 | dpo.owl | http://purl.obolibrary.org/obo/dpo/dpo-base.owl |
+| dpo-ext.owl | https://raw.githubusercontent.com/monarch-initiative/uphenotizer/main/release/dpo-ext-base.owl |
+| apo-ext.owl | https://raw.githubusercontent.com/monarch-initiative/uphenotizer/main/release/apo-ext-base.owl |
 | uberon.owl | http://purl.obolibrary.org/obo/uberon/uberon-base.owl |
 | cl.owl | http://purl.obolibrary.org/obo/cl/cl-base.owl |
 | ddanat.owl | http://purl.obolibrary.org/obo/ddanat.owl |
