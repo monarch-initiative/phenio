@@ -324,6 +324,9 @@ $(ONT)-relation-graph.tsv: $(MINIMAL_PATH)
 			--mode TSV \
 			--obo-prefixes true \
 			--verbose true
+	# --obo-prefixes only shortens OBO PURLs. Consumers join this file on CURIEs, so
+	# uphenotizer's DPO-ext / APO-ext classes need contracting too.
+	sed -i 's#https://w3id.org/monarch-initiative/entity/PHENOTYPE_#PHENOTYPE:#g' $@
 
 # test artifact. A small subset of the ontology for testing purposes
 # Note this does include categories.
