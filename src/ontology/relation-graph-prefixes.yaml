@@ -1,0 +1,3 @@
+# Prefixes for relation-graph's TSV output, beyond the OBO PURLs handled by
+# --obo-prefixes. Consumers join the relation graph on CURIEs.
+PHENOTYPE: https://w3id.org/monarch-initiative/entity/PHENOTYPE_

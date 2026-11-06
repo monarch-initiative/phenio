@@ -306,7 +306,7 @@ $(MINIMAL_PATH): $(ONT).owl
 		filter --exclude-terms exclude-terms.txt \
 		-o $@
 
-$(ONT)-relation-graph.tsv: $(MINIMAL_PATH)
+$(ONT)-relation-graph.tsv: $(MINIMAL_PATH) relation-graph-prefixes.yaml
 ###	$(OWLTOOLS) $< --merge-imports-closure \
 ###					--remove-axioms -t DisjointClasses \
 ###					--remove-axioms -t ObjectPropertyDomain \
@@ -323,10 +323,8 @@ $(ONT)-relation-graph.tsv: $(MINIMAL_PATH)
 			--reflexive-subclasses true \
 			--mode TSV \
 			--obo-prefixes true \
+			--prefixes relation-graph-prefixes.yaml \
 			--verbose true
-	# --obo-prefixes only shortens OBO PURLs. Consumers join this file on CURIEs, so
-	# uphenotizer's DPO-ext / APO-ext classes need contracting too.
-	sed -i 's#https://w3id.org/monarch-initiative/entity/PHENOTYPE_#PHENOTYPE:#g' $@
 
 # test artifact. A small subset of the ontology for testing purposes
 # Note this does include categories.
